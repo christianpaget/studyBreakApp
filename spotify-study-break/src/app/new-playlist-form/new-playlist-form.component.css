@@ -1,0 +1,7 @@
+.inline-button div{
+	display: inline-block;
+	width: 500px;
+	min-height: 50px;
+	height: auto;
+	background-color: #D3D3D3;
+}
