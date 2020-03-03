@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+<<<<<<< HEAD
+html {background-color: grey}
+=======
+body {
+    background-color: grey;
+    font-family: 'proxima-nova', sans-serif;
+}
+>>>>>>> 4d57064ec136c6a698eaf81ee873dc8349384552

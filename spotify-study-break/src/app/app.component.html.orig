@@ -6,7 +6,7 @@
               <ul>
 <<<<<<< HEAD
                 <li><a routerLink="/homepage" routerLinkActive="active">Home</a></li>
-		<li><a routerLink="/new-playlist-form" routerLinkActive="active">Playlists</a></li>
+                <li><a routerLink="/new-playlist-form" routerLinkActive="active">Playlists</a></li>
                 <li><a routerLink="/help" routerLinkActive="inactive">Help</a></li>
                 <li><a routerLink="/contactUs" routerLinkActive="inactive">Contact Us</a></li>
                 <li><a routerLink="/login" routerLinkActive="active">Log In</a></li>

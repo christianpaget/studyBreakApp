@@ -12,6 +12,6 @@ export class HomepageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  title = 'Study Break!';
+  title = 'Study Break';
 
 }

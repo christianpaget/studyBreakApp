@@ -1,31 +1,9 @@
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 
-html, body, div,
- p,a, ul, li,
- form, label, 
-table, footer, header, hgroup,
-menu, nav{
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-  display: block;
-}
-body {
-  line-height: 1;
-  font: arial, sans-serif;
-}
 ol, ul {
   list-style: none;
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 table {
@@ -38,62 +16,33 @@ table {
 
 .container {
   margin: 0 auto;
-  /* width: 960px; */         /* initial design */
-  width: 100%;                /* responsive */	
-  padding-left: 30px;
-  padding-right: 30px;
+  width: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
-.grid {
-  margin: 0 auto;
-  /* width: 960px; */         /* initial design */
-  width: 100%;                /* responsive */	
-  padding-left: 15px;
-  padding-right: 15px;
-  text-align: center;
-}
- 
 .content-col {
   display: inline-block;	  
 } 
-
-.content-row {
-  background: #ffffff;
-  padding: 66px 0 44px 0;
-}
-
-.subtitle {
-  color: #003333;	
-  font-size: 21px;
-}
 
 p {
   margin-bottom: 22px;
 }
 
 a {
-  color: #648880;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #a9b2b9;
-}
-
-p a {
-  border-bottom: 1px solid #dfe2e5;
-}
+    text-decoration: none;
+  }
 
 .primary-header a, .primary-footer a {
    color: #191414;
 }
 
 .primary-header a:hover, .primary-footer a:hover {
-  color: #648880;
+  color: #1DB954;
 }
 
 .primary-nav {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: .5px;
   text-transform: uppercase;
@@ -109,138 +58,4 @@ p a {
   margin: 0 10px;
   vertical-align: top;
   background-color: 191414;
-}
-
-.title {
-  color: #191414;;
-  line-height: 44px;
-  padding: 22px 48px 66px 120px;
-  text-align: center;
-}
-
-.title h2 {
-  font-size: 36px;
-}
-
-.title p {
-  font-size: 24px;
-  font-weight: 100;
-}
-
-
-
-
-/**************************************/
-/*   css to make the page responsive  */
- 
-/* 1. Ensure that all HTML elements have the box-sizing property set to border-box.
-   This makes sure that the padding and border are included in the total width
-   and height of the elements. */
-* {
-  box-sizing: border-box;
-}
-
-
-/* 2 Define column width -- to be used as default-width 
-.col-1 { width: 8.33%; }
-.col-2 { width: 16.66%; }
-.col-3 { width: 25%; }
-.col-4 { width: 33.33%; }
-.col-5 { width: 41.66%; }
-.col-6 { width: 50%; }
-.col-7 { width: 58.33%; }
-.col-8 { width: 66.66%; }
-.col-9 { width: 75%; }
-.col-10 { width: 83.33%; }
-/*.col-11 { width: 91.66%; }
-/*.col-12 { width: 100%; }
-
-
-*/  
-
-
-/* set these columns to float left, and have a padding */
-[class*="col-"] {
-  float: left;
-  padding: 15px;
-}
-
-
-/* 3. Add a break point, use a media query to insert a breakpoint (between desktop, tablets, and mobiles) */
-
-/* 3.1 Ensure that all col-* is default to 100% on mobile -- "mobile first" ) */ 
-/* For mobile phones: */
-[class*="col-"] {
-  width: 100%;
-}
-
-
-/*
-roughly 
-- desktop  max-width: 992px
-- medium size tablet  max-width: 768px
-- mobile  max-width: 480px  
-*/
-
-/* 3.2 Add CSS rules to adjust screen that is smaller than 768px (for example, tablets and mobile phones) */
-/* change font and size with media queries */ 
-@media only screen and (max-width: 768px) {
-  body {
-    background-color: black; 
-  }
-}
-
-
-
-/* 3.3 Add CSS rules to adjust screen that is smaller than 768px (for example, tablets and mobile phones) */
-@media only screen and (min-width: 768px) {
-  /* For desktop: */
-  .col-1 {width: 8.33%;}
-  .col-2 {width: 16.66%;}
-  .col-3 {width: 25%;}
-  .col-4 {width: 33.33%;}
-  .col-5 {width: 41.66%;}
-  .col-6 {width: 50%;}
-  .col-7 {width: 58.33%;}
-  .col-8 {width: 66.66%;}
-  .col-9 {width: 75%;}
-  .col-10 {width: 83.33%;}
-  .col-11 {width: 91.66%;}
-  .col-12 {width: 100%;}
-}
-
-
-
-
-/* change font and size with media queries */ 
-
-/* 3.5. If the screen size is 600px or less, set the font-size and padding (for example, small tablets and mobile phones) */
-@media only screen and (max-width: 600px) {
-  .title h2 {
-     font-size: 24px;
-  } 
-  .title p {
-     font-size: 20px;
-  }  
-  .logo {       
-     font-size: 36px;
-  }
-  .container {
-     padding-left: 24px;
-     padding-right: 20px;
-  }  
-  .title {  
-     line-height: 40px;
-     padding: 30px 20px 20px 40px;
-  }
-}
-
-/* 3.6 add rules to hide the top content when the screebn is smaller than 600px */
-@media only screen and (max-width: 600px) {
-  #fadeshow {
-    display: none;
-  }
-
-  
-.row { width: 100%; }
 }

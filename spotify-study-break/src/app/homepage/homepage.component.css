@@ -1,0 +1,30 @@
+h1 {
+    background-color: #c5c5c5;
+    width: 25%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-size: 60px;
+    font-weight: 300
+}
+
+button {
+    border-radius: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+h4 {
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+li {
+    display: inline; 
+    margin-right: 10px; 
+ }
