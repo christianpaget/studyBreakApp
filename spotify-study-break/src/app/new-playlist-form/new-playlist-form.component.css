@@ -5,3 +5,15 @@
 	height: auto;
 	background-color: #D3D3D3;
 }
+
+.bodybg-color {
+	background-color: grey;
+}
+
+.PlaylistForm {
+	padding-left: 5%
+}
+
+.spinner {
+	width: 250px;
+}
