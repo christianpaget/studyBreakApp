@@ -6,12 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { NewPlaylistFormComponent } from './new-playlist-form/new-playlist-form.component';
+import { HomepageComponent } from './homepage/homepage.component';
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
 {path: 'login', component: LoginComponent},
 {path: 'new-playlist-form', component: NewPlaylistFormComponent},
-//{path: 'home', component: HomeComponent},
+{path: 'homepage', component: HomepageComponent},
 {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     NewPlaylistFormComponent,
+    HomepageComponent,
     //HomeComponent
   ],
   imports: [
