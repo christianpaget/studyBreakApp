@@ -15,10 +15,10 @@
 	<label>Step 1: Choose your study vibe</label>
 		<div class="inline-button">
     		<div class="radio-button">
-      			<input class="form-check-input" type="radio" name="step1" value="genre" id="step1genre" onclick="showGenreOne()">Genre
+      			<input class="form-check-input" type="radio" name="step1" value="genre" id="step1genre" onclick="showGenreOne()" [(ngModel)]="playlistModel.step1choice">Genre
     		</div>
     		<div class="search-bar" style="display: none">
-    			<input type="text" name="genreName" placeholder="Search by Genre" id="step1boxgenre">
+    			<input type="text" name="genreName" placeholder="Search by Genre" id="step1boxgenre" [(ngModel)]="playlistModel.step1search">
     		</div>
     	</div>
 
@@ -81,7 +81,7 @@
     		<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="30" min="5" value="15"> minutes
     	</div>
     </div>
-    <div>
+    <!--<div>
     	<button class="submit" (click)="submitPlaylist()">Create new playlist</button>
-	</div>
+	</div>-->
 </div>
