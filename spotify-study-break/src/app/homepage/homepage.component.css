@@ -1,15 +1,15 @@
-h1 {
+.title_container {
+    text-align: center;
+}
+.title_background {
     background-color: #c5c5c5;
     width: 25%;
     padding-top: 5px;
     padding-bottom: 5px;
+    display: inline-block;
+    font-size: 30px;
 }
 
-h3 {
-    font-size: 60px;
-    font-weight: 300;
-    font-family: 'proxima-nova', 'sans-serif';
-}
 
 button {
     border-radius: 20px;
@@ -28,4 +28,20 @@ h4 {
 li {
     display: inline; 
     margin-right: 10px; 
+ }
+
+ ul {
+     text-align: center;
+     padding-top: 16%;
+     padding-bottom: 20%;
+ }
+
+ .see_what {
+     font-size: 20px;
+ }
+
+ .or {
+     font-size: 60px;
+     padding-left: 15px;
+     padding-right: 15px;
  }
