@@ -1,87 +1,91 @@
 <script type="text/javascript">
-	function showGenreOne(){
+	/*function showGenreOne(){
 		var check = document.getElementById("step1genre");
 		var box = document.getElementById("step1boxgenre");
 		box.style.display = check.checked ? "block" : "none";
-	}
+	}*/
 </script>
 
+{{ playlistModel | json }}
 <h1>Create Your Study Break!</h1>
 <div class="ResetButton">
-	<button onclick="resetSelections" layout-align="center center">Reset Selections</button>
+	<button (click)="resetSelections()" layout-align="center center">Reset Selections</button>
 
 </div>
 <div class="PlaylistForm">
 	<label>Step 1: Choose your study vibe</label>
-		<div class="inline-button">
-    		<div class="radio-button">
-      			<input class="form-check-input" type="radio" name="step1" value="genre" id="step1genre" onclick="showGenreOne()" [(ngModel)]="playlistModel.step1choice">Genre
-    		</div>
-    		<div class="search-bar" style="display: none">
-    			<input type="text" name="genreName" placeholder="Search by Genre" id="step1boxgenre" [(ngModel)]="playlistModel.step1search">
-    		</div>
+	<p class="step1alert" id="step1alert"></p>
+	<div class="inline-button">
+    	<div class="radio-button">
+     			<input class="form-check-input" type="radio" name="step1" value="genre" id="step1genre" (click)="showGenreOne()" [(ngModel)]="playlistModel.step1choice">Genre
+    	</div>
+    	<div class="search-bar" id="step1genreBar">
+    		<input type="text" name="genreName" placeholder="Search by Genre" id="step1boxgenre" style="display: none" [(ngModel)]="playlistModel.step1search">
+    	</div>
     	</div>
 
     <div class="inline-button">
     	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step1" value="artist">Artist
+      		<input class="form-check-input" type="radio" name="step1" value="artist" [(ngModel)]="playlistModel.step1choice" (click) = "showArtistOne()">Artist
   		</div>
   		<div class="search-bar">
-  			<input type="text" name="artistName" placeholder="Search by Artist">
+  			<input type="text" name="artistName" placeholder="Search by Artist" id = "step1boxartist" style="display:none"[(ngModel)]="playlistModel.step1search" >
   		</div>
     </div>
     <div class="inline-button">
     	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step1" value="playlist">Playlist
+      		<input class="form-check-input" type="radio" name="step1" value="playlist" [(ngModel)]="playlistModel.step1choice" (click)="showPlaylistOne()">Playlist
   		</div>
   		<div class="search-bar">
-  			<input type="text" name="artistName" placeholder="Search by Playlist">
+  			<input type="text" name="artistName" placeholder="Search by Playlist" [(ngModel)]="playlistModel.step1search" id="step1boxplaylist" style="display:none">
   		</div>
     </div>
     <label>Step 2: Choose your study vibe</label>
-		<div class="inline-button">
-    		<div class="radio-button">
-      			<input class="form-check-input" type="radio" name="step2" value="genre">Genre
-    		</div>
-    		<div class="search-bar">
-    			<input type="text" name="genreName" placeholder="Search by Genre">
-    		</div>
+    <p class="step1alert" id="step2alert"></p>
+	<div class="inline-button">
+    	<div class="radio-button">
+    		<input class="form-check-input" type="radio" name="step2" value="genre" [(ngModel)]="playlistModel.step2choice" (click)="showGenreTwo()">Genre
     	</div>
+    	<div class="search-bar">
+    		<input type="text" name="genreName" placeholder="Search by Genre" [(ngModel)]="playlistModel.step2search" id="step2boxgenre" style="display:none">
+    	</div>
+    </div>
 
     <div class="inline-button">
     	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step2" value="artist">Artist
+      		<input class="form-check-input" type="radio" name="step2" value="artist" [(ngModel)]="playlistModel.step2choice" (click)="showArtistTwo()">Artist
   		</div>
   		<div class="search-bar">
-  			<input type="text" name="step2" placeholder="Search by Artist">
+  			<input type="text" name="step2" placeholder="Search by Artist" [(ngModel)]="playlistModel.step2search" id="step2boxartist" style="display:none">
   		</div>
     </div>
     <div class="inline-button">
     	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step2" value="playlist">Playlist
+      		<input class="form-check-input" type="radio" name="step2" value="playlist" [(ngModel)]="playlistModel.step2choice" (click)="showPlaylistTwo()">Playlist
   		</div>
   		<div class="search-bar">
-  			<input type="text" name="artistName" placeholder="Search by Playlist">
+  			<input type="text" name="artistName" placeholder="Search by Playlist" [(ngModel)]="playlistModel.step2search" id="step2boxplaylist" style="display: none">
   		</div>
     </div>
     <label>Step 3: Choose the length of your study time and break time</label>
-    <div class="iline-button">
+    <p class="step1alert" id="step3alert"></p>
+    <div class="inline-button">
     	<div class="label">
-    		<a>Study time length: </a>
-    	</div>
-   		<div class="spinner">
-    		<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="90" value="30"/> minutes
+    		<p>Study time length: </p>
+   			<div class="spinner">
+    			<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="90" value="30" [(ngModel)]="playlistModel.studytime"/> minutes
+    		</div>
     	</div>
     </div>
-    <div class="iine-button">
+    <div class="inline-button">
     	<div class="label">
-    		<a>Break time length: </a>
-    	</div>
+    		<p>Break time length: </p>
     	<div class="spinner">
-    		<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="30" min="5" value="15"> minutes
+    		<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="30" min="5" value="15" [(ngModel)]="playlistModel.breaktime"> minutes
     	</div>
     </div>
-    <!--<div>
+    </div>
+    <div>
     	<button class="submit" (click)="submitPlaylist()">Create new playlist</button>
-	</div>-->
+	</div>
 </div>

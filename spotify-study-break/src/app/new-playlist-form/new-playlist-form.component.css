@@ -3,9 +3,12 @@
 	width: 500px;
 	min-height: 50px;
 	height: auto;
-	background-color: #D3D3D3;
+	/*background-color: #D3D3D3;
+*/
 }
-
+.step1alert{
+	color: red;
+}
 .bodybg-color {
 	background-color: grey;
 }

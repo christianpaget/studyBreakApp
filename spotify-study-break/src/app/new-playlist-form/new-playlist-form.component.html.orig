@@ -1,0 +1,93 @@
+<script type="text/javascript">
+	function showGenreOne(){
+		var check = document.getElementById("step1genre");
+		var box = document.getElementById("step1boxgenre");
+		box.style.display = check.checked ? "block" : "none";
+	}
+</script>
+
+<h1>Create Your Study Break!</h1>
+<div class="ResetButton">
+	<button onclick="resetSelections" layout-align="center center">Reset Selections</button>
+
+</div>
+<div class="PlaylistForm">
+	<label>Step 1: Choose your study vibe</label>
+		<div class="inline-button">
+    		<div class="radio-button">
+      			<input class="form-check-input" type="radio" name="step1" value="genre" id="step1genre" onclick="showGenreOne()" [(ngModel)]="playlistModel.step1choice">Genre
+    		</div>
+    		<div class="search-bar" style="display: none">
+    			<input type="text" name="genreName" placeholder="Search by Genre" id="step1boxgenre" [(ngModel)]="playlistModel.step1search">
+    		</div>
+    	</div>
+
+    <div class="inline-button">
+    	<div class="radio-button">
+      		<input class="form-check-input" type="radio" name="step1" value="artist">Artist
+  		</div>
+  		<div class="search-bar">
+  			<input type="text" name="artistName" placeholder="Search by Artist">
+  		</div>
+    </div>
+    <div class="inline-button">
+    	<div class="radio-button">
+      		<input class="form-check-input" type="radio" name="step1" value="playlist">Playlist
+  		</div>
+  		<div class="search-bar">
+  			<input type="text" name="artistName" placeholder="Search by Playlist">
+  		</div>
+    </div>
+    <label>Step 2: Choose your study vibe</label>
+		<div class="inline-button">
+    		<div class="radio-button">
+      			<input class="form-check-input" type="radio" name="step2" value="genre">Genre
+    		</div>
+    		<div class="search-bar">
+    			<input type="text" name="genreName" placeholder="Search by Genre">
+    		</div>
+    	</div>
+
+    <div class="inline-button">
+    	<div class="radio-button">
+      		<input class="form-check-input" type="radio" name="step2" value="artist">Artist
+  		</div>
+  		<div class="search-bar">
+  			<input type="text" name="step2" placeholder="Search by Artist">
+  		</div>
+    </div>
+    <div class="inline-button">
+    	<div class="radio-button">
+      		<input class="form-check-input" type="radio" name="step2" value="playlist">Playlist
+  		</div>
+  		<div class="search-bar">
+  			<input type="text" name="artistName" placeholder="Search by Playlist">
+  		</div>
+    </div>
+    <label>Step 3: Choose the length of your study time and break time</label>
+    <div class="iline-button">
+    	<div class="label">
+    		<a>Study time length: </a>
+    	</div>
+   		<div class="spinner">
+    		<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="90" value="30"/> minutes
+    	</div>
+    </div>
+    <div class="iine-button">
+    	<div class="label">
+    		<a>Break time length: </a>
+    	</div>
+    	<div class="spinner">
+    		<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="30" min="5" value="15"> minutes
+    	</div>
+    </div>
+<<<<<<< HEAD
+    <!--<div>
+    	<button class="submit" (click)="submitPlaylist()">Create new playlist</button>
+	</div>-->
+=======
+  <!--<div>
+	<button class="submit" (click)="submitPlaylist()">Create new playlist</button>
+</div> ---->  
+>>>>>>> 1f254f402f32ecb91541eebfbad8f9a75ad316c3
+</div>
