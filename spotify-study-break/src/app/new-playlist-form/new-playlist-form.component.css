@@ -20,3 +20,11 @@
 .spinner {
 	width: 250px;
 }
+
+input:valid { 
+	background-color: #1DB954;
+  }
+
+::placeholder {
+	color: white;
+}
