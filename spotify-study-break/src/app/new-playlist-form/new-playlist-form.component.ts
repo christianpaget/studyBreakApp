@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Playlist } from './playlist'
+import { newPlaylist } from './newPlaylist'
+import { ApiService } from '../api.service';
 @Component({
   selector: 'app-new-playlist-form',
   templateUrl: './new-playlist-form.component.html',
   styleUrls: ['./new-playlist-form.component.css']
 })
 export class NewPlaylistFormComponent implements OnInit {
+    constructor(private apiService: ApiService){}
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
-  	playlistModel = new Playlist("", "", "", "", 5, 15);
-  	ngOnInit(): void {
+  	playlistModel = new newPlaylist("", "", "", "", 5, 15);
+  	playlists: Playlist[];
+  	ngOnInit() {
+  		this.apiService.readPlaylists().subscribe((playlists: Playlist[])=>{
+  			this.playlists = playlists;
+  			console.log(this.playlists);
+  		})
   	}
   	/*
   	TODO: Make value in search bar clear when new option is chosen
   	*/
   	resetSelections(){
-  		this.playlistModel = new Playlist("", "", "", "", 5, 15);
+  		this.playlistModel = new newPlaylist("", "", "", "", 5, 15);
   	}
   	step1alert(){
   		document.getElementById("step1alert").innerHTML = "Please select an option and enter a search term";

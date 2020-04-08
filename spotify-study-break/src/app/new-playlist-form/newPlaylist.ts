@@ -1,4 +1,4 @@
-export class Playlist{
+export class newPlaylist{
 	constructor(
 		public step1choice: string,
 		public step1search: string,

@@ -1,5 +1,24 @@
 <!----Authors: Christian Paget-->
+<h1>Playlists</h1>
+<div>
 
+  <table border='1' width='100%' style='border-collapse: collapse;'>
+    <tr>
+      <th>ID</th>
+      <th>Policy Number</th>
+      <th>Policy Amount</th>
+      <th>Operations</th>
+
+    </tr>
+
+    <tr *ngFor="let playlist of playlists">
+      <td>{{ playlist.createrID }}</td>
+      <td>{{ playlist.numSongs }}</td>
+      <td>{{ playlist.genre }}</td>
+      <td>
+      </td>
+    </tr>
+  </table>
 <script type="text/javascript">
 	/*function showGenreOne(){
 		var check = document.getElementById("step1genre");
