@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { newPlaylist } from './newPlaylist'
 import { ApiService } from '../api.service';
+import { Playlist } from '../playlist';
 @Component({
   selector: 'app-new-playlist-form',
   templateUrl: './new-playlist-form.component.html',
@@ -10,9 +11,9 @@ export class NewPlaylistFormComponent implements OnInit {
     constructor(private apiService: ApiService){}
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
   	playlistModel = new newPlaylist("", "", "", "", 5, 15);
-  	playlists: Playlist[];
+  	playlists: newPlaylist[];
   	ngOnInit() {
-  		this.apiService.readPlaylists().subscribe((playlists: Playlist[])=>{
+  		this.apiService.readPlaylists().subscribe((playlists: newPlaylist[])=>{
   			this.playlists = playlists;
   			console.log(this.playlists);
   		})
