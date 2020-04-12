@@ -12,7 +12,7 @@ if($result = mysqli_query($con,$sql))
   $i = 0;
   while($row = mysqli_fetch_assoc($result))
   {
-    $playlists[$i]['playlistID']    = $row['playlistID'];
+    $playlists[$i]['playlistID'] = $row['playlistID'];
     $playlists[$i]['step1choice'] = $row['step1choice'];
     $playlists[$i]['step1search'] = $row['step1search'];
     $playlists[$i]['step2search'] = $row['step2search'];

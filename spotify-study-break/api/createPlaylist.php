@@ -2,10 +2,13 @@
 /**
  * Returns the list of policies.
  */
+header("Access-Control-Allow-Origin: *");
+  header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
+  header("Access-Control-Allow-Headers: Origin, X-Requested-Wth, Content-Type, Accept");
 require 'index.php';
 // Get posted data.
 $postdata = file_get_contents("php://input");
-
+echo $postdata;
 if(isset($postdata) && !empty($postdata))
 {
   // Extract the data.
@@ -13,40 +16,40 @@ if(isset($postdata) && !empty($postdata))
 
 
   // Validate.
-  if(trim($request->number) === '' || (float)$request->amount < 0)
+  /*if(trim($request->step1search) === '' || (float)$request->studytime < 0)
   {
     return http_response_code(400);
   }
-
+*/
   // Sanitize.
-  $playlistID = mysqli_real_escape_string($con, trim($request->playlistID));
+  $playlistID = mysqli_real_escape_string($con, (int)($request->playlistID));
 
   $step1search = mysqli_real_escape_string($con, trim($request->step1search));
   $step1choice = mysqli_real_escape_string($con, trim($request->step1choice));
   $step2choice = mysqli_real_escape_string($con, trim($request->step2choice));
 
   $step2search = mysqli_real_escape_string($con, trim($request->step2search));
-  $breaktime = mysqli_real_escape_string($con, (int)($request->breaktime);
+  $breaktime = mysqli_real_escape_string($con, (int)($request->breaktime));
 
-  $studytime = mysqli_real_escape_string($con, (int)$request->studytime);
+  $studytime = mysqli_real_escape_string($con, (int)($request->studytime));
 
 
 
   // Create.
   //$sql = "INSERT INTO `playlists`(`step1choice`,`step1search`,`step2choice`, `step2search`, `studytime`, `breaktime`) VALUES (null,'{$number}','{$amount}')";
 
-  $sql = "INSERT INTO `playlists` (`step1choice`, `step1search`, `step2choice`, `step2search`, `studytime`, `breaktime`, `playlistID`) VALUES ('{$step1choice}', '{$step1search}', '{$step2choice}', '{$step2search}', '{$studytime}', '{$breaktime}', '{$playlistID}')";
+  $sql = "INSERT INTO `spotify_studybreak`.`playlists` (`step1choice`, `step1search`, `step2choice`, `step2search`, `studytime`, `breaktime`) VALUES ('{$step1choice}', '{$step1search}', '{$step2choice}', '{$step2search}', '{$studytime}', '{$breaktime}')";
   if(mysqli_query($con,$sql))
   {
     http_response_code(201);
     $playlist = [
-      'playlistID' => $number,
-      'step1choice' => $amount,
+      'playlistID' => $playlistID,
+      'step1choice' => $step1choice,
       'step1search' => $step1search,
       'step2choice' => $step2choice,
       'step2search' => $step2search,
       'breaktime' => $breaktime,
-      'studytime' => $playlistID
+      'studytime' => $studytime
     ];
     echo json_encode($playlist);
   }
