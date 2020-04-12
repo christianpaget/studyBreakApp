@@ -2,27 +2,62 @@ import { Component, OnInit } from '@angular/core';
 import { newPlaylist } from './newPlaylist'
 import { ApiService } from '../api.service';
 import { Playlist } from '../playlist';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-new-playlist-form',
   templateUrl: './new-playlist-form.component.html',
   styleUrls: ['./new-playlist-form.component.css']
 })
 export class NewPlaylistFormComponent implements OnInit {
-    constructor(private apiService: ApiService){}
+    constructor(private http: HttpClient, private router: Router){}
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
-  	playlistModel = new newPlaylist("", "", "", "", 5, 15);
+  	playlistModel = new newPlaylist("", "", "", "", 5, 15 ,50);
   	playlists: newPlaylist[];
   	ngOnInit() {
-  		this.apiService.readPlaylists().subscribe((playlists: newPlaylist[])=>{
+  		/*this.apiService.readPlaylists().subscribe((playlists: newPlaylist[])=>{
   			this.playlists = playlists;
   			console.log(this.playlists);
-  		})
+  		})*/
   	}
   	/*
   	TODO: Make value in search bar clear when new option is chosen
+    onSubmit(form: any): void{
+    console.log('You submitted value: ', form);
+    this.data_submitted = form;
+
+    let params = JSON.stringify(form);
+    //this.http.get<Order>('http://localhost/php-inclass/inclass11/ngphp-get.php?str='+params).subscribe((data) =>{
+    this.http.post<Order>('http://localhost/php-inclass/inclass1/ngphp-get.php', params).subscribe((data) =>{
+      console.log('Response: ', data);
+      this.responseData = data;
+    }, (error) =>{
+      console.log('Error :', error);
+    });
+  }
   	*/
-  	resetSelections(){
-  		this.playlistModel = new newPlaylist("", "", "", "", 5, 15);
+    redirectSuccess(){
+      this.router.navigate(['/createSuccess'])
+    }
+  	submitPlaylist(form: any): void{
+      if(this.validatePlaylist()){
+        let params = JSON.stringify(this.playlistModel);
+        console.log(params);
+        this.http.post<newPlaylist>('http://localhost/api/createPlaylist.php', params).subscribe((data) =>{
+          console.log('Response: ', data);
+        }, (error) =>{
+          if(error==201){
+            //this.redirectSuccess();
+          }
+          this.redirectSuccess();
+
+          console.log('Error: ', error);
+        });
+      }
+    }
+    resetSelections(){
+  		this.playlistModel = new newPlaylist("", "", "", "", 5, 15, 0);
   	}
   	step1alert(){
   		document.getElementById("step1alert").innerHTML = "Please select an option and enter a search term";
@@ -52,11 +87,7 @@ export class NewPlaylistFormComponent implements OnInit {
   	}
 
 
-  	submitPlaylist(){
-  		if(this.validatePlaylist()){
-  			alert("Thank you for creating a playlist");
-  		}
-  	}
+  	
   	showGenreOne(){
 		var box = document.getElementById("step1boxgenre");
 		box.style.display = "inline-block";
