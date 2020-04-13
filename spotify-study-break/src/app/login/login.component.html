@@ -15,10 +15,10 @@
       </h2>
     </div>
     <div style="text-align:center">
-      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-        Username: <input type="text" name="username" class="form-control" autofocus required /> <br/>
-        Password: <input type="password" name="pwd" class="form-control" required /> <br/>
-        <input type="submit" value="Sign in" class="btn btn-light"  />   
+      <form #loginForm="ngForm">
+        Username: <input type="text" name="username" [(ngModel)]="loginModel.username"class="form-control" autofocus required /> <br/>
+        Password: <input type="password" name="pwd" class="form-control" [(ngModel)]="loginModel.password" required  /> <br/>
+        <input type="submit" value="Sign in" class="btn btn-light" (click)="logIn(loginForm.value)"  />   
       </form>
     </div>
     
