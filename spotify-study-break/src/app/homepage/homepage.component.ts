@@ -14,6 +14,6 @@ export class HomepageComponent implements OnInit {
 
   title = 'Study Break';
 
-  left = 'See what everyone is listening to!'
+  left = 'See what you listened to last time!'
 
 }

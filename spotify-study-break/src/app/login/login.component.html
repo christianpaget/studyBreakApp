@@ -15,7 +15,11 @@
       </h2>
     </div>
     <div style="text-align:center">
-        <button type="button" style = 'background-color: #1DB954' onclick="alert('test')"><h3>Spotify Log In</h3></button>
+      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+        Username: <input type="text" name="username" class="form-control" autofocus required /> <br/>
+        Password: <input type="password" name="pwd" class="form-control" required /> <br/>
+        <input type="submit" value="Sign in" class="btn btn-light"  />   
+      </form>
     </div>
     
     </body>
