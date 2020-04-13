@@ -1,24 +1,6 @@
 <!----Authors: Christian Paget-->
 <h1>Playlists</h1>
 <div>
-
-  <table border='1' width='100%' style='border-collapse: collapse;'>
-    <tr>
-      <th>ID</th>
-      <th>Policy Number</th>
-      <th>Policy Amount</th>
-      <th>Operations</th>
-
-    </tr>
-
-    <tr *ngFor="let playlist of playlists">
-      <td>{{ playlist.playlistID }}</td>
-      <td>{{ playlist.breaktime }}</td>
-      <td>{{ playlist.studytime }}</td>
-      <td>{{ playlist.step1choice }}
-      </td>
-    </tr>
-  </table>
 <script type="text/javascript">
 	/*function showGenreOne(){
 		var check = document.getElementById("step1genre");
@@ -26,7 +8,7 @@
 		box.style.display = check.checked ? "block" : "none";
 	}*/
 </script>
-
+{{ responseData | json}}
 {{ playlistModel | json }}
 <h1>Create Your Study Break!</h1>
 <div class="ResetButton">

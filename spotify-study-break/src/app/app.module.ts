@@ -32,7 +32,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes, { enableTracing: true})
+    RouterModule.forRoot(appRoutes, { enableTracing: true, onSameUrlNavigation: 'reload'})
   ],
   providers: [],
   bootstrap: [AppComponent]

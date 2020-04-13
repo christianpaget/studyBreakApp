@@ -15,17 +15,16 @@ export class NewPlaylistFormComponent implements OnInit {
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
   	playlistModel = new newPlaylist("", "", "", "", 5, 15 ,50);
   	playlists: newPlaylist[];
+    responseData;
   	ngOnInit() {
-  		/*this.apiService.readPlaylists().subscribe((playlists: newPlaylist[])=>{
-  			this.playlists = playlists;
-  			console.log(this.playlists);
-  		})*/
+  		this.http.get('http://localhost/api/session.php').subscribe((data) =>{
+        this.responseData = data;
+        
+  		})
   	}
+
   	/*
-  	TODO: Make value in search bar clear when new option is chosen
-    onSubmit(form: any): void{
-    console.log('You submitted value: ', form);
-    this.data_submitted = form;
+  	
 
     let params = JSON.stringify(form);
     //this.http.get<Order>('http://localhost/php-inclass/inclass11/ngphp-get.php?str='+params).subscribe((data) =>{
@@ -58,7 +57,23 @@ export class NewPlaylistFormComponent implements OnInit {
     }
     resetSelections(){
   		this.playlistModel = new newPlaylist("", "", "", "", 5, 15, 0);
+      document.getElementById("step1alert").innerHTML = "";
+      document.getElementById("step2alert").innerHTML = "";
+      document.getElementById("step3alert").innerHTML = "";
+      this.resetSearch();
+
+
   	}
+    resetSearch(){
+    document.getElementById("step1boxgenre").style.display = "none";
+    document.getElementById("step1boxartist").style.display = "none";
+    document.getElementById("step1boxplaylist").style.display = "none";
+    document.getElementById("step2boxgenre").style.display = "none";
+    document.getElementById("step2boxartist").style.display = "none";
+    document.getElementById("step2boxplaylist").style.display = "none";
+        
+
+    }
   	step1alert(){
   		document.getElementById("step1alert").innerHTML = "Please select an option and enter a search term";
   	}
@@ -73,16 +88,29 @@ export class NewPlaylistFormComponent implements OnInit {
   		if(this.playlistModel.step1choice == "" || this.playlistModel.step1search == ""){
   			this.step1alert();
   			fail = false;
+
   		}
+      else{
+        document.getElementById("step1alert").innerHTML = "";
+
+      }
   		if(this.playlistModel.step2choice == "" || this.playlistModel.step2search == ""){
   			this.step2alert();
   			fail = false;
   		}
-  		if(this.playlistModel.studytime == 0 || this.playlistModel.studytime == 0){
+      else{
+        document.getElementById("step2alert").innerHTML = "";
+
+      }
+  		if(this.playlistModel.studytime <= 0 || this.playlistModel.studytime <= 0){
   			this.step3alert();
   			fail = false;
   		}
-  		return fail
+      else{
+        document.getElementById("step3alert").innerHTML = "";
+
+      }
+  		return fail;
 
   	}
 
