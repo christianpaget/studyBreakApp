@@ -2,19 +2,24 @@
 <?php
 	/* sourcecodester.com
 	*/
+
 	require('index.php');
-	session_start();
+	//session_start();
 
 	$request = json_decode(file_get_contents('php://input'));
-	echo json_encode($request);
+	//echo json_encode($request);
 	$username = $request->username;
 	$pwd = $request->password;
-	$pwd = password_hash($pwd, PASSWORD_BCRYPT);
-	$out = [];
+	//echo($request->password);
+	//$pwd = password_hash($pwd, PASSWORD_BCRYPT);
 
-	$sql = "SELECT * FROM spotify_studybreak.users WHERE Username='$username' AND Hashed_pwd='$pwd'";
+	$out = [];
+	//echo($username);
+	//echo($pwd);
+	$sql = "SELECT * FROM `spotify_studybreak`.`users` WHERE Username='". $username . "' AND Hashed_pwd='" .$pwd ."'";
+	//echo($sql);
 	$query = mysqli_query($con, $sql);
-	echo $query->num_rows;
+	//echo $query->num_rows;
 	if($query->num_rows>0){
 		$row = $query->fetch_array();
 		$out['message'] = 'Success';
@@ -25,6 +30,7 @@
 		$out['error'] = true;
 		$out['message'] = 'Invalid Login';
 	}
+	//echo json_encode($_SESSION);
 	echo json_encode($out);
 
 ?>

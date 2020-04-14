@@ -1,13 +1,16 @@
 <?php
 
-	include('index.php');
+	require('index.php');
+	//require('login.php');
+
+	//session_start();
 
 	$postdata = file_get_contents("php://input");
 	$request = json_decode($postdata);
 	$sessions = array();
 	$session["user"] = "no";
 	$data = [];
-	session_start();
+	echo $_SESSION['user'];
 	if(isset($_SESSION['user'])){
 		echo "auth";
 	}
@@ -25,9 +28,9 @@
 		}*/
 		$sessions = $_SESSION;
 	//}
-	$pwd = "hi";
-	$pwd = password_hash($pwd, PASSWORD_BCRYPT);
-	echo json_encode($pwd);
+	//$pwd = "hi";
+	//$pwd = password_hash($pwd, PASSWORD_BCRYPT);
+	//echo json_encode($pwd);
 
 
 ?>
