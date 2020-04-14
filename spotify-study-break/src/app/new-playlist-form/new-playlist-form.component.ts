@@ -17,7 +17,9 @@ export class NewPlaylistFormComponent implements OnInit {
   	playlists: newPlaylist[];
     responseData;
   	ngOnInit() {
-  		this.http.get('http://localhost/api/session.php', {responseType: 'text'}).subscribe((data) =>{
+      var param = { session : "yes"};
+      var send = JSON.stringify(param);
+  		this.http.post('http://localhost/api/login.php', param, {responseType: 'text'}).subscribe((data) =>{
         this.responseData = data;
         console.log(data);
   		})

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -16,4 +16,7 @@ export class HomepageComponent implements OnInit {
 
   left = 'See what you listened to last time!'
 
+  goToPlaylist(){
+  	this.router.navigate(['/new-playlist-form']);
+  }
 }

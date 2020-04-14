@@ -10,6 +10,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSuccessComponent } from './create-success/create-success.component';
 import { UserPlaylistsComponent } from './user-playlists/user-playlists.component';
+import { UserHomeComponent } from './user-home/user-home.component';
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
@@ -17,7 +18,8 @@ const appRoutes: Routes = [
 {path: 'new-playlist-form', component: NewPlaylistFormComponent},
 {path: 'homepage', component: HomepageComponent},
 {path: '', redirectTo: '/login', pathMatch: 'full'},
-{path: 'createSuccess', component: CreateSuccessComponent}
+{path: 'createSuccess', component: CreateSuccessComponent},
+{path: 'user_home', component: UserHomeComponent}
 ];
 
 @NgModule({
@@ -28,6 +30,7 @@ const appRoutes: Routes = [
     HomepageComponent,
     CreateSuccessComponent,
     UserPlaylistsComponent,
+    UserHomeComponent,
     //HomeComponent
   ],
   imports: [

@@ -1,0 +1,26 @@
+<body>
+<h1>Hi {{ user }}!</h1>
+
+<p>Your Playlists</p>
+<table border='1' width='100%' style='border-collapse: collapse;'>
+    <tr>
+      <th>ID</th>
+      <th>Study Vibe</th>
+      <th>Break Vibe</th>
+      <th>Study Time</th>
+      <th>Break Time</th>
+
+    </tr>
+
+    <tr *ngFor="let playlist of playlists">
+      <td>{{ playlist.playlistID }}</td>
+      <td>{{ playlist.step1search }}</td>
+      <td>{{ playlist.step2search }}</td>
+      <td>{{ playlist.studytime }}</td>
+      <td>{{ playlist.breaktime }}</td>
+      <td>
+        <button (click)="deletePolicy(policy.id)">Delete</button>
+      </td>
+    </tr>
+  </table>
+</body>

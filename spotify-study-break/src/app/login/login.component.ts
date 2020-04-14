@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { login } from './login';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,6 +19,8 @@ export class LoginComponent implements OnInit {
   loginModel = new login("", "");
   constructor(private http: HttpClient, private router: Router) { }
   data;
+  invocation = new XMLHttpRequest();
+  url = 'http://localhost/api/login.php';
   ngOnInit(): void {
   }
   failedLogin(){
