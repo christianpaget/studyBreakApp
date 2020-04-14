@@ -13,13 +13,13 @@ import { Router } from '@angular/router';
 export class NewPlaylistFormComponent implements OnInit {
     constructor(private http: HttpClient, private router: Router){}
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
-  	playlistModel = new newPlaylist("", "", "", "", 5, 15 ,50);
+  	playlistModel = new newPlaylist("", "", "", "", 15, 30 ,null);
   	playlists: newPlaylist[];
     responseData;
   	ngOnInit() {
-  		this.http.get('http://localhost/api/session.php').subscribe((data) =>{
+  		this.http.get('http://localhost/api/newplaylist.php').subscribe((data) =>{
         this.responseData = data;
-        
+        console.log(data);
   		})
   	}
 

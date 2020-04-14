@@ -16,11 +16,11 @@ if(isset($postdata) && !empty($postdata))
 
 
   // Validate.
-  /*if(trim($request->step1search) === '' || (float)$request->studytime < 0)
+  if(trim($request->step1search) === '' || trim($request->step1choice) === '' || trim($request->step2search) === ''  || trim($request->step2choice) === '' || (float)$request->breaktime < 0 || (float)$request->studytime < 0)
   {
     return http_response_code(400);
   }
-*/
+
   // Sanitize.
   $playlistID = mysqli_real_escape_string($con, (int)($request->playlistID));
 

@@ -16,18 +16,20 @@ export class LoginComponent implements OnInit {
   the perfect playlist\! Log in using your Spotify account and try it out!'
   loginModel = new login("", "");
   constructor(private http: HttpClient) { }
-
+  data;
   ngOnInit(): void {
   }
   logIn(form: any): void{
       let params = JSON.stringify(this.loginModel);
       console.log(params);
       this.http.post<login>('http://localhost/api/session.php', params).subscribe((data) =>{
+          this.data = data;
           console.log('Response: ', data);
         }, (error) =>{
           if(error==201){
             //this.redirectSuccess();
           }
+          //console.log(this.data);
   });
     }
   }

@@ -7,26 +7,27 @@
 	$sessions = array();
 	$session["user"] = "no";
 	$data = [];
-	if($request!=""){
-	
-		if (!isset($_SESSION)){
-			session_start();
-		}
-
-		$_SESSION['user'] = $request->{'username'};
+	session_start();
+	if(isset($_SESSION['user'])){
+		echo "auth";
+	}
+	else{
+		echo "notAuth";
+	}
+	//if($request!=""){
+		//$_SESSION['users'] = $request->username;
 		//$_SESSION['password'] = password_hash($request->{'username'}, PASSWORD_BCRYPT);
-
 		//$sessions = array();
-
 		//$sessions['user'] = $_SESSION['user'];
 	//*/
-
-		foreach ($request as $k => $v) {
-	
+		/*foreach ($request as $k => $v) {
 			$data[0]['get'.$k] = $v;
-		}
-	}
-	echo json_encode($_SESSION);
+		}*/
+		$sessions = $_SESSION;
+	//}
+	$pwd = "hi";
+	$pwd = password_hash($pwd, PASSWORD_BCRYPT);
+	echo json_encode($pwd);
 
 
 ?>

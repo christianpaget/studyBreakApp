@@ -9,6 +9,7 @@ import { NewPlaylistFormComponent } from './new-playlist-form/new-playlist-form.
 import { HomepageComponent } from './homepage/homepage.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSuccessComponent } from './create-success/create-success.component';
+import { UserPlaylistsComponent } from './user-playlists/user-playlists.component';
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
     NewPlaylistFormComponent,
     HomepageComponent,
     CreateSuccessComponent,
+    UserPlaylistsComponent,
     //HomeComponent
   ],
   imports: [

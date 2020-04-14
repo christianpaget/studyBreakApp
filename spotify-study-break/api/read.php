@@ -3,7 +3,8 @@
  * Returns the list of policies.
  */
 require 'index.php';
-
+session_start();
+echo $_SESSION['user'];
 $playlists = [];
 $sql = "SELECT * FROM playlists";
 
