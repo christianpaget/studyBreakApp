@@ -3,7 +3,7 @@
 	require('index.php');
 	//require('login.php');
 
-	//session_start();
+	session_start();
 
 	$postdata = file_get_contents("php://input");
 	$request = json_decode($postdata);

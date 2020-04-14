@@ -7,16 +7,9 @@
 	session_start();
 
 	$request = json_decode(file_get_contents('php://input'));
-//Session.php 'function'
-	if($request->session){
-		if(isset($_SESSION['user'])){
-		echo "auth";
-		return;
-	}
-	else{
-		echo "notAuth";
-		return;
-}
+	//echo $request->session;
+	
+
 	//echo json_encode($request);
 	$username = $request->username;
 	$pwd = $request->password;
@@ -40,9 +33,9 @@
 		$out['error'] = true;
 		$out['message'] = 'Invalid Login';
 	}
+	//var_dump($_SESSION);
+	//echo session_id();
 	//echo json_encode($_SESSION);
 	echo json_encode($out);
-
-
 
 ?>

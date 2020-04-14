@@ -26,7 +26,7 @@
 
 	//$pdo = new PDO($dsn, $username, $password);
 	//$pdo =
-	session_start();
+	//session_start();
 function connect(){
 	//$connect = mysql_connect("$")
 	$connect = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);

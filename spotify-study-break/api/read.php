@@ -4,7 +4,7 @@
  */
 require 'index.php';
 session_start();
-echo $_SESSION['user'];
+//echo $_SESSION['user'];
 $playlists = [];
 $sql = "SELECT * FROM playlists";
 
@@ -20,6 +20,7 @@ if($result = mysqli_query($con,$sql))
     $playlists[$i]['step2choice'] = $row['step1choice'];
     $playlists[$i]['breaktime'] = $row['breaktime'];
     $playlists[$i]['studytime'] = $row['studytime'];
+    $playlists[$i]['userID'] = $row['userID'];
     $i++;
   }
 
