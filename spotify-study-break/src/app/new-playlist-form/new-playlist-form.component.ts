@@ -12,11 +12,18 @@ import { Router } from '@angular/router';
 })
 export class NewPlaylistFormComponent implements OnInit {
     constructor(private http: HttpClient, private router: Router){}
+    user;
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
-  	playlistModel = new newPlaylist("", "", "", "", 15, 30 ,null);
+  	playlistModel = new newPlaylist("", "", "", "", 30, 15 ,null, this.user);
   	playlists: newPlaylist[];
     responseData;
+    //window.localStorage.getItem('user');
   	ngOnInit() {
+      if(!window.localStorage.getItem('user')){
+        alert('You must sign in before you can access this page');
+        this.router.navigate(['/login']);
+      }
+      this.user = window.localStorage.getItem('user');
       var param = { session : "yes"};
       var send = JSON.stringify(param);
   		this.http.post('http://localhost/api/login.php', param, {responseType: 'text'}).subscribe((data) =>{
@@ -58,7 +65,7 @@ export class NewPlaylistFormComponent implements OnInit {
       }
     }
     resetSelections(){
-  		this.playlistModel = new newPlaylist("", "", "", "", 5, 15, 0);
+  		this.playlistModel = new newPlaylist("", "", "", "", 30, 15, null, this.user);
       document.getElementById("step1alert").innerHTML = "";
       document.getElementById("step2alert").innerHTML = "";
       document.getElementById("step3alert").innerHTML = "";

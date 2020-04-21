@@ -32,12 +32,13 @@ export class LoginComponent implements OnInit {
   logIn(form: any): void{
       let params = JSON.stringify(this.loginModel);
       console.log(params);
-      this.http.post<login>('http://localhost/api/login.php', params, {responseType: 'text'}).subscribe((data) =>{
+      this.http.post<any>('http://localhost/api/login.php', params, {responseType: 'text' as 'json'}).subscribe((data) =>{
           this.data = data;
           console.log('Response: ', data);
           data = JSON.parse(data);
           if(data['message']=='Success'){
             this.redirectSuccess();
+            window.localStorage.setItem('user', data['user']);
           }
           else if(data['message']!='Success'){
             this.failedLogin();

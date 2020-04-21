@@ -6,6 +6,7 @@ export class newPlaylist{
 		public step2search: string,
 		public studytime: number,
 		public breaktime: number,
-		public playlistID: number
+		public playlistID: number,
+		public userID: string
 		){}
 }

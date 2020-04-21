@@ -2,7 +2,8 @@
 <h1>Hi {{ user }}!</h1>
 
 <p>Your Playlists</p>
-<table border='1' width='100%' style='border-collapse: collapse;'>
+<div *ngIf="playlistsLength > 0; else noPlaylist">
+<table border='1' width='100%' style='border-collapse: collapse; padding-left: 20px;padding-right: 20px;'>
     <tr>
       <th>ID</th>
       <th>Study Vibe</th>
@@ -19,8 +20,11 @@
       <td>{{ playlist.studytime }}</td>
       <td>{{ playlist.breaktime }}</td>
       <td>
-        <button (click)="deletePolicy(policy.id)">Delete</button>
+        <button class="btn btn-light" (click)="listen(playlist.playlistID)" style = 'background-color: #1DB954'>Listen Now</button>
+        <button class="btn btn-light" (click)="deletePlaylist(playlist.playListID)">Delete</button>
       </td>
     </tr>
   </table>
+</div>
+<ng-template #noPlaylist>You don't have any playlists :(</ng-template>
 </body>

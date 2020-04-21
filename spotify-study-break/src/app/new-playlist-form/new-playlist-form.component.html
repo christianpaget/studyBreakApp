@@ -8,7 +8,6 @@
 		box.style.display = check.checked ? "block" : "none";
 	}*/
 </script>
-{{ responseData | json}}
 {{ playlistModel | json }}
 <h1>Create Your Study Break!</h1>
 <div class="ResetButton">
@@ -77,7 +76,7 @@
     	<div class="label">
     		<p>Study time length: </p>
    			<div class="spinner">
-    			<input class="form-control" type="number" ng-model="$scope.someNumber" step="5" max="90" value="30" [(ngModel)]="playlistModel.studytime"/> minutes
+    			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.studytime" name="studyTime"/> minutes
     		</div>
     	</div>
     </div>
@@ -85,7 +84,7 @@
     	<div class="label">
     		<p>Break time length: </p>
     	<div class="spinner">
-    		<input class="form-control" type="number" step="5" max="30" min="5" value="15" [(ngModel)]="playlistModel.breaktime"> minutes
+    		<input class="form-control" type="number" step="5" max="30" min="5" [(ngModel)]="playlistModel.breaktime" name="breakTime"> minutes
     	</div>
     </div>
     </div>
