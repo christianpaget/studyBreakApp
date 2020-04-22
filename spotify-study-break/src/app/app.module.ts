@@ -13,6 +13,9 @@ import { UserPlaylistsComponent } from './user-playlists/user-playlists.componen
 import { UserHomeComponent } from './user-home/user-home.component';
 import { SpotifyPlayerComponent } from './spotify-player/spotify-player.component';
 import { SpotifyLoginComponent } from './spotify-login/spotify-login.component';
+import { LogoutComponent } from './logout/logout.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
@@ -22,8 +25,13 @@ const appRoutes: Routes = [
 {path: '', redirectTo: '/login', pathMatch: 'full'},
 {path: 'createSuccess', component: CreateSuccessComponent},
 {path: 'user_home', component: UserHomeComponent},
+
 {path: 'spotify-player', component: SpotifyPlayerComponent},
-{path: 'spotify-login', component: SpotifyLoginComponent}
+{path: 'spotify-login', component: SpotifyLoginComponent},
+
+{path: 'logout', component: LogoutComponent},
+{path: 'createUser', component: CreateUserComponent}
+
 ];
 
 @NgModule({
@@ -35,8 +43,13 @@ const appRoutes: Routes = [
     CreateSuccessComponent,
     UserPlaylistsComponent,
     UserHomeComponent,
+<<<<<<< HEAD
     SpotifyPlayerComponent,
     SpotifyLoginComponent,
+=======
+    LogoutComponent,
+    CreateUserComponent,
+>>>>>>> 2529fadfe8dc4ad5db2f1efb77a176d75e4119f9
     //HomeComponent
   ],
   imports: [
