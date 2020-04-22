@@ -43,13 +43,10 @@ const appRoutes: Routes = [
     CreateSuccessComponent,
     UserPlaylistsComponent,
     UserHomeComponent,
-<<<<<<< HEAD
     SpotifyPlayerComponent,
     SpotifyLoginComponent,
-=======
     LogoutComponent,
     CreateUserComponent,
->>>>>>> 2529fadfe8dc4ad5db2f1efb77a176d75e4119f9
     //HomeComponent
   ],
   imports: [
