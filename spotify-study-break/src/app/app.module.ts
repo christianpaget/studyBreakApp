@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CreateSuccessComponent } from './create-success/create-success.component';
 import { UserPlaylistsComponent } from './user-playlists/user-playlists.component';
 import { UserHomeComponent } from './user-home/user-home.component';
+import { SpotifyPlayerComponent } from './spotify-player/spotify-player.component';
+import { SpotifyLoginComponent } from './spotify-login/spotify-login.component';
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
@@ -19,7 +21,9 @@ const appRoutes: Routes = [
 {path: 'homepage', component: HomepageComponent},
 {path: '', redirectTo: '/login', pathMatch: 'full'},
 {path: 'createSuccess', component: CreateSuccessComponent},
-{path: 'user_home', component: UserHomeComponent}
+{path: 'user_home', component: UserHomeComponent},
+{path: 'spotify-player', component: SpotifyPlayerComponent},
+{path: 'spotify-login', component: SpotifyLoginComponent}
 ];
 
 @NgModule({
@@ -31,6 +35,8 @@ const appRoutes: Routes = [
     CreateSuccessComponent,
     UserPlaylistsComponent,
     UserHomeComponent,
+    SpotifyPlayerComponent,
+    SpotifyLoginComponent,
     //HomeComponent
   ],
   imports: [
