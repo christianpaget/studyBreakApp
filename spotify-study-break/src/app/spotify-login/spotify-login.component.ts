@@ -14,7 +14,7 @@ export class SpotifyLoginComponent implements OnInit {
   }
   login(){
   	document.location.href = 'https://accounts.spotify.com/authorize?client_id=' + this.spotifyID + '&redirect_uri=' + this.redirect_uri
-  	+ '&scope=user-read-currently-playing%20user-read-playback-state&response_type=token';
+  	+ '&scope=user-modify-playback-state%20streaming%20user-read-private%20user-read-email&response_type=token';
   }
   redirect_uri = 'http:%2F%2Flocalhost:4200%2Fhomepage';
   spotifyID = 'a466c513c83a43809ffe7f0573d24418';
