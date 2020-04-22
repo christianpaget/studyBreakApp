@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CreateSuccessComponent } from './create-success/create-success.component';
 import { UserPlaylistsComponent } from './user-playlists/user-playlists.component';
 import { UserHomeComponent } from './user-home/user-home.component';
+import { LogoutComponent } from './logout/logout.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
@@ -19,7 +21,9 @@ const appRoutes: Routes = [
 {path: 'homepage', component: HomepageComponent},
 {path: '', redirectTo: '/login', pathMatch: 'full'},
 {path: 'createSuccess', component: CreateSuccessComponent},
-{path: 'user_home', component: UserHomeComponent}
+{path: 'user_home', component: UserHomeComponent},
+{path: 'logout', component: LogoutComponent},
+{path: 'createUser', component: CreateUserComponent},
 ];
 
 @NgModule({
@@ -31,6 +35,8 @@ const appRoutes: Routes = [
     CreateSuccessComponent,
     UserPlaylistsComponent,
     UserHomeComponent,
+    LogoutComponent,
+    CreateUserComponent,
     //HomeComponent
   ],
   imports: [
