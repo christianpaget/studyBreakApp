@@ -25,6 +25,7 @@ export class NewPlaylistFormComponent implements OnInit {
       }
       this.user = window.localStorage.getItem('user');
       var param = { session : "yes"};
+      this.playlistModel.userID = this.user;
       var send = JSON.stringify(param);
   		this.http.post('http://localhost/api/login.php', param, {responseType: 'text'}).subscribe((data) =>{
         this.responseData = data;

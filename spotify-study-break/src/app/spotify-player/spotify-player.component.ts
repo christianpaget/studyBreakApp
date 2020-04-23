@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { newPlaylist } from '../new-playlist-form/newPlaylist';
+import { timer } from 'rxjs';
+
 @Component({
   selector: 'app-spotify-player',
   templateUrl: './spotify-player.component.html',
@@ -15,16 +18,37 @@ export class SpotifyPlayerComponent implements OnInit {
   		else if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
   			this.router.navigate(['/spotify-login']);
   		}
- // 		this.loadSpotifyScript();
-  //		this.initializeSpotifyPlayer();
-  	//	this.searchSpotify();
-  		this.token = window.localStorage.getItem('auth_token');
+  		let info = this.route.snapshot.paramMap;
+  		this.playlist.step1choice = info.get('step1choice');
+  		this.playlist.step1search = info.get('step1search');
+  		this.playlist.step2choice = info.get('step2choice');
+  		this.playlist.step2search = info.get('step2search');
+  		this.playlist.breaktime = parseInt(info.get('breaktime'))
+  		this.playlist.studytime = parseInt(info.get('studytime'));
+  		this.playlist.userID = info.get('userID');
+  		this.playlist.playlistID = parseInt(info.get('playlistID'));
+  		this.minuteTimeLeft = this.playlist.studytime;
+  		this.studytime = true;
+  		this.loadSpotifyScript();
+  		this.initializeSpotifyPlayer();
+  		this.searchSpotify();
+  		this.pause();
+
+  		//this.token = window.localStorage.getItem('auth_token');
   		//this.headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   }
-  constructor(private router: Router, private http: HttpClient) { 
+  constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute) { 
   	//this.loadSpotifyScript();
   	//this.initializeSpotifyPlayer();
   }
+  trackNum = 0;
+  playing;
+  seenTimer;
+  interval;
+  studytime;
+  secondTimeLeft = 0;
+  minuteTimeLeft;
+  playlist = new newPlaylist('', '', '', '', null, null, null, '');
   token; //window.localStorage.getItem('auth_token');
   headers;//= new HttpHeaders().append('Authorization', 'Bearer ' + this.token)
   deviceID;
@@ -32,13 +56,74 @@ export class SpotifyPlayerComponent implements OnInit {
   spotifyID = 'a466c513c83a43809ffe7f0573d24418';
   spotifySecret = '0575752dbd7e41ac964f63c60342308e';
   tracks: [];
+  switchVibe(){
+  	this.studytime = !this.studytime;
+  	this.searchSpotify();
+  	this.queue();
+  	console.log('queue');
+  	this.nextTrack();
+  	console.log('next');
+  	
+  }
+  startSession(){
+  	this.queue();
+  	this.nextTrack();
+  	this.play();
+  	this.interval = setInterval(() =>{
+  		if(this.secondTimeLeft > 0)
+  			this.secondTimeLeft--;
+  		else if(this.minuteTimeLeft > 0) {
+  			this.secondTimeLeft = 59;
+  			this.minuteTimeLeft --;
+  		}
+  		else{
+  			if(this.studytime)
+  				this.minuteTimeLeft = this.playlist.breaktime;
+  			else
+  				this.minuteTimeLeft = this.playlist.studytime;
+  			//this.studytime = !this.studytime;
+  			this.switchVibe();
+  		}
+  	}, 1000)
+  }
+  queue(){
+  	let token = window.localStorage.getItem('auth_token');
+	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  	//console.log(headers);
+  	let params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.trackNum]['uri']);
+  	//console.log(this.tracks[0]['uri']);
+  	let data = JSON.stringify(params);
+  	//console.log(data);
+  	this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.trackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  		console.log(response);
+  	});
+  	this.trackNum ++;
+  }
+  nextTrack(){
+  	let token = window.localStorage.getItem('auth_token');
+	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  	//console.log(headers);
+  	//let params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.trackNum]['uri']);
+  	//console.log(this.tracks[0]['uri']);
+  	//let data = JSON.stringify(params);
+  	//console.log(data);
+  	this.http.post('https://api.spotify.com/v1/me/player/next', '', {headers: headers}).subscribe((response) =>{
+  		console.log(response);
+  	});
+  }
   searchSpotify(){
 
   	let token = window.localStorage.getItem('auth_token');
 
   	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
   	//headers = headers.append('Authorization', 'Bearer ' + token);
-  	let q = 'artist:muse';
+  	//let q = 'artist:';
+  	let q;
+  	if(this.studytime)
+  		q = this.playlist.step1choice + ':' + this.playlist.step1search;
+  	else
+  		q = this.playlist.step2choice + ':' + this.playlist.step2search;
+
   	let type = 'track';
   	//console.log(headers);
   	let params = new HttpParams().set('q', q).set('type', type);
@@ -53,18 +138,22 @@ export class SpotifyPlayerComponent implements OnInit {
   	});
   }
   play(){
+  	this.playing = true;
   	let token = window.localStorage.getItem('auth_token');
 	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
   	//console.log(headers);
-  	let params = new HttpParams().set('device_id', this.deviceID);//.set('context_uri', this.tracks[0]['uri']);
+  	let params = new HttpParams().set('device_id', this.deviceID).set('context_uri', this.tracks[0]['uri']);
   	console.log(params);
   	let data = JSON.stringify(params);
   	console.log(data);
+
   	this.http.put('https://api.spotify.com/v1/me/player/play', data, {headers: headers}).subscribe((response) =>{
   		console.log(response);
-  	});  
+  	});
+
   }
   pause(){
+  	this.playing = false;
   	let token = window.localStorage.getItem('auth_token');
 	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
   	let params = new HttpParams().set('device_id', this.deviceID);
@@ -90,7 +179,7 @@ export class SpotifyPlayerComponent implements OnInit {
   	document.getElementsByTagName('head')[0].appendChild(node);
   }
 
- initializeSpotifyPlayer(){
+  initializeSpotifyPlayer(){
   	window.onSpotifyWebPlaybackSDKReady = () => {
   		const token = window.localStorage.getItem('auth_token');
   		//'BQCLqevB8AQB_XS3v4db1er8Dlm1A_1nFmLEZeNRUFq-pOnyEGZyuF-RDH0EhFDdLHzK9J9VLjQ94pealD9vb62l8GbzK_Rp0P3Arfsjx2Zs9U9UWOcPqkIHXEBa6NE-lkMnEPVxPisr85AR37ucQ0I2JZ-M-ptc6D8';

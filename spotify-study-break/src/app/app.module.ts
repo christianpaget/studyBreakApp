@@ -15,7 +15,7 @@ import { SpotifyPlayerComponent } from './spotify-player/spotify-player.componen
 import { SpotifyLoginComponent } from './spotify-login/spotify-login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { CreateUserComponent } from './create-user/create-user.component';
-
+import { newPlaylist } from './new-playlist-form/newPlaylist';
 //import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [

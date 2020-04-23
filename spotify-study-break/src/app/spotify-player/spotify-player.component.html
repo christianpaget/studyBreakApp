@@ -1,3 +1,13 @@
 <p>spotify-player works!</p>
+<button (click)="startSession()">Start Session</button>
+{{minuteTimeLeft}} : {{ secondTimeLeft }}
+<div *ngIf="playing==true">
 <button (click)="pause()">Pause</button>
+</div>
+<div *ngIf="playing==false">
 <button (click)="play()">Play</button>
+</div>
+
+<button (click)="queue()">Queue Song</button>
+<button (click)="switchVibe()">Switch Vibe</button>
+{{ studytime }}

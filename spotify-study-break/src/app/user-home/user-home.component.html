@@ -20,8 +20,8 @@
       <td>{{ playlist.studytime }}</td>
       <td>{{ playlist.breaktime }}</td>
       <td>
-        <button class="btn btn-light" (click)="listen(playlist.playlistID)" style = 'background-color: #1DB954'>Listen Now</button>
-        <button class="btn btn-light" (click)="deletePlaylist(playlist.playListID)">Delete</button>
+        <button class="btn btn-light" (click)="listen(playlist)" style = 'background-color: #1DB954'>Listen Now</button>
+        <button class="btn btn-light" (click)="deletePlaylist(playlist,playlistID)">Delete</button>
       </td>
     </tr>
   </table>
