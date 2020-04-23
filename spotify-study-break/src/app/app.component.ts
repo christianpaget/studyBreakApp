@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Study Break';
+
+logged_in: string;
+
+ngOnInit(){
+    this.logged_in = this.readLocalStorageValue('user');
+}
+  readLocalStorageValue(key: string): string {
+    return localStorage.getItem(key);
+}
 }
