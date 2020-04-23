@@ -8,8 +8,12 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 })
 export class SpotifyPlayerComponent implements OnInit {
 	ngOnInit(): void {
-  		if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
-  			this.router.navigate(['/spotify-login'])
+		if(!window.localStorage.getItem('user')){
+			this.router.navigate(['/login']);
+			return;
+		}
+  		else if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
+  			this.router.navigate(['/spotify-login']);
   		}
   		this.loadSpotifyScript();
   		this.initializeSpotifyPlayer();
@@ -29,27 +33,52 @@ export class SpotifyPlayerComponent implements OnInit {
   spotifySecret = '0575752dbd7e41ac964f63c60342308e';
   tracks: [];
   searchSpotify(){
-  	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   	let token = window.localStorage.getItem('auth_token');
+
+  	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
   	//headers = headers.append('Authorization', 'Bearer ' + token);
   	let q = 'artist:muse';
   	let type = 'track';
+  	//console.log(headers);
   	let params = new HttpParams().set('q', q).set('type', type);
   	this.http.get('https://api.spotify.com/v1/search', {headers: headers, params: params, responseType: 'text' as 'json'}).subscribe((response) =>{
-  		console.log(response);
+  		//console.log(response);
   		let output = JSON.parse(response);
   		this.tracks = output['tracks']['items'];
   		console.log(this.tracks);
 
   	});
   }
+  play(){
+  	let token = window.localStorage.getItem('auth_token');
+	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  	//console.log(headers);
+  	let params = new HttpParams().set('device_id', this.deviceID);//.set('context_uri', this.tracks[0]['uri']);
+  	console.log(params);
+  	let data = JSON.stringify(params);
+  	console.log(data);
+  	this.http.put('https://api.spotify.com/v1/me/player/play', data, {headers: headers}).subscribe((response) =>{
+  		console.log(response);
+  	});  
+  }
   pause(){
-  	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
+  	let token = window.localStorage.getItem('auth_token');
+	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  	let params = new HttpParams().set('device_id', this.deviceID);
+  	this.http.put('https://api.spotify.com/v1/me/player/pause', params, {headers: headers}).subscribe((response) =>{
+  		console.log(response);
+
+  	});  	
+
+
+  	/*let headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   	//header not getting passed in? or params
   	let params = new HttpParams().set('device_id', this.deviceID);
-  	this.http.put('https://api.spotify.com/v1/me/player/pause', {headers: headers, params: params}).subscribe((response) =>{
+  	console.log(this.token);
+  	this.http.put('https://api.spotify.com/v1/me/player/pause', {headers: headers}).subscribe((response) =>{
   		console.log(response);
   	});
+  	*/
   }
   loadSpotifyScript(){
   	const node = document.createElement('script');
@@ -65,11 +94,15 @@ export class SpotifyPlayerComponent implements OnInit {
   		this.player = new Spotify.Player({
     		name: 'Web Playback SDK Quick Start Player',
     		getOAuthToken: cb => { cb(token) }
-  });
+    });
 
-  	// Error handling
+	  	// Error handling
   	this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-  	this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
+  	this.player.addListener('authentication_error', ({ message }) => { 
+  		console.error(message);
+  		window.localStorage.removeItem('auth_token'); 
+  		this.router.navigate(['/spotify-login']);
+  			});
   	this.player.addListener('account_error', ({ message }) => { console.error(message); });
   	this.player.addListener('playback_error', ({ message }) => { console.error(message); });
 
@@ -105,6 +138,7 @@ export class SpotifyPlayerComponent implements OnInit {
 	});
 	};
   }
+
 
 
 
