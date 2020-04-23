@@ -1,1 +1,14 @@
-<p>create-user works!</p>
+<h1>Welcome! Let's set up your account</h1>
+
+<form #makeAccount="ngForm">
+<div class="AccountForm">
+	<p class="passwordAlert" id="passwordAlert"></p>
+    <div style="text-align:center">
+        <p class="passwordAlert" id="mismatch" color="red"></p>
+        <form #loginForm="ngForm" [ngStyle]="{'padding-left' : '50px', 'padding-right': '50px'}">
+          Username: <input type="text" name="username" id = "username" [(ngModel)]="accountModel.user"class="form-control" autofocus required /> <br/>
+          Password: <input type="password" name="pwd" id = "pwd" class="form-control" [(ngModel)]="accountModel.pwd" required  /> <br/>
+          Confirm Password: <input type="password" name="pwd" id = "pwd2" class="form-control"  required  /> <br/>
+          <input type="submit" value="Create Account!" class="btn btn-light" (click)="submitAccount(makeAccount.value)"  />   
+        </form>
+      </div>

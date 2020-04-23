@@ -11,9 +11,9 @@ export class SpotifyPlayerComponent implements OnInit {
   		if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
   			this.router.navigate(['/spotify-login'])
   		}
-  		this.loadSpotifyScript();
-  		this.initializeSpotifyPlayer();
-  		this.searchSpotify();
+ // 		this.loadSpotifyScript();
+  //		this.initializeSpotifyPlayer();
+  	//	this.searchSpotify();
   		this.token = window.localStorage.getItem('auth_token');
   		//this.headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   }
@@ -28,7 +28,7 @@ export class SpotifyPlayerComponent implements OnInit {
   spotifyID = 'a466c513c83a43809ffe7f0573d24418';
   spotifySecret = '0575752dbd7e41ac964f63c60342308e';
   tracks: [];
-  searchSpotify(){
+/*  searchSpotify(){
   	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   	let token = window.localStorage.getItem('auth_token');
   	//headers = headers.append('Authorization', 'Bearer ' + token);
@@ -37,8 +37,8 @@ export class SpotifyPlayerComponent implements OnInit {
   	let params = new HttpParams().set('q', q).set('type', type);
   	this.http.get('https://api.spotify.com/v1/search', {headers: headers, params: params, responseType: 'text' as 'json'}).subscribe((response) =>{
   		console.log(response);
-  		let output = JSON.parse(response);
-  		this.tracks = output['tracks']['items'];
+//  		let output = JSON.parse(response);
+  //		this.tracks = output['tracks']['items'];
   		console.log(this.tracks);
 
   	});
@@ -58,7 +58,7 @@ export class SpotifyPlayerComponent implements OnInit {
   	document.getElementsByTagName('head')[0].appendChild(node);
   }
 
-  initializeSpotifyPlayer(){
+ initializeSpotifyPlayer(){
   	window.onSpotifyWebPlaybackSDKReady = () => {
   		const token = window.localStorage.getItem('auth_token');
   		//'BQCLqevB8AQB_XS3v4db1er8Dlm1A_1nFmLEZeNRUFq-pOnyEGZyuF-RDH0EhFDdLHzK9J9VLjQ94pealD9vb62l8GbzK_Rp0P3Arfsjx2Zs9U9UWOcPqkIHXEBa6NE-lkMnEPVxPisr85AR37ucQ0I2JZ-M-ptc6D8';
@@ -106,6 +106,6 @@ export class SpotifyPlayerComponent implements OnInit {
 	};
   }
 
-
+*/
 
 }

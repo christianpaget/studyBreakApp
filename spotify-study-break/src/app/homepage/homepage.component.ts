@@ -14,11 +14,13 @@ export class HomepageComponent implements OnInit {
     if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
       //this.activatedRoute.queryParams.subscribe(params => {
       let params = this.activatedRoute.snapshot.fragment;
-      let token = params.split('&')[0];
-      let arg = token.split('=');
-        console.log(arg[1]);
-        if(arg[1])
-          window.localStorage.setItem('auth_token', arg[1]);
+      if ( params != undefined) {
+        let token = params.split('&')[0];
+        let arg = token.split('=');
+          console.log(arg[1]);
+          if(arg[1])
+            window.localStorage.setItem('auth_token', arg[1]);
+      }
 
       //});
     }
