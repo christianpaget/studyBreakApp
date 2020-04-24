@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { newPlaylist } from '../new-playlist-form/newPlaylist';
@@ -9,7 +9,7 @@ import { timer } from 'rxjs';
   templateUrl: './spotify-player.component.html',
   styleUrls: ['./spotify-player.component.css']
 })
-export class SpotifyPlayerComponent implements OnInit {
+export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		if(!window.localStorage.getItem('user')){
 			this.router.navigate(['/login']);
@@ -37,12 +37,19 @@ export class SpotifyPlayerComponent implements OnInit {
   		//this.token = window.localStorage.getItem('auth_token');
   		//this.headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   }
+  ngOnDestroy(){
+  	this.player.pause();
+  	clearInterval(this.interval);
+  	console.log('Interval cleared: ' + this.interval);
+  }
   constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute) { 
   	//this.loadSpotifyScript();
   	//this.initializeSpotifyPlayer();
   }
-  trackNum = 0;
+  studyTrackNum = 0;
+  breakTrackNum = 0;
   playing;
+  isBeginning = false;
   seenTimer;
   interval;
   studytime;
@@ -58,18 +65,92 @@ export class SpotifyPlayerComponent implements OnInit {
   tracks: [];
   switchVibe(){
   	this.studytime = !this.studytime;
-  	this.searchSpotify();
-  	this.queue();
+  	//this.searchSpotify();
+  	let token = window.localStorage.getItem('auth_token');
+
+  	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
+  	//headers = headers.append('Authorization', 'Bearer ' + token);
+  	//let q = 'artist:';
+  	let q;
+  	if(this.studytime)
+  		q = this.playlist.step1choice + ':' + this.playlist.step1search;
+  	else
+  		q = this.playlist.step2choice + ':' + this.playlist.step2search;
+
+  	let type = 'track';
+  	//console.log(headers);
+  	let params = new HttpParams().set('q', q).set('type', type);
+  	this.http.get('https://api.spotify.com/v1/search', {headers: headers, params: params, responseType: 'text' as 'json'}).subscribe((response) =>{
+
+  		//console.log(response);
+  		let output = JSON.parse(response);
+  		this.tracks = output['tracks']['items'];
+
+  		console.log(this.tracks);
+
+  		//let token = window.localStorage.getItem('auth_token');
+		//let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  		//console.log(headers);
+  		//let params;
+  		if(this.studytime){
+  		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
+  			this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  				console.log(response);
+	  			this.studyTrackNum ++;
+	  			this.nextTrack();
+  			});
+  		}
+  		else{
+  			this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.breakTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  				console.log(response);
+  				this.breakTrackNum ++;
+  				this.nextTrack();
+  			});
+  			
+  		}
+  	});
+  	//this.queue();
+
+
+/*
   	console.log('queue');
   	this.nextTrack();
   	console.log('next');
-  	
+  */	
+  }
+  startSessionHelper(){
+  	let token = window.localStorage.getItem('auth_token');
+	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  	//console.log(headers);
+  	let params;
+  	if(this.studytime){
+  		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
+  		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  			console.log(response);
+  			//let token = window.localStorage.getItem('auth_token');
+			//let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+		  	this.http.post('https://api.spotify.com/v1/me/player/next', '', {headers: headers}).subscribe((response) =>{
+  				console.log(response);
+  				this.player.resume();
+  	});
+  		});
+  		this.studyTrackNum ++;
+  	}
+  	else{
+  		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.breakTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  		console.log(response);
+  	});
+  		this.breakTrackNum ++;
+  	}
   }
   startSession(){
-  	this.queue();
-  	this.nextTrack();
-  	this.play();
+  	//this.queue();
+  	//this.nextTrack();
+  	//this.play();
+  	this.startSessionHelper();
+  	console.log('secondTimeLeft');
   	this.interval = setInterval(() =>{
+
   		if(this.secondTimeLeft > 0)
   			this.secondTimeLeft--;
   		else if(this.minuteTimeLeft > 0) {
@@ -90,14 +171,27 @@ export class SpotifyPlayerComponent implements OnInit {
   	let token = window.localStorage.getItem('auth_token');
 	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
   	//console.log(headers);
-  	let params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.trackNum]['uri']);
-  	//console.log(this.tracks[0]['uri']);
-  	let data = JSON.stringify(params);
-  	//console.log(data);
-  	this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.trackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  	let params;
+  	if(this.studytime){
+  		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
+  		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  			console.log(response);
+  		});
+  		this.studyTrackNum ++;
+  	}
+  	else{
+  		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.breakTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
   		console.log(response);
   	});
-  	this.trackNum ++;
+  		this.breakTrackNum ++;
+  	}
+  		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.breakTrackNum]['uri']);
+  	//console.log(this.tracks[0]['uri']);
+  	//let data = JSON.stringify(params);
+  	//console.log(data);
+  	//this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.trackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
+  	//	console.log(response);
+  	//});
   }
   nextTrack(){
   	let token = window.localStorage.getItem('auth_token');
