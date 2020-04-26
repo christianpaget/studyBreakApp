@@ -21,7 +21,7 @@
       <td>{{ playlist.breaktime }}</td>
       <td>
         <button class="btn btn-light" (click)="listen(playlist)" style = 'background-color: #1DB954'>Listen Now</button>
-        <button class="btn btn-light" (click)="deletePlaylist(playlist,playlistID)">Delete</button>
+        <button class="btn btn-light" (click)="deletePlaylist(playlist.playlistID)">Delete</button>
       </td>
     </tr>
   </table>
