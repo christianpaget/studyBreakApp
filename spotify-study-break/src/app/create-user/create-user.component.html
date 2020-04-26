@@ -4,11 +4,13 @@
 <div class="AccountForm">
 	<p class="passwordAlert" id="passwordAlert"></p>
     <div style="text-align:center">
-        <p class="passwordAlert" id="mismatch" color="red"></p>
         <form #loginForm="ngForm" [ngStyle]="{'padding-left' : '50px', 'padding-right': '50px'}">
-          Username: <input type="text" name="username" id = "username" [(ngModel)]="accountModel.user"class="form-control" autofocus required /> <br/>
-          Password: <input type="password" name="pwd" id = "pwd" class="form-control" [(ngModel)]="accountModel.pwd" required  /> <br/>
-          Confirm Password: <input type="password" name="pwd" id = "pwd2" class="form-control"  required  /> <br/>
+          <p class="alert" id="usernameAlert"></p>
+          Username: <input type="text" name="username" id = "username" [(ngModel)]="accountModel.user"class="form-control" autofocus required />
+          <p class="alert" id="pwdAlert"></p>
+          Password: <input type="password" name="pwd" id = "pwd" class="form-control" [(ngModel)]="accountModel.pwd" required  />
+          <p class="alert" id="pwd2Alert"></p>
+          Confirm Password: <input type="password" name="pwd" id = "pwd2" class="form-control"  [(ngModel)]="accountModel.pwd2" required  /> <br>
           <input type="submit" value="Create Account!" class="btn btn-light" (click)="submitAccount(makeAccount.value)"  />   
         </form>
       </div>
