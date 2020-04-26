@@ -26,8 +26,8 @@ export class UserHomeComponent implements OnInit {
       this.playlistsLength = this.playlists.length;
   	})
   }
-  listen(id){
-
+  listen(data: newPlaylist){
+    this.router.navigate(['/spotify-player', data]);
   }
   deletePlaylist(id){
 
