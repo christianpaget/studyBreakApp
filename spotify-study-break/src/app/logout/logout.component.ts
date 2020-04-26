@@ -15,10 +15,15 @@ export class LogoutComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  redirectSuccess(){
+    this.router.navigate(['/login']);
+  }
+
   logout(): void {
     //console.log("function called")
     //window.localStorage.removeItem('user');
     window.localStorage.clear();
+    this.redirectSuccess();
   }
 
 }

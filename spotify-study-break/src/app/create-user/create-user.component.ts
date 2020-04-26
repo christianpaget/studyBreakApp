@@ -12,7 +12,7 @@ import { Account} from './account';
 export class CreateUserComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router){}
   user;
-  accountModel = new Account("", "");
+  accountModel = new Account("", "", "");
   accounts: Account[];
   responseData;
 
@@ -26,6 +26,7 @@ export class CreateUserComponent implements OnInit {
 
   submitAccount(form: any): void{
     if(this.validateAccount()){
+      window.localStorage.setItem('user', this.accountModel.user);
       let params = JSON.stringify(this.accountModel);
       console.log(params);
       this.http.post<Account>('http://localhost/api/createAccount.php', params).subscribe((data) =>{
@@ -36,11 +37,12 @@ export class CreateUserComponent implements OnInit {
         }
         this.redirectSuccess();
 
+
         console.log('Error: ', error);
       });
     }
   }
-/*
+
   usernameAlert(){
     document.getElementById("usernameAlert").innerHTML = "Please enter a username";
   }
@@ -50,26 +52,38 @@ export class CreateUserComponent implements OnInit {
   pwd2Alert(){
     document.getElementById("pwd2Alert").innerHTML = "Please enter your password again";
   }
-  */
+  
     validateAccount() {
       var fail = true
       if(this.accountModel.user == ""){
-  //      this.usernameAlert();
+        this.usernameAlert();
         fail = false;
-        console.log('failed username');
       }
       else{
-        //document.getElementById("usernameAlert").innerHTML = ""
-        console.log('username worked');
+        document.getElementById("usernameAlert").innerHTML = ""
       }
       if(this.accountModel.pwd == "" ){
-  //      this.pwdAlert();
+        this.pwdAlert();
         fail = false;
-        console.log('failed pwd1');
       }
       else{
-        //document.getElementById("pwdAlert").innerHTML = ""
-        console.log('password worked');
+        document.getElementById("pwdAlert").innerHTML = ""
+      }
+      if(this.accountModel.pwd2 == "" ){
+        this.pwd2Alert();
+        fail = false;
+      }
+      else{
+        document.getElementById("pwd2Alert").innerHTML = ""
+      }
+      if(this.accountModel.pwd2 != this.accountModel.pwd) {
+        console.log(this.accountModel.pwd2);
+        console.log(this.accountModel.pwd);
+        document.getElementById("pwd2Alert").innerHTML = "Passwords do not match"
+        fail = false;
+      }
+      else {
+        document.getElementById("pwd2Alert").innerHTML = ""
       }
       return fail;
     }
