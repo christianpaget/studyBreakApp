@@ -326,8 +326,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   			//console.log(state['position']);
   			let length = state['duration'] - state['position'];
   			let sessionLength = ((this.minuteTimeLeft * 60) + this.secondTimeLeft) * 1000;
-  			console.log(length);
-  			console.log(sessionLength);
+  			console.log('Song length: ' + length);
+  			console.log('Session Length:' + sessionLength);
   			if(sessionLength > length){
   				this.queue();
   				console.log('queued');
