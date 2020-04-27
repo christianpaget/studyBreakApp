@@ -14,7 +14,7 @@
       </h2>
     </div>
     <div style="text-align:center">
-      <p class="step1alert" id="loginFail" color="red"></p>
+      <p [class]="'step1alert'" id="loginFail" color="red"></p>
       <form #loginForm="ngForm" [ngStyle]="{'padding-left' : '50px', 'padding-right': '50px'}">
         Username: <input type="text" name="username" [(ngModel)]="loginModel.username"class="form-control" autofocus required /> <br/>
         Password: <input type="password" name="pwd" class="form-control" [(ngModel)]="loginModel.password" required  /> <br/>
