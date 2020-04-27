@@ -61,9 +61,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   studyTrackNum = 0;
   breakTrackNum = 0;
   playing;
+  sessionRunning = false;
   isBeginning = false;
   seenTimer;
   interval;
+  currentSongTime;
   studytime;
   secondTimeLeft = 0;
   minuteTimeLeft;
@@ -109,16 +111,18 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   		//console.log(headers);
   		//let params;
   		if(this.studytime){
+  			let data = this.tracks[this.studyTrackNum]['name'];
   		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
   			this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-  				console.log(response);
+  				console.log("Queued: " + data + "in switchVibe");
 	  			this.studyTrackNum ++;
 	  			this.nextTrack();
   			});
   		}
   		else{
+  			let data = this.tracks[this.studyTrackNum]['name'];
   			this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.breakTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-  				console.log(response);
+  				console.log("Queued: " + data + "in switchVibe");
   				this.breakTrackNum ++;
   				this.nextTrack();
   			});
@@ -140,21 +144,24 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	//console.log(headers);
   	let params;
   	if(this.studytime){
+  		params = this.tracks[this.studyTrackNum]['name'];
   		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
   		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-  			console.log(response);
+  			console.log("Queued: " +params + "in startSessionHelper");
   			//let token = window.localStorage.getItem('auth_token');
 			//let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 		  	this.http.post('https://api.spotify.com/v1/me/player/next', '', {headers: headers}).subscribe((response) =>{
-  				console.log(response);
+  				console.log("Next clicked");
   				this.player.resume();
+  				this.playing = true;
   	});
   		});
   		this.studyTrackNum ++;
   	}
   	else{
+  		params = this.tracks[this.studyTrackNum]['name'];
   		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.breakTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-  		console.log(response);
+  		console.log("Queued: " + params + " in startSessionHelper");
   	});
   		this.breakTrackNum ++;
   	}
@@ -163,8 +170,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	//this.queue();
   	//this.nextTrack();
   	//this.play();
+  	this.sessionRunning = true;
   	this.startSessionHelper();
   	console.log('secondTimeLeft');
+
   	this.interval = setInterval(() =>{
 
   		if(this.secondTimeLeft > 0)
@@ -189,15 +198,17 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	//console.log(headers);
   	let params;
   	if(this.studytime){
+  		params = this.tracks[this.studyTrackNum]['name'];
   		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
   		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-  			console.log(response);
+  			console.log("Queued: "+ params + "in queue function");
   		});
   		this.studyTrackNum ++;
   	}
   	else{
+  		params = this.tracks[this.studyTrackNum]['name'];
   		this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.breakTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-  		console.log(response);
+  		console.log("Queued: " + params + "in queue function");
   	});
   		this.breakTrackNum ++;
   	}
@@ -312,30 +323,43 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
   	// Playback status updates
   	this.player.addListener('player_state_changed', state => { 
+  		console.log("Changed: " + state['track_window']['current_track']['name']);
   		console.log(state);
-  		let track = state['context']['uri'];
+  		let track = state['track_window']['current_track']['uri'];
+  		console.log(track);
+  		if(this.sessionRunning){
+  			console.log("sessionRunning")
   		//this.currentSong = state['context']['uri'];
-  		if(track != this.currentSong){
-  			this.changed = false;
-  			this.currentSong = track;
-  			console.log('New Song');
-  		}
+  			if(track != this.currentSong){
+  				if(this.currentSongTime == state['duration']){
+  					console.log("Not up to date");
+  					return;
+  				}
+  				console.log(state['duration']);
+  				this.changed = false;
+  				this.currentSong = track;
+  				this.currentSongTime = state['duration'];
+  				console.log('New Song');
+  				
+  			}
   		//this.changed = false;
   		//let json = JSON.parse(state);
-  		if(!this.changed){
+  			if(!this.changed){
   			//console.log(state['position']);
-  			let length = state['duration'] - state['position'];
-  			let sessionLength = ((this.minuteTimeLeft * 60) + this.secondTimeLeft) * 1000;
-  			console.log('Song length: ' + length);
-  			console.log('Session Length:' + sessionLength);
-  			if(sessionLength > length){
-  				this.queue();
-  				console.log('queued');
+  				let length = state['duration'] - state['position'];
+  				let sessionLength = ((this.minuteTimeLeft * 60) + this.secondTimeLeft) * 1000;
+  				console.log('Song length: ' + length);
+  				console.log('Session Length:' + sessionLength);
+  				if(sessionLength > length){
+  					this.queue();
+  					console.log('queued');
 
   			}
   			this.changed = true;
-  		}
+  			}
+  	}
   	});
+
 
   	// Ready
   	this.player.addListener('ready', ({ device_id }) => {
