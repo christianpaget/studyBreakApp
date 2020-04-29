@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
   data;
   invocation = new XMLHttpRequest();
-  url = "34.239.121.145/api/login.php";
+  url = "18.205.124.34/api/login.php";
   //url = 'http://localhost/api/login.php';
   ngOnInit(): void {
   }
