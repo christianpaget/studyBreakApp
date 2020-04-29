@@ -1,0 +1,32 @@
+/*Authors: Christian Paget and Emily Shepherd*/
+
+.inline-button div{
+	display: inline-block;
+	width: 500px;
+	min-height: 50px;
+	height: auto;
+	/*background-color: #D3D3D3;
+*/
+}
+.step1alert{
+	color: red;
+}
+.bodybg-color {
+	background-color: grey;
+}
+
+.PlaylistForm {
+	padding-left: 5%
+}
+
+.spinner {
+	width: 250px;
+}
+
+input:valid { 
+	background-color: #1DB954;
+  }
+
+::placeholder {
+	color: white;
+}

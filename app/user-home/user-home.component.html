@@ -1,0 +1,30 @@
+<body>
+<h1>Hi {{ user }}!</h1>
+
+<p>Your Playlists</p>
+<div *ngIf="playlistsLength > 0; else noPlaylist">
+<table border='1' width='100%' style='border-collapse: collapse; padding-left: 20px;padding-right: 20px;'>
+    <tr>
+      <th>ID</th>
+      <th>Study Vibe</th>
+      <th>Break Vibe</th>
+      <th>Study Time</th>
+      <th>Break Time</th>
+
+    </tr>
+
+    <tr *ngFor="let playlist of playlists">
+      <td>{{ playlist.playlistID }}</td>
+      <td>{{ playlist.step1search }}</td>
+      <td>{{ playlist.step2search }}</td>
+      <td>{{ playlist.studytime }}</td>
+      <td>{{ playlist.breaktime }}</td>
+      <td>
+        <button class="btn btn-light" (click)="listen(playlist)" style = 'background-color: #1DB954'>Listen Now</button>
+        <button class="btn btn-light" (click)="deletePlaylist(playlist.playlistID)">Delete</button>
+      </td>
+    </tr>
+  </table>
+</div>
+<ng-template #noPlaylist>You don't have any playlists :(</ng-template>
+</body>

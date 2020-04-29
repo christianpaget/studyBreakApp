@@ -1,0 +1,31 @@
+/*Authors: Emily Shepherd*/
+
+h2 {
+    font-size: 21px;
+    font-weight: 400;
+    padding-bottom: 20px;
+
+}
+.login {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+button {
+    border-radius: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+h3{
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.step1alert{
+    color: red;
+    font-size: 20px;
+}
+

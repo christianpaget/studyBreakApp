@@ -1,0 +1,20 @@
+<div *ngIf="studytime"><h1>Its Study Time!</h1></div>
+<div *ngIf="!studytime"><h1>Its Break Time!</h1></div>
+
+<button *ngIf="!sessionRunning"(click)="startSession()">Start Session</button><br/>
+
+	<div *ngIf="secondTimeLeft==0; else final">
+		<h1>{{minuteTimeLeft}} minutes: {{ secondTimeLeft }}0 seconds remaining</h1>
+	</div>
+	<ng-template #final>
+		<h1>{{minuteTimeLeft}} minutes: {{ secondTimeLeft }} seconds remaining</h1>
+	</ng-template>
+
+<div *ngIf="playing==true">
+<button (click)="pause()">Pause</button>
+</div>
+<div *ngIf="playing==false">
+<button (click)="play()">Play</button>
+</div>
+
+

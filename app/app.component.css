@@ -1,0 +1,61 @@
+/*Authors: Emily Shepherd*/
+ol, ul {
+  list-style: none;
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+/**************************************/
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.content-col {
+  display: inline-block;	  
+} 
+
+p {
+  margin-bottom: 22px;
+}
+
+a {
+    text-decoration: none;
+  }
+
+.primary-header a, .primary-footer a {
+   color: #191414;
+}
+
+.primary-header a:hover, .primary-footer a:hover {
+  color: #1DB954;
+}
+
+.primary-nav {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.nav {
+  text-align: left;
+  width: 100%;
+}
+
+.nav li {
+  display: inline-block;
+  margin: 0 10px;
+  vertical-align: top;
+  background-color: 191414;
+}
