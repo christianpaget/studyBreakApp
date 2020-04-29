@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   logIn(form: any): void{
       let params = JSON.stringify(this.loginModel);
       console.log(params);
-      this.http.post<any>('http://localhost/api/login.php', params, {responseType: 'text' as 'json'}).subscribe((data) =>{
+      this.http.post<any>('url', params, {responseType: 'text' as 'json'}).subscribe((data) =>{
           this.data = data;
           console.log('Response: ', data);
           data = JSON.parse(data);
