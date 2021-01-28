@@ -32,15 +32,18 @@ export class CreateUserComponent implements OnInit {
       this.http.post<Account>('http://localhost/api/createAccount.php', params).subscribe((data) =>{
         console.log('Response: ', data);
       },(error) =>{
-        if(error==201){
-          //this.redirectSuccess();
+        if(error['status']==201){
+          this.redirectSuccess();
         }
-        this.redirectSuccess();
-
+        this.fail();
 
         console.log('Error: ', error);
       });
     }
+  }
+
+  fail(){
+    document.getElementById("usernameAlert").innerHTML = "There was a server issue. Try again";
   }
 
   usernameAlert(){
