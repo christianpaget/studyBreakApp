@@ -1,13 +1,13 @@
 version: 0.2
 
-env:
-    variables:
-        S3_BUCKET: "cpaget-bucket"
-APP_NAME: ""
-BUILD_ENV : "prod"
+os: linux
 
-phases:
-    install:
+files:
+    - source: /
+    destination: /var/www/html/
+
+hooks:
+    Beforeinstall:
         commands:
         # Download and Install NodeJS 8.0
         - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
