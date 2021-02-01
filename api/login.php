@@ -1,9 +1,6 @@
-
 <?php
-	/* sourcecodester.com
-	*/
-
 	require('index.php');
+
 	session_start();
 
 	$request = json_decode(file_get_contents('php://input'));
@@ -12,30 +9,43 @@
 
 	//echo json_encode($request);
 	$username = $request->username;
-	$pwd = $request->password;
+	$password = $request->password;
+	$password = password_hash($password, PASSWORD_BCRYPT);
 	//echo($request->password);
 	//$pwd = password_hash($pwd, PASSWORD_BCRYPT);
 
+	$tableName = 'Users';
+
+	//$userID = rand(10000,99999);
+	//$username = ;
+	//$password = "pd";
+	
+	$key = $marshaler->marshalJson('
+	    {
+	        "username": "' . $username . '"
+	    }
+	');
+
+	$params = [
+	    'TableName' => $tableName,
+	    'Key' => $key
+	];
 	$out = [];
-	//echo($username);
-	//echo($pwd);
-	$sql = "SELECT * FROM `spotify_studybreak`.`users` WHERE Username='". $username . "' AND Hashed_pwd='" .$pwd ."'";
-	//echo($sql);
-	$query = mysqli_query($con, $sql);
-	//echo $query->num_rows;
-	if($query->num_rows>0){
-		$row = $query->fetch_array();
-		$out['message'] = 'Success';
-		$out['user'] = $username;
-		$_SESSION['user'] = $username;
+	try {
+	    $result = $dynamodb->getItem($params);
+	    //TODO: Implement hashing
+	    //make log-in check logic
+	    echo $result['Item'];
+	    if($result['Item']['password'] == $password){
+			$out['message'] = 'Success';
+			$out['user'] = $username;
+		}
+
+	} catch (DynamoDbException $e) {
+	    echo "Unable to get item:\n";
+	    echo $e->getMessage() . "\n";
 	}
-	else{
-		$out['error'] = true;
-		$out['message'] = 'Invalid Login';
-	}
-	//var_dump($_SESSION);
-	//echo session_id();
-	//echo json_encode($_SESSION);
-	echo json_encode($out);
+
+	//echo json_encode($out);
 
 ?>
