@@ -32,7 +32,7 @@ export class CreateUserComponent implements OnInit {
       this.http.post<Account>('http://localhost/api/createAccount.php', params).subscribe((data) =>{
         console.log('Response: ', data);
       },(error) =>{
-        if(error['status']==201){
+        if(error['status']==200){
           this.redirectSuccess();
         }
         this.fail();
