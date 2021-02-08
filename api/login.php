@@ -10,15 +10,11 @@
 	//echo json_encode($request);
 	$username = $request->username;
 	$password = $request->password;
-	$password = password_hash($password, PASSWORD_BCRYPT);
+	//$password = password_hash($password, PASSWORD_DEFAULT);
 	//echo($request->password);
 	//$pwd = password_hash($pwd, PASSWORD_BCRYPT);
 
 	$tableName = 'Users';
-
-	//$userID = rand(10000,99999);
-	//$username = ;
-	//$password = "pd";
 	
 	$key = $marshaler->marshalJson('
 	    {
@@ -34,9 +30,15 @@
 	try {
 	    $result = $dynamodb->getItem($params);
 	    //TODO: Implement hashing
+	    //$result = json_encode($result);
 	    //make log-in check logic
-	    echo $result['Item'];
-	    if($result['Item']['password'] == $password){
+	    $result = json_decode($marshaler->unmarshalJson($result['Item']));
+	    
+	    $pwd = $result->password;
+	    //$pwd = $result['Item']['password'];
+	    //echo($pwd);
+	    //echo $password;
+	    if($pwd == $password){
 			$out['message'] = 'Success';
 			$out['user'] = $username;
 		}
@@ -46,6 +48,6 @@
 	    echo $e->getMessage() . "\n";
 	}
 
-	//echo json_encode($out);
+	echo json_encode($out);
 
 ?>
