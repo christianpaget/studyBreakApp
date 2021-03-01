@@ -13,13 +13,12 @@ export class LoginComponent implements OnInit {
 
   title = 'Study Break with Spotify';
 
-  message = 'Study Break is a tool that lets you take control of your study sessions! Listen to your preferred study music for an amount of time that you choose, and when it\'s time for a break, the music changes\!\
-  When the music returns to your study music, you know it\'s time to get back to work. Log in using your Spotify account and try it out!'
+  message = 'Study Break is a tool that lets you take control of your study sessions! Log in using your Spotify account and try it out!'
   loginModel = new login("", "");
   constructor(private http: HttpClient, private router: Router) { }
   data;
   //invocation = new XMLHttpRequest();
-  url = "http://localhost:2060/login.php";
+  url = "http://localhost:8000/login.php";
   ngOnInit(): void {
   }
   failedLogin(){
