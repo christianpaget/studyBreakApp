@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
-    "angular-cookies": "^1.7.9"
+    "angular-cookies": "^1.7.9",
+    "express": "^4.17.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
