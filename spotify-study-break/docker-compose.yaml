@@ -1,0 +1,18 @@
+version: '3'
+services:
+    server:
+      restart: always
+      build:
+        dockerfile: Dockerfile
+        context: ./api
+      ports:
+        - '2060:80'
+    client:
+      build:
+          dockerfile: Dockerfile
+          context: .
+      volumes:
+          - /app/node_modules
+          - ./client:/app
+      ports:
+        - '7060:80'

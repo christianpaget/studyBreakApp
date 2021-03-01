@@ -2,10 +2,6 @@
 /**
  * Returns the list of policies.
  */
-header("Access-Control-Allow-Origin: *");
-  header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE");
-  header("Access-Control-Allow-Headers: Origin, X-Requested-Wth, Content-Type, Accept");
-  session_start();
 require 'index.php';
 // Get posted data.
 $postdata = file_get_contents("php://input");
@@ -23,6 +19,7 @@ if(isset($postdata) && !empty($postdata))
   }
 
   // Sanitize.
+  /*
   $playlistID = mysqli_real_escape_string($con, (int)($request->playlistID));
 
   $step1search = mysqli_real_escape_string($con, trim($request->step1search));
@@ -35,10 +32,65 @@ if(isset($postdata) && !empty($postdata))
   $studytime = mysqli_real_escape_string($con, (int)($request->studytime));
   $userID = mysqli_escape_string($con, trim($request->userID));
 
+  $playlistID = rand(10000,99999);
 
-  // Create.
+  // Create.*/
   //$sql = "INSERT INTO `playlists`(`step1choice`,`step1search`,`step2choice`, `step2search`, `studytime`, `breaktime`) VALUES (null,'{$number}','{$amount}')";
 
+  $playlistID = (int)($request->playlistID);
+
+  $step1search = trim($request->step1search);
+  $step1choice = trim($request->step1choice);
+  $step2choice = trim($request->step2choice);
+
+  $step2search = trim($request->step2search);
+  $breaktime = (int)($request->breaktime);
+
+  $studytime = (int)($request->studytime);
+  $userID = trim($request->userID);
+
+  $playlistID = rand(10000,99999);
+  $newPlaylist = $marshaler->marshalJson('
+      {
+          "playlistID": "'. $playlistID . '",
+          "step1choice": "'. $step1choice . '",
+          "step1search": "'. $step1search . '",
+          "step2choice": "'. $step2choice . '",
+          "step2search": "'. $step2search . '",
+          "breaktime": "'. $breaktime . '",
+          "studytime": "'. $studytime . '",
+          "userID": "'. $userID . '" 
+      }
+  ');
+
+  $params = [
+      'TableName' => 'playlists',
+      'Item' => $newPlaylist
+  ];
+  $out = [];
+  try {
+        $result = $dynamodb->putItem($params);
+        echo $result;
+        $result = json_decode($marshaler->unmarshalJson($result['Item']));
+      
+      $status = $result->status;
+      //$pwd = $result['Item']['password'];
+      //echo($pwd);
+      //echo $password;
+      if($status == 202){
+      $out['message'] = 'Success';
+      //$out['user'] = $username;
+    }
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to add playlist:\n";
+        echo $e->getMessage() . "\n";
+        $out['message'] = 'Failed';
+    }
+
+    echo $out;
+  }
+  /*
   $sql = "INSERT INTO `spotify_studybreak`.`playlists` (`step1choice`, `step1search`, `step2choice`, `step2search`, `studytime`, `breaktime`, `userID`) VALUES ('{$step1choice}', '{$step1search}', '{$step2choice}', '{$step2search}', '{$studytime}', '{$breaktime}', '{$userID}')";
   if(mysqli_query($con,$sql))
   {

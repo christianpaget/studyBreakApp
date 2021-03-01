@@ -8,9 +8,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-	PHP_API_SERVER = "http://127.0.0.1:80";
+	PHP_API_SERVER = "http://3.92.60.217/api/login.php";
+	//PHP_API_SERVER = "http://127.0.0.1:80";
+
 	readPlaylists(): Observable<newPlaylist[]>{
 		return this.httpClient.get<newPlaylist[]>(`${this.PHP_API_SERVER}/api/read.php`);
 	}
+
   constructor(private httpClient: HttpClient) { }
 }

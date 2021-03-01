@@ -14,14 +14,12 @@ export class LoginComponent implements OnInit {
   title = 'Study Break with Spotify';
 
   message = 'Study Break is a tool that lets you take control of your study sessions! Listen to your preferred study music for an amount of time that you choose, and when it\'s time for a break, the music changes\!\
-  When the music returns to your study music, you know it\'s time to get back to work.You tell us your desired music to study to, music to take a break to, and how often/ how long your break is and we create\
-  the perfect playlist\! Log in using your Spotify account and try it out!'
+  When the music returns to your study music, you know it\'s time to get back to work. Log in using your Spotify account and try it out!'
   loginModel = new login("", "");
   constructor(private http: HttpClient, private router: Router) { }
   data;
-  invocation = new XMLHttpRequest();
-  //url = "18.205.124.34/api/login.php";
-  url = 'http://localhost/api/login.php';
+  //invocation = new XMLHttpRequest();
+  url = "http://localhost:2060/login.php";
   ngOnInit(): void {
   }
   failedLogin(){
@@ -33,7 +31,7 @@ export class LoginComponent implements OnInit {
   logIn(form: any): void{
       let params = JSON.stringify(this.loginModel);
       console.log(params);
-      this.http.post<any>('http://localhost/api/login.php', params, {responseType: 'text' as 'json'}).subscribe((data) =>{
+      this.http.post<any>("http://localhost:2060/login.php", params, {responseType: 'text' as 'json'}).subscribe((data) =>{
           this.data = data;
           console.log('Response: ', data);
           data = JSON.parse(data);
