@@ -5,50 +5,90 @@ AWS.config.update({
 });
 const bcrypt = require('bcrypt');
 const client = new AWS.DynamoDB.DocumentClient();
-const userTable = "Users";
+const userTable = "sb-users";
 const playlistsTable = "playlists";
 
+const bodyParser = require("body-parser");
 
+const cors = require('cors');
 
 const express = require('express');
 
 const app = express();
 const port = 8000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log('Server started!');
     console.log(`Listening on port ${port}`);
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+
+app.use(cors());
+
+
+//Test function
+
+app.get('/version', (req, res) => {
+    res.json({ version: '1.0.0' });
+});
+
 //Login
 
-app.get("/api/login", (req, res)=>{
-    
-    var usernameData = req.username;
-    var password = req.password
+app.post("/api/login", (req, res)=>{
+    if(!req.body){
+        console.log("?");
+        return res.status(400).send("Bad Request");
+    }
+    //console.log(req.body);
+    var usernameData = req.body.username;
+    var passwordData = req.body.password
+    console.log(usernameData);
+    console.log(passwordData);
     /*hash = bcrypt.hash(password, 10, function(err, hash)=>{
         //Add password encryption
     })*/
 
-    var params = {
+    client.get({
         TableName: userTable,
-        KeyConditionExpression: {username: usernameData}
-    }
-
-    client.scan(params, (err, data) =>{
-        if(err){
-            console.log(err);
-            res.status(404);
-        } else {
-            var pwd = data.Items['password'];
-            console.log(pwd);
+        Key: {
+            username: usernameData
         }
+    })
+    .promise().then(data => {
+        //console.log(data.Item);
+        var pwd = data.Item['password'];
+        //console.log(pwd);
+        //console.log(passwordData)
+            if(pwd == passwordData){
+                console.log("Success");
+                res.json({message: "Success", user: usernameData});
+                res.statusMessage = "Success"
+                res.status(200).send();
+            }
+            else{
+                res.statusMessage = "Failed";
+                console.log("failed");
+                res.send();
+            }
+    }).catch(console.error);
 
-    });
 })
 //Create User
+app.post("/api/new/user", (req, res) => {
+    //res.send();
+})
 //Create Playlist
+app.post("api/new/playlist", (req, res) => {
+    if(!req.body){
+        console.log("?");
+        return res.status(400).send("Bad Request");
+    }
+    res.send();
+})
 //Get Playlist
-
-// Get all playlist IDs
+//Get all playlist IDs - Done
 app.get("/api/userRows", (req, res) => {
     
     var params = {
@@ -58,15 +98,38 @@ app.get("/api/userRows", (req, res) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(data.Items);
             var playlists = [];
-            for (var i in data.Items)
-                playlists.push(data.Items[i]['playlistID']);
+            for (var i in data.Items){
+                var singlePlaylistResponse = data.Items[i];
+                var singlePlaylist = {
+                    playlistID: singlePlaylistResponse['playlistID'],
+                    step1choice: singlePlaylistResponse['step1choice'],
+                    step1search: singlePlaylistResponse['step1search'],
+                    step2choice: singlePlaylistResponse['step2choice'],
+                    step2search: singlePlaylistResponse['step2search'],
+                    breaktime: singlePlaylistResponse['breaktime'],
+                    studytime: singlePlaylistResponse['studytime'],
+                    userID: singlePlaylistResponse['userID']
+                }
+                playlists.push(singlePlaylist);
+            }
+                //playlists[i].push(data.Items[i]['userID']);
             console.log(playlists);
 
             res.contentType = 'application/json'
-            res.send(playlists);
+            res.json(playlists);
+            //res.send(playlists);
         }
     })
+});
+
+// Delete Playlist by ID
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.status(500).json({ message: err.message });
 });
 
 module.exports = app;

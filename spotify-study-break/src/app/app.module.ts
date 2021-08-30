@@ -10,6 +10,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateSuccessComponent } from './create-success/create-success.component';
 import { UserPlaylistsComponent } from './user-playlists/user-playlists.component';
+
 import { UserHomeComponent } from './user-home/user-home.component';
 import { SpotifyPlayerComponent } from './spotify-player/spotify-player.component';
 import { SpotifyLoginComponent } from './spotify-login/spotify-login.component';
@@ -50,8 +51,8 @@ const appRoutes: Routes = [
     //HomeComponent
   ],
   imports: [
-    HttpClientModule,
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true, onSameUrlNavigation: 'reload'})
   ],

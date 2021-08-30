@@ -3,17 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Playlist } from './playlist';
 import { newPlaylist } from './new-playlist-form/newPlaylist';
 import { Observable } from 'rxjs';
+import { environment } from './../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-	PHP_API_SERVER = "http://3.92.60.217/api/login.php";
-	//PHP_API_SERVER = "http://127.0.0.1:80";
+	//PHP_API_SERVER = "http://3.92.60.217/api/login.php";
+	EXPRESS_API_SERVER = environment.apiUrl;
 
 	readPlaylists(): Observable<newPlaylist[]>{
-		return this.httpClient.get<newPlaylist[]>(`${this.PHP_API_SERVER}/api/read.php`);
+		return this.httpClient.get<newPlaylist[]>(`${this.EXPRESS_API_SERVER}/api/userRows`);
 	}
 
+	
   constructor(private httpClient: HttpClient) { }
 }
