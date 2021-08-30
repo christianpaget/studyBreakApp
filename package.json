@@ -4,16 +4,19 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "@google-cloud/firestore": "^4.9.4",
     "angular-cookies": "^1.7.9",
     "aws-sdk": "^2.853.0",
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
     "chai": "^4.3.0",
     "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mocha": "^8.3.0"
   },
   "scripts": {
-    "test": "mocha --timeout 10000",
+    "test": "nyc mocha --exit",
     "start": "node server.js"
   },
   "repository": {
@@ -25,5 +28,9 @@
   "bugs": {
     "url": "https://github.com/christianpaget/cs4640app/issues"
   },
-  "homepage": "https://github.com/christianpaget/cs4640app#readme"
+  "homepage": "https://github.com/christianpaget/cs4640app#readme",
+  "devDependencies": {
+    "nyc": "^15.1.0",
+    "supertest": "^6.1.3"
+  }
 }

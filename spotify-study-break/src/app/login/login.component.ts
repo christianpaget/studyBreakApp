@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { login } from './login';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { environment } from './../../environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,22 +18,32 @@ export class LoginComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
   data;
   //invocation = new XMLHttpRequest();
-  url = "http://localhost:8000/login.php";
+  //url = "http://localhost:8000/api/login";
+  url = environment.apiUrl;
   ngOnInit(): void {
   }
   failedLogin(){
     document.getElementById('loginFail').innerHTML = "Invalid Login";
   }
   redirectSuccess(){
-      this.router.navigate(['/homepage']);
+      this.router.navigate(['/user_home']);
     }
   logIn(form: any): void{
-      let params = JSON.stringify(this.loginModel);
+      //let params = JSON.stringify(this.loginModel);
+      let params = this.loginModel;
+      const headers = {
+        headers: new HttpHeaders({
+          'Content-Type':'application/json',
+        })
+      };
+      const options = {
+        responseType: 'text' as const,
+      };
       console.log(params);
-      this.http.post<any>("http://localhost:2060/login.php", params, {responseType: 'text' as 'json'}).subscribe((data) =>{
+      this.http.post<any>(this.url + "/login" , params, headers).subscribe((data) =>{
           this.data = data;
           console.log('Response: ', data);
-          data = JSON.parse(data);
+          //data = JSON.parse(data);
           if(data['message']=='Success'){
             this.redirectSuccess();
             window.localStorage.setItem('user', data['user']);
@@ -44,6 +54,9 @@ export class LoginComponent implements OnInit {
         }, (error) =>{
           if(error==201){
             //this.redirectSuccess();
+          }
+          else if(error==400){
+            console.log("Bad Request");
           }
           //console.log(this.data);
   });

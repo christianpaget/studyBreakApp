@@ -4,6 +4,8 @@ import { ApiService } from '../api.service';
 import { Playlist } from '../playlist';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from './../../environments/environment';
+
 
 @Component({
   selector: 'app-new-playlist-form',
@@ -53,13 +55,17 @@ export class NewPlaylistFormComponent implements OnInit {
       if(this.validatePlaylist()){
         let params = JSON.stringify(this.playlistModel);
         console.log(params);
-        this.http.post<newPlaylist>('http://localhost/api/createPlaylist.php', params).subscribe((data) =>{
+		var apiUrl = environment.apiUrl;
+        this.http.post<any>(apiUrl + '/api/createPlaylist.php', params).subscribe((data) =>{
           console.log('Response: ', data);
+		  if(data.status == 201){
+			this.redirectSuccess
+		  }
         }, (error) =>{
-          if(error==201){
-            //this.redirectSuccess();
+          if(error==400){
+            alert("Received 400 error")
           }
-          this.redirectSuccess();
+          //this.redirectSuccess();
 
           console.log('Error: ', error);
         });
