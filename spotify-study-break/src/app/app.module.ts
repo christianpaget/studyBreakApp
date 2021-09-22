@@ -22,7 +22,7 @@ import { newPlaylist } from './new-playlist-form/newPlaylist';
 const appRoutes: Routes = [
 {path: 'login', component: LoginComponent},
 {path: 'new-playlist-form', component: NewPlaylistFormComponent},
-{path: 'homepage', component: HomepageComponent},
+{path: 'homepage', component: UserHomeComponent},
 {path: '', redirectTo: '/login', pathMatch: 'full'},
 {path: 'createSuccess', component: CreateSuccessComponent},
 {path: 'user_home', component: UserHomeComponent},

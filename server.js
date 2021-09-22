@@ -11,7 +11,7 @@ const playlistsTable = "playlists";
 const bodyParser = require("body-parser");
 
 const cors = require('cors');
-
+const path = require('path');
 const express = require('express');
 
 const app = express();
@@ -32,6 +32,18 @@ app.use(cors());
 
 app.get('/version', (req, res) => {
     res.json({ version: '1.0.0' });
+});
+
+//Spotify Login
+
+app.post("/api/spotify/login", (req, res)=>{
+  const spotifyID = "a466c513c83a43809ffe7f0573d24418";
+  const spotifySecret = "0575752dbd7e41ac964f63c60342308e";
+  redirect_uri = req.body.redirect_uri;
+  console.log("Spotify log-in received")
+  const spotifyLink = "https://accounts.spotify.com/authorize?client_id=" + spotifyID + "&redirect_uri=" + redirect_uri
+  + "&scope=user-modify-playback-state%20streaming%20user-read-private%20user-read-email&response_type=token" 
+  res.redirect(spotifyLink);
 });
 
 //Login
@@ -131,5 +143,7 @@ app.use((err, req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.status(500).json({ message: err.message });
 });
+
+app.use(express.static(path.join( __dirname, './dist/spotify-study-break')));
 
 module.exports = app;

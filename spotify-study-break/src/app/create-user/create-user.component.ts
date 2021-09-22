@@ -1,8 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import { CognitoUserPool,CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import { environment } from 'src/environments/environment';
 import { ApiService } from '../api.service';
+import { NgForm } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Account} from './account';
+import { env } from 'process';
+
+interface formDataInterface {
+
+  "username": string;
+  "email": string;
+  [key: string]: string;
+};
 
 @Component({
   selector: 'app-create-user',
@@ -12,9 +23,13 @@ import { Account} from './account';
 export class CreateUserComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router){}
   user;
+  username:string = "";
+  email:string = "";
+  password:string = "";
   accountModel = new Account("", "", "");
   accounts: Account[];
   responseData;
+  isLoading = false;
 
   ngOnInit() {
 
@@ -26,6 +41,14 @@ export class CreateUserComponent implements OnInit {
 
   submitAccount(form: any): void{
     if(this.validateAccount()){
+      this.isLoading = true;
+      var poolData = {
+        //UserPoolId: environment.cognitoUserPoolId,
+        //ClientId: environment.cognitoAppClientId
+      };
+      //var userPool = new CognitoUserPool(poolData);
+      //userPool.signUp(this.accountModel.user, this.accountModel.pwd, )
+
       window.localStorage.setItem('user', this.accountModel.user);
       let params = JSON.stringify(this.accountModel);
       console.log(params);

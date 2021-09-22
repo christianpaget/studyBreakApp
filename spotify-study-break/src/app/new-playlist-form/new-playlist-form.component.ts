@@ -14,7 +14,7 @@ import { environment } from './../../environments/environment';
 })
 export class NewPlaylistFormComponent implements OnInit {
     constructor(private http: HttpClient, private router: Router){}
-    user;
+    user = "";
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
   	playlistModel = new newPlaylist("", "", "", "", 30, 15 ,null, this.user);
   	playlists: newPlaylist[];
