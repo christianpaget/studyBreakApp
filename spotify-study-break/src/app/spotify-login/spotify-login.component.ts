@@ -14,17 +14,13 @@ export class SpotifyLoginComponent implements OnInit {
   ngOnInit(): void {
   }
   login(){
-  	//document.location.href = 'https://accounts.spotify.com/authorize?client_id=' + this.spotifyID + '&redirect_uri=' + this.redirect_uri
-  	//+ '&scope=user-modify-playback-state%20streaming%20user-read-private%20user-read-email&response_type=token';
+    let redirect_uri = environment.redirect_uri;
     let apiUrl = environment.apiUrl;
-    let params = {redirect_uri: this.redirect_uri};
-    this.http.post(apiUrl + "/spotify/login", params).subscribe((error) =>{
-        console.log('Error: ', error);
+    let params = {redirect_uri: redirect_uri};
+    this.http.post(apiUrl + "/spotify/login", params).subscribe((data)=>{
+        let url = data['link'];
+        document.location.href = url;
       });
   }
-  //redirect_uri = 'http:%2F%2Flocalhost:4200%2Fhomepage';
-  redirect_uri = environment.redirect_uri;
-  spotifyID = 'a466c513c83a43809ffe7f0573d24418';
-  spotifySecret = '0575752dbd7e41ac964f63c60342308e';
 
 }

@@ -43,7 +43,7 @@ app.post("/api/spotify/login", (req, res)=>{
   console.log("Spotify log-in received")
   const spotifyLink = "https://accounts.spotify.com/authorize?client_id=" + spotifyID + "&redirect_uri=" + redirect_uri
   + "&scope=user-modify-playback-state%20streaming%20user-read-private%20user-read-email&response_type=token" 
-  res.redirect(spotifyLink);
+  res.json({link: spotifyLink});
 });
 
 //Login
