@@ -105,12 +105,43 @@ app.post("/api/new/user", (req, res) => {
     //res.send();
 })
 //Create Playlist
-app.post("api/new/playlist", (req, res) => {
+app.post("/api/new/playlist", (req, res) => {
     if(!req.body){
         console.log("?");
         return res.status(400).send("Bad Request");
     }
-    res.send();
+    let newPlaylist = req.body;
+    let playlistID = Math.round(Math.random()*100000);
+    playlistID = playlistID.toString();
+    newPlaylistObject = 
+        {
+            "playlistID": playlistID,
+            "step1choice": newPlaylist.step1choice,
+            "step1search": newPlaylist.step1search,
+            "step2choice": newPlaylist.step2choice,
+            "step2search": newPlaylist.step2search,
+            "breaktime": newPlaylist.breaktime,
+            "studytime": newPlaylist.studytime,
+            "userID": newPlaylist.userID 
+        };
+    console.log(newPlaylistObject)
+    let params = {
+        TableName: playlistsTable,
+        Item: newPlaylistObject
+    };
+
+    client.put(params, function(err, data){
+        if(err){
+            console.log(err);
+            return res.json({status: 400}).send("Bad Request");
+        } 
+        else{
+            console.log("Successfully added playlist")
+            return res.json({status: 200}).send();
+        }
+    })
+    //res.send("Unknown error");
+    
 })
 //Get Playlist
 //Get all playlist IDs - Done

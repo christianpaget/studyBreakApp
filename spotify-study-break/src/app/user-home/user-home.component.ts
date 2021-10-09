@@ -44,6 +44,7 @@ export class UserHomeComponent implements OnInit {
     }*/
 
   //Get playlists of logged in user
+  if(!window.localStorage.getItem('id')){
     let token = this.authToken
     const headers = {
       headers: new HttpHeaders({
@@ -59,6 +60,7 @@ export class UserHomeComponent implements OnInit {
       window.localStorage.setItem('user', this.user);
       window.localStorage.setItem('id', this.spotId);
     });
+  }
     const playlistHeaders = {
       headers: new HttpHeaders({
         'Content-Type':'application/json',

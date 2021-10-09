@@ -15,6 +15,7 @@ import { environment } from './../../environments/environment';
 export class NewPlaylistFormComponent implements OnInit {
     constructor(private http: HttpClient, private router: Router){}
     user = "";
+	id;
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
   	playlistModel = new newPlaylist("", "", "", "", 30, 15 ,null, this.user);
   	playlists: newPlaylist[];
@@ -26,43 +27,26 @@ export class NewPlaylistFormComponent implements OnInit {
         this.router.navigate(['/login']);
       }
       this.user = window.localStorage.getItem('user');
+	  this.id = window.localStorage.getItem('id');
       var param = { session : "yes"};
-      this.playlistModel.userID = this.user;
-      var send = JSON.stringify(param);
-  		this.http.post('http://localhost/api/login.php', param, {responseType: 'text'}).subscribe((data) =>{
-        this.responseData = data;
-        console.log(data);
-  		})
+      this.playlistModel.userID = this.id;
   	}
 
-  	/*
-  	
-
-    let params = JSON.stringify(form);
-    //this.http.get<Order>('http://localhost/php-inclass/inclass11/ngphp-get.php?str='+params).subscribe((data) =>{
-    this.http.post<Order>('http://localhost/php-inclass/inclass1/ngphp-get.php', params).subscribe((data) =>{
-      console.log('Response: ', data);
-      this.responseData = data;
-    }, (error) =>{
-      console.log('Error :', error);
-    });
-  }
-  	*/
     redirectSuccess(){
-      this.router.navigate(['/createSuccess'])
+      this.router.navigate(['/homepage'])
     }
   	submitPlaylist(form: any): void{
       if(this.validatePlaylist()){
-        let params = JSON.stringify(this.playlistModel);
-        console.log(params);
+        let params = this.playlistModel;
 		var apiUrl = environment.apiUrl;
-        this.http.post<any>(apiUrl + '/api/createPlaylist.php', params).subscribe((data) =>{
+        this.http.post<any>(apiUrl + '/new/playlist', params).subscribe((data) =>{
           console.log('Response: ', data);
-		  if(data.status == 201){
-			this.redirectSuccess
+		  if(data['status'] == 200){
+			  console.log("here")
+			this.redirectSuccess()
 		  }
         }, (error) =>{
-          if(error==400){
+          if(error.status==400){
             alert("Received 400 error")
           }
           //this.redirectSuccess();
