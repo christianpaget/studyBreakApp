@@ -28,7 +28,17 @@ export class LoginComponent implements OnInit {
   redirectSuccess(){
       this.router.navigate(['/user_home']);
     }
-  logIn(form: any): void{
+  logIn(){
+    console.log("Spotify Log in Clicked")
+    let redirect_uri = environment.redirect_uri;
+    let apiUrl = environment.apiUrl;
+    let params = {redirect_uri: redirect_uri};
+    this.http.post(apiUrl + "/spotify/login", params).subscribe((data)=>{
+        let url = data['link'];
+        document.location.href = url;
+      });
+  }
+  /*logIn(form: any): void{
       //let params = JSON.stringify(this.loginModel);
       let params = this.loginModel;
       const headers = {
@@ -60,6 +70,6 @@ export class LoginComponent implements OnInit {
           }
           //console.log(this.data);
   });
-    }
+    }*/
   }
 

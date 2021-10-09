@@ -8,6 +8,8 @@ const client = new AWS.DynamoDB.DocumentClient();
 const userTable = "sb-users";
 const playlistsTable = "playlists";
 
+const ssm = new AWS.SSM();
+
 const bodyParser = require("body-parser");
 
 const cors = require('cors');
@@ -38,7 +40,18 @@ app.get('/version', (req, res) => {
 
 app.post("/api/spotify/login", (req, res)=>{
   const spotifyID = "a466c513c83a43809ffe7f0573d24418";
-  const spotifySecret = "0575752dbd7e41ac964f63c60342308e";
+  let spotifys;
+  let params = {
+      Name: 'spotify_api_secret'
+  };
+  ssm.getParameter(params, function(error, data){
+      if (err){ console.log(err, err.stack);
+        res.json({Error: "Could not connect"});
+      }
+      else{
+        spotifyS = data.Parameter.Value;
+      }
+  })
   redirect_uri = req.body.redirect_uri;
   console.log("Spotify log-in received")
   const spotifyLink = "https://accounts.spotify.com/authorize?client_id=" + spotifyID + "&redirect_uri=" + redirect_uri
@@ -104,7 +117,14 @@ app.post("api/new/playlist", (req, res) => {
 app.get("/api/userRows", (req, res) => {
     
     var params = {
-        TableName: playlistsTable
+        TableName: playlistsTable,
+        KeyConditionExpression: "#id = :id",
+        ExpressionAttributeNames:{
+            "#id": "id"
+        },
+        ExpressionAttributeValues: {
+            ":id": req.body.userID
+        }
     }
     client.scan(params, (err, data) => {
         if (err) {
