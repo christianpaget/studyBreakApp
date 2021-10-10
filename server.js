@@ -146,15 +146,15 @@ app.post("/api/new/playlist", (req, res) => {
 //Get Playlist
 //Get all playlist IDs - Done
 app.get("/api/userRows", (req, res) => {
-    
+    let userid = req.headers.userid
     var params = {
         TableName: playlistsTable,
-        KeyConditionExpression: "#id = :id",
+        FilterExpression: "#userID = :userID",
         ExpressionAttributeNames:{
-            "#id": "id"
+            "#userID": "userID"
         },
         ExpressionAttributeValues: {
-            ":id": req.body.userID
+            ":userID": userid
         }
     }
     client.scan(params, (err, data) => {

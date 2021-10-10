@@ -34,7 +34,7 @@ export class UserHomeComponent implements OnInit {
             this.authToken = arg[1];
       }
     }
-    console.log(window.localStorage.getItem('auth_token'));
+    //console.log(window.localStorage.getItem('auth_token'));
   
   //Restrict access to log in only section
   /*
@@ -54,22 +54,22 @@ export class UserHomeComponent implements OnInit {
     };
     console.log(headers);
     this.http.get("https://api.spotify.com/v1/me", headers).subscribe((userMetaData)=>{
-      console.log(userMetaData);
+      //console.log(userMetaData);
       this.user = userMetaData['display_name'];
       this.spotId = userMetaData['id'];
       window.localStorage.setItem('user', this.user);
       window.localStorage.setItem('id', this.spotId);
     });
   }
+  this.user = window.localStorage.getItem('user')
+  let userSpotID = window.localStorage.getItem('id');
+  //console.log(userSpotID)
     const playlistHeaders = {
       headers: new HttpHeaders({
         'Content-Type':'application/json',
-        'userID': `${this.spotId}`
+        'userID': userSpotID
       })
     };
-    this.user = window.localStorage.getItem('user');
-    let temp = {user: this.user}
-    let param = JSON.stringify(temp);
     this.http.get(this.url + '/userRows', playlistHeaders).subscribe((playlists)=>{
       this.playlists = playlists;
       this.playlistsLength = this.playlists.length;
