@@ -44,7 +44,7 @@ app.post("/api/spotify/login", (req, res)=>{
   let params = {
       Name: 'spotify_api_secret'
   };
-  ssm.getParameter(params, function(error, data){
+  ssm.getParameter(params, function(err, data){
       if (err){ console.log(err, err.stack);
         res.json({Error: "Could not connect"});
       }
@@ -161,7 +161,7 @@ app.get("/api/userRows", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(data.Items);
+            //console.log(data.Items);
             var playlists = [];
             for (var i in data.Items){
                 var singlePlaylistResponse = data.Items[i];
@@ -178,7 +178,7 @@ app.get("/api/userRows", (req, res) => {
                 playlists.push(singlePlaylist);
             }
                 //playlists[i].push(data.Items[i]['userID']);
-            console.log(playlists);
+            //console.log(playlists);
 
             res.contentType = 'application/json'
             res.json(playlists);

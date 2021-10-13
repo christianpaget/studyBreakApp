@@ -34,11 +34,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   		this.initializeSpotifyPlayer();
   		this.searchSpotify();
   		this.pause();
-  		
-  		
-
-  		//this.token = window.localStorage.getItem('auth_token');
-  		//this.headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
   }
   ngOnDestroy(){
   	try{
@@ -53,8 +48,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
   }
   constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute) { 
-  	//this.loadSpotifyScript();
-  	//this.initializeSpotifyPlayer();
   }
   changed = true;
   currentSong;
@@ -75,16 +68,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   deviceID;
   player;
   spotifyID = 'a466c513c83a43809ffe7f0573d24418';
-  spotifySecret = '0575752dbd7e41ac964f63c60342308e';
   tracks: [];
   switchVibe(){
   	this.studytime = !this.studytime;
-  	//this.searchSpotify();
   	let token = window.localStorage.getItem('auth_token');
-
   	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
-  	//headers = headers.append('Authorization', 'Bearer ' + token);
-  	//let q = 'artist:';
   	let q;
   	if(this.studytime)
   		q = this.playlist.step1choice + ':' + this.playlist.step1search;
@@ -92,7 +80,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   		q = this.playlist.step2choice + ':' + this.playlist.step2search;
 
   	let type = 'track';
-  	//console.log(headers);
   	let params = new HttpParams().set('q', q).set('type', type);
   	this.http.get('https://api.spotify.com/v1/search', {headers: headers, params: params, responseType: 'text' as 'json'}).subscribe((response) =>{
 
@@ -126,21 +113,20 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	});
   	//this.queue();
   }
-  startSessionHelper(){
+  async startSessionHelper(){
   	let token = window.localStorage.getItem('auth_token');
-	  let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-  	//console.log(headers);
+	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
   	let params;
   	if(this.studytime){
   		params = this.tracks[this.studyTrackNum]['name'];
-  		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
-      this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers}).subscribe((response) =>{
-        console.log("Queued: " +params + "in startSessionHelper");
-  			this.http.post('https://api.spotify.com/v1/me/player/next', '', {headers: headers}).subscribe((response) =>{
-  			console.log("Next clicked");
-  			this.player.resume();
-  			this.playing = true;
-  	});
+        await this.http.post('https://api.spotify.com/v1/me/player/queue?uri='+ this.tracks[this.studyTrackNum]['uri'], '', {headers: headers})//.subscribe((response) =>{
+        setTimeout(()=> 500);
+		console.log("Queued: " +params + " in startSessionHelper");
+		this.http.post('https://api.spotify.com/v1/me/player/next', '', {headers: headers}).subscribe((response) =>{
+		console.log("Next clicked");
+		this.player.resume();
+		this.playing = true;
+  	//});
   		});
   		this.studyTrackNum ++;
       console.log("studyTrackNum");
@@ -153,12 +139,12 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   		this.breakTrackNum ++;
   	}
   }
-  startSession(){
+  async startSession(){
   	//this.queue();
   	//this.nextTrack();
   	//this.play();
   	this.sessionRunning = true;
-  	this.startSessionHelper();
+  	await this.startSessionHelper();
   	console.log('secondTimeLeft');
 
   	this.interval = setInterval(() =>{
@@ -212,11 +198,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   nextTrack(){
   	let token = window.localStorage.getItem('auth_token');
 	let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-  	//console.log(headers);
-  	//let params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.trackNum]['uri']);
-  	//console.log(this.tracks[0]['uri']);
-  	//let data = JSON.stringify(params);
-  	//console.log(data);
   	this.http.post('https://api.spotify.com/v1/me/player/next', '', {headers: headers}).subscribe((response) =>{
   		console.log(response);
   	});
@@ -273,15 +254,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
   	});  	
 
-
-  	/*let headers = new HttpHeaders().append('Authorization', 'Bearer ' + this.token);
-  	//header not getting passed in? or params
-  	let params = new HttpParams().set('device_id', this.deviceID);
-  	console.log(this.token);
-  	this.http.put('https://api.spotify.com/v1/me/player/pause', {headers: headers}).subscribe((response) =>{
-  		console.log(response);
-  	});
-  	*/
   }
   loadSpotifyScript(){
   	const node = document.createElement('script');
@@ -294,7 +266,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	try{
   	window.onSpotifyWebPlaybackSDKReady = () => {
   		const token = window.localStorage.getItem('auth_token');
-  		//'BQCLqevB8AQB_XS3v4db1er8Dlm1A_1nFmLEZeNRUFq-pOnyEGZyuF-RDH0EhFDdLHzK9J9VLjQ94pealD9vb62l8GbzK_Rp0P3Arfsjx2Zs9U9UWOcPqkIHXEBa6NE-lkMnEPVxPisr85AR37ucQ0I2JZ-M-ptc6D8';
   		this.player = new Spotify.Player({
     		name: 'Web Playback SDK Quick Start Player',
     		getOAuthToken: cb => { cb(token) }
@@ -312,13 +283,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
   	// Playback status updates
   	this.player.addListener('player_state_changed', state => { 
-  		console.log("Changed: " + state['track_window']['current_track']['name']);
-  		console.log(state);
+  		//console.log("Changed: " + state['track_window']['current_track']['name']);
   		let track = state['track_window']['current_track']['uri'];
-  		console.log(track);
+  		//console.log(track);
   		if(this.sessionRunning){
-  			console.log("sessionRunning")
-  		//this.currentSong = state['context']['uri'];
+  			//console.log("sessionRunning")
   			if(track != this.currentSong){
   				if(this.currentSongTime == state['duration']){
   					console.log("Not up to date");
