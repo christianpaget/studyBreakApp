@@ -3,7 +3,7 @@
 
 <p>Your Playlists</p>
 <div *ngIf="playlistsLength > 0; else noPlaylist">
-<table border='1' width='100%' style='border-collapse: collapse; padding-left: 20px;padding-right: 20px;'>
+<!--<table border='1' width='100%' style='border-collapse: collapse; padding-left: 20px;padding-right: 20px;'>
     <tr>
       <th>ID</th>
       <th>Study Vibe</th>
@@ -11,20 +11,45 @@
       <th>Study Time</th>
       <th>Break Time</th>
 
-    </tr>
+    </tr>-->
 
-    <tr *ngFor="let playlist of playlists">
-      <td>{{ playlist.playlistID }}</td>
+      <div class="card-container">
+        <div *ngFor="let playlist of playlists" class="card">
+          {{ playlist.step1search }} X {{ playlist.step2search }}
+          <div class="study-card">Study</div>
+        </div>
+        
+      </div>
+  <!--<mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>{{ playlist.step1search }} X {{ playlist.step2search }}</mat-card-title>
+            <mat-card-subtitle>
+              Learn Web Development with Easy Tutorials
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              
+            </p>
+          </mat-card-content>
+      
+          <mat-card-actions>
+            <button mat-raised-button style = "color: Green">Listen</button>
+            <button mat-raised-button style = "color: rgb(196, 26, 26)">Delete</button>
+          </mat-card-actions>
+        </mat-card>
+      --->
+      <!--<td>{{ playlist.playlistID }}</td>
       <td>{{ playlist.step1search }}</td>
       <td>{{ playlist.step2search }}</td>
       <td>{{ playlist.studytime }}</td>
       <td>{{ playlist.breaktime }}</td>
       <td>
         <button class="btn btn-light" (click)="listen(playlist)" style = 'background-color: #1DB954'>Listen Now</button>
-        <button class="btn btn-light" (click)="deletePlaylist(playlist.playlistID)">Delete</button>
+        <button class="btn btn-light" (click)="deletePlaylist(playlist.playlistID)" style = 'background-color: rgb(179, 29, 29); color: white; align-items: flex-end;'>Delete</button>
       </td>
     </tr>
-  </table>
+  </table>-->
 </div>
 <ng-template #noPlaylist>You don't have any playlists :(</ng-template>
 </body>

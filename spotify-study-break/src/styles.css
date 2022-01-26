@@ -2,8 +2,10 @@
 /*Authors: Emily Shepherd and Christian Paget*/
 
 body {
-    background-color: grey;
+    background-color: #141414;
     font-family: 'proxima-nova', sans-serif;
-    color: black;
+    color: white ;
 
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

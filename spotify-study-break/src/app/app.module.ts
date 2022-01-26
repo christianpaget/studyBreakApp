@@ -18,7 +18,10 @@ import { SpotifyLoginComponent } from './spotify-login/spotify-login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { newPlaylist } from './new-playlist-form/newPlaylist';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 //import { HomeComponent } from './home/home.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 
 const appRoutes: Routes = [
 {path: 'login', component: LoginComponent},
@@ -55,7 +58,10 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes, { enableTracing: true, onSameUrlNavigation: 'reload'})
+    RouterModule.forRoot(appRoutes, { enableTracing: true, onSameUrlNavigation: 'reload'}),
+    NoopAnimationsModule,
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [
     //{provide : LocationStrategy , useClass: HashLocationStrategy}
