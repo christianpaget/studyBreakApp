@@ -11,7 +11,7 @@ import { environment } from './../../environments/environment';
 
 export class LoginComponent implements OnInit {
 
-  title = 'Pomodoro with Spotify';
+  title = 'Thrum';
 
   message = 'Study Break is a tool that lets you take control of your study sessions! Log in using your Spotify account and try it out!'
   loginModel = new login("", "");
