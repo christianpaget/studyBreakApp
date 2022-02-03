@@ -29,6 +29,11 @@
     height: 54px;
     left: 0px;
     top: 150px;
+    font-family: SF Pro;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
 
     /* White */
 
@@ -37,6 +42,7 @@
     box-sizing: border-box;
     border-radius: 90px;
     background-color: #191414;
+    
 
     /* Inside auto layout */
 
@@ -86,35 +92,102 @@
     font-size: 30px;
 
 }
-/*
-h2 {
-    font-size: 21px;
-    font-weight: 400;
-    padding-bottom: 20px;
+ .affiliate-frame{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: flex-end;
+    padding: 0px;
+    
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+ }
 
-}
-.login {
-    padding-left: 50px;
-    padding-right: 50px;
-}
-button {
-    border-radius: 20px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-right: 30px;
-    padding-left: 30px;
-}
+ .coffee{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px -5px;
+    justify-content: right;
 
-h3{
-    color: white;
-    font-size: 16px;
-    font-weight: 400;
-}
+    position: relative;
+    
 
-.step1alert{
-    color: red;
+    /*background: #C4C4C4;/*
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    margin: 0px 0px;
+ }
+.coffee-button{
+    position: relative;
+
+    font-family: SF Pro;
+    font-style: normal;
+    font-weight: normal;
     font-size: 20px;
+    line-height: 24px;
+    /* identical to box height */
+    color: #000000;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 0px;
 }
-*/
+
+.not-affiliated{
+    position: relative;
+    
+
+    font-family: SF Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    /* identical to box height */
+
+    text-align: right;
+
+    /* White */
+
+    color: #FFFFFF;
 
 
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin: 16px 0px;
+}
+
+.made-by{
+    position: relative;
+    
+
+    font-family: SF Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    /* identical to box height */
+    /* White */
+    color: #FFFFFF;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 0px;
+}
+
+a{
+    color: #FFFFFF;
+    text-decoration: underline;
+}

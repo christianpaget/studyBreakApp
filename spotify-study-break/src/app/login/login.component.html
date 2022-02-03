@@ -1,4 +1,5 @@
-<body>
+<body style="background: #191414;">
+
     <div class = title-frame>
       <div class = title>
         {{ title }}
@@ -12,26 +13,17 @@
         <b class="login-button" (click) = 'logIn()'>Login to Spotify</b>
       </div>
     </div>
-    <!--
-    <div style="text-align:center">
-      <img src="../favicon.ico" alt="Spotify Logo" height = 20% width = 20% class="center">
-    </div>
-    <div style="text-align:center">
-      <h2>
-        {{ message }}
-      </h2>
-    </div>
-    <div style="text-align:center">
-        <button type="button" style = 'background-color: #1DB954' (click) = 'logIn()'> <h4>Log In with Your Spotify</h4></button>
-    </div>
-  -->
-      <!--<p [class]="'step1alert'" id="loginFail" color="red"></p>
-      <form #loginForm="ngForm" [ngStyle]="{'padding-left' : '50px', 'padding-right': '50px'}">
-        Username: <input type="text" name="username" [(ngModel)]="loginModel.username"class="form-control" autofocus required /> <br/>
-        Password: <input type="password" name="pwd" class="form-control" [(ngModel)]="loginModel.password" required  /> <br/>
-        <input type="submit" value="Sign in" class="btn btn-light" (click)="logIn(loginForm.value)"  />   
-      </form>-->
-    
+     <div class="affiliate-frame">
+       <div class="made-by">
+        Made by <a>Christian Paget</a> + <a target="_blank" href="https://www.ryanwshih.com/">Ryan Shih</a>
+       </div>
+       <div class="not-affiliated">
+        Not affiliated with Spotify
+       </div>
+       <div class="coffee">
+         <button class="coffee-button">Buy me a coffee</button>
+       </div>
+     </div>
     </body>
   
   
