@@ -7,14 +7,64 @@
 		box.style.display = check.checked ? "block" : "none";
 	}*/
 </script>
-<h1>Create Your Study Break!</h1>
+<div class="Navbar">
+	<div class="title">
+		Thrum
+	</div>
+	<div class="user-block">
+		<div class="profilePic">
+			<iframe src="{{spotUserPic}}"></iframe>
+		</div>
+		<div class="username" style="height:100px;width:100px">
+			{{ user }}
+		</div>
+	</div>
+</div>
+<form #orderForm="ngForm">
+	<div class="form">
+		<div class="session-title">
+			<div class="title" style="order: 0;">
+				<input type="text" class="title" placeholder="Sample Title" id=title [(ngModel)]="playlistModel.title" name="title">
+			</div>
+			<div class="pencilIcon" style="order: 1;">
+				<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M4.125 23.7187V28.875H9.28125L24.4888 13.6675L19.3325 8.51124L4.125 23.7187ZM28.4763 9.67999C29.0125 9.14374 29.0125 8.27749 28.4763 7.74124L25.2588 4.52374C24.7225 3.98749 23.8563 3.98749 23.32 4.52374L20.8038 7.03999L25.96 12.1962L28.4763 9.67999V9.67999Z" fill="white"/>
+				</svg>
+			</div>
+		</div>
+		<div class="work-time">
+			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.focusTime" name="focusTime"/> minute working sessions
+		</div>
+		<div class="work-playlist">
+			<select class="form-control" [(ngModel)]="playlistModel.focusPlaylist" name="focusPlaylist">
+				<option *ngFor="let playlist of playlists" [value]="playlist">
+					{{playlist}}
+				</option>
+			</select>
+		</div>
+		<div class="break-time">
+			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxShortTime" name="relaxShortTime"/> minute short breaks
+		</div>
+		<div class="break-playlist">
+			<select class="form-control" [(ngModel)]="playlistModel.relaxPlaylist" name="relaxPlaylist"></select>
+		</div>
+		<div class="long-break">
+			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxLongTime" name="relaxLongTime"/> minute long breaks every <input class="form-control" type="number" step="1" max="90" [(ngModel)]="playlistModel.roundsNumber" name="roundsNumber"/> rounds
+		</div>
+		<div class="start-button">
+			<button>Start</button>
+		</div>
+	</div>
+</form>
+
+<!--<h1>Create Your Study Break!</h1>
 <div class="ResetButton">
 	<button (click)="resetSelections()" layout-align="center center">Reset Selections</button>
 
 </div>
 <form #orderForm="ngForm">
 
-	<!--
+	
 <div class="PlaylistForm">
 	<label>Step 1: Choose your study vibe</label>
 	<p class="step1alert" id="step1alert"></p>
@@ -91,6 +141,6 @@
     <div>
 
     	<button class="submit" (click)="submitPlaylist(orderForm.value)">Create new playlist</button>
-	</div>-->
-</form>
+	</div>
+</form>-->
 </div>

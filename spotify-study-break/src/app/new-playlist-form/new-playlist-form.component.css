@@ -1,5 +1,107 @@
 /*Authors: Christian Paget and Emily Shepherd*/
 
+.Navbar{
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	width: 1287px;
+	height: 72px;
+	left: 68px;
+	top: 58px;
+
+}
+
+.title{
+	font-family: SF Pro;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 60px;
+	line-height: 72px;
+	/* identical to box height */
+	/* White */
+	color: #FFFFFF;
+}
+
+.username{
+	font-family: SF Pro;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 30px;
+	line-height: 36px;
+	/* White */
+
+	color: #FFFFFF;
+	/* Inside auto layout */
+
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+	margin: 0px 10px;
+}
+
+.pencilIcon{
+	position: relative;
+	float: right;
+}
+
+.session-title{
+	position: relative;
+	
+	display: flex;
+	flex-flow: row;
+	justify-content: space-between;
+	
+	
+}
+.title{
+	position: absolute;
+	width: 235px;
+	height: 36px;
+	left: 0px;
+	top: 0px;
+
+	font-family: SF Pro;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 30px;
+	line-height: 36px;
+	/* identical to box height */
+
+	text-decoration-line: underline;
+
+	border-top-style: hidden;
+	border-right-style: hidden;
+	border-left-style: hidden;
+	border-bottom-style: hidden;
+	background-color: #141414;
+	/* White */
+
+	color: #FFFFFF;
+}
+
+.user-block{
+	position: absolute;
+	width: 206px;
+	height: 62px;
+	left: 1081px;
+	top: 5px;
+}
+
+.form{
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	width: 278px;
+	height: 36px;
+	left: 441px;
+	top: 202px;
+}
+
+.start-button{
+	position: relative;
+	
+
+}
 .inline-button div{
 	display: inline-block;
 	width: 500px;
@@ -21,12 +123,4 @@
 
 .spinner {
 	width: 250px;
-}
-
-input:valid { 
-	background-color: #1DB954;
-  }
-
-::placeholder {
-	color: white;
 }
