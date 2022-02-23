@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 /*Authors: Emily Shepherd and Christian Paget*/
-
+@font-face{
+    font-family: "Space Grotesk";
+    src: local("Space Grotesk"), url(./assets/fonts/SpaceGrotesk-VariableFont_wght.ttf) format("truetype");
+}
 body {
     background-color: #141414;
     font-family: 'proxima-nova', sans-serif;

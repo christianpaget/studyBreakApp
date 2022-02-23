@@ -19,21 +19,24 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   		else if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
   			this.router.navigate(['/spotify-login']);
   		}
+		
   		let info = this.route.snapshot.paramMap;
-  		this.playlist.step1choice = info.get('step1choice');
-  		this.playlist.step1search = info.get('step1search');
-  		this.playlist.step2choice = info.get('step2choice');
-  		this.playlist.step2search = info.get('step2search');
-  		this.playlist.breaktime = parseInt(info.get('breaktime'))
-  		this.playlist.studytime = parseInt(info.get('studytime'));
+  		this.playlist.title = info.get('title');
+  		this.playlist.focusPlaylist = info.get('focusPlaylist');
+  		this.playlist.relaxPlaylist = info.get('relaxPlaylist');
+  		this.playlist.focusTime = parseInt(info.get('focusTime'));
+  		this.playlist.relaxShortTime = parseInt(info.get('relaxShortTime'))
+  		this.playlist.relaxLongTime = parseInt(info.get('relaxLongTime'));
   		this.playlist.userID = info.get('userID');
+		this.playlist.roundsNumber = parseInt(info.get('roundsNumber'))
   		this.playlist.playlistID = parseInt(info.get('playlistID'));
-  		this.minuteTimeLeft = this.playlist.studytime;
+  		this.minuteTimeLeft = this.playlist.focusTime;
   		this.studytime = true;
   		this.loadSpotifyScript();
   		this.initializeSpotifyPlayer();
   		this.searchSpotify();
   		this.pause();
+		  
   }
   ngOnDestroy(){
   	try{
@@ -62,7 +65,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   studytime;
   secondTimeLeft = 0;
   minuteTimeLeft;
-  playlist = new newPlaylist('', '', '', '', null, null, null, '');
+  playlist = new newPlaylist("", "", "", 25, 5 , 20, 4,null, "");
   token; //window.localStorage.getItem('auth_token');
   headers;//= new HttpHeaders().append('Authorization', 'Bearer ' + this.token)
   deviceID;
@@ -74,11 +77,12 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	let token = window.localStorage.getItem('auth_token');
   	let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
   	let q;
+	  /*
   	if(this.studytime)
-  		q = this.playlist.step1choice + ':' + this.playlist.step1search;
+  		q = this.playlist.focusPlaylist + ':' + this.playlist.step1search;
   	else
-  		q = this.playlist.step2choice + ':' + this.playlist.step2search;
-
+  		q = this.playlist.relaxPlaylist + ':' + this.playlist.step2search;
+*/
   	let type = 'track';
   	let params = new HttpParams().set('q', q).set('type', type);
   	this.http.get('https://api.spotify.com/v1/search', {headers: headers, params: params, responseType: 'text' as 'json'}).subscribe((response) =>{
@@ -157,9 +161,9 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   		}
   		else{
   			if(this.studytime)
-  				this.minuteTimeLeft = this.playlist.breaktime;
+  				this.minuteTimeLeft = this.playlist.focusTime;
   			else
-  				this.minuteTimeLeft = this.playlist.studytime;
+  				this.minuteTimeLeft = this.playlist.relaxShortTime;
   			//this.studytime = !this.studytime;
   			this.switchVibe();
   		}
@@ -210,11 +214,12 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   	//headers = headers.append('Authorization', 'Bearer ' + token);
   	//let q = 'artist:';
   	let q;
-  	if(this.studytime)
-  		q = this.playlist.step1choice + ':' + this.playlist.step1search;
+  	/*
+	  if(this.studytime)
+  		q = this.playlist.focusPlaylist + ':' + this.playlist.step1search;
   	else
-  		q = this.playlist.step2choice + ':' + this.playlist.step2search;
-
+  		q = this.playlist.relaxPlaylist + ':' + this.playlist.step2search;
+*/
   	let type = 'track';
   	//console.log(headers);
   	let params = new HttpParams().set('q', q).set('type', type);

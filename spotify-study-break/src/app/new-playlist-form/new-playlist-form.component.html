@@ -1,4 +1,5 @@
 <!----Authors: Christian Paget-->
+<body style="background: #191414;">
 <div>
 <script type="text/javascript">
 	/*function showGenreOne(){
@@ -32,27 +33,33 @@
 				</svg>
 			</div>
 		</div>
-		<div class="work-time">
-			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.focusTime" name="focusTime"/> minute working sessions
+		<div class="work-time row-container">
+			<input class="form-control time-spinner" type="number" step="1" max="90" [(ngModel)]="playlistModel.focusTime" name="focusTime"/><div class="follow-text"> minute working sessions</div> 
 		</div>
-		<div class="work-playlist">
-			<select class="form-control" [(ngModel)]="playlistModel.focusPlaylist" name="focusPlaylist">
-				<option *ngFor="let playlist of playlists" [value]="playlist">
+		<div class="row-container">
+			<select class="playlist form-control" [(ngModel)]="playlistModel.focusPlaylist" name="focusPlaylist">
+				<option class="playlistOption" *ngFor="let playlist of playlists" [value]="playlist">
 					{{playlist}}
 				</option>
 			</select>
+			<div class="follow-text">playing while I focus</div>
 		</div>
-		<div class="break-time">
-			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxShortTime" name="relaxShortTime"/> minute short breaks
+		<div class="break-time row-container" >
+			<input class="form-control time-spinner" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxShortTime" name="relaxShortTime"/> <div class="follow-text"> minute short breaks</div>
 		</div>
-		<div class="break-playlist">
-			<select class="form-control" [(ngModel)]="playlistModel.relaxPlaylist" name="relaxPlaylist"></select>
+		<div class="row-container">
+			<select class="playlist form-control" [(ngModel)]="playlistModel.relaxPlaylist" name="relaxPlaylist">
+				<option class="playlistOption" *ngFor="let playlist of playlists" [value]="playlist">
+					{{playlist}}
+				</option>
+			</select>
+			<div class="follow-text">playing while I relax</div>
 		</div>
-		<div class="long-break">
-			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxLongTime" name="relaxLongTime"/> minute long breaks every <input class="form-control" type="number" step="1" max="90" [(ngModel)]="playlistModel.roundsNumber" name="roundsNumber"/> rounds
+		<div class="long-break row-container">
+			<input class="form-control time-spinner" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxLongTime" name="relaxLongTime"/><div class="follow-text"> minute long breaks every </div><input class="form-control round-spinner" type="number" step="1" max="10" [(ngModel)]="playlistModel.roundsNumber" name="roundsNumber"/> <div class="follow-text">rounds</div>
 		</div>
-		<div class="start-button">
-			<button>Start</button>
+		<div class="row-container">
+			<button class="start-button">Start</button>
 		</div>
 	</div>
 </form>
