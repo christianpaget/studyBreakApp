@@ -1,40 +1,35 @@
 /*Authors: Christian Paget and Emily Shepherd*/
 
-.row-container{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	padding: 10px;
-	
-}
-.follow-text{
-	left: 0%;
-right: 0%;
-top: 0%;
-bottom: 0%;
-flex: 0 0 auto;
-width: 300px;
-font-family: "Space Grotesk";
-font-style: normal;
-font-weight: normal;
-font-size: 30px;
-line-height: 36px;
-/* identical to box height */
-
-
-/* White */
-
-color: #FFFFFF;
+.row-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
 }
 
-.start-button{
-	display: flex;
+.follow-text {
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    flex: 0 0 auto;
+    width: 300px;
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    /* identical to box height */
+    /* White */
+    color: #FFFFFF;
+}
+
+.start-button {
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     padding: 15px 25px;
-
-    
     width: 205px;
     height: 54px;
     left: 0px;
@@ -44,253 +39,224 @@ color: #FFFFFF;
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
-
     /* White */
-
     border: 1px solid #FFFFFF;
     color: #FFFFFF;
     box-sizing: border-box;
     border-radius: 90px;
     background-color: #191414;
-    
-
     /* Inside auto layout */
-
     flex: none;
     order: 2;
     flex-grow: 0;
     margin: 20px 0px;
 }
-.start-button:hover{
-    /* Auto layout */
 
+.start-button:hover {
+    /* Auto layout */
     background: #FFFFFF;
     color: #191414;
     /* White */
-
     border: 1px solid #FFFFFF;
     box-sizing: border-box;
     border-radius: 90px;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.playlistOption{
-	font-family: Space Grotesk;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 30px;
-	line-height: 38px;
-
-/* Space Grey */
-
-color: #191414;
-
-
-/* Inside auto layout */
-
-flex: none;
-order: 0;
-flex-grow: 0;
-margin: 0px 15px;
-}
-.playlist{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	padding: 10px 0px;
-
-	width: 280px;
-	height: 58px;
-	left: 0px;
-	top: 0px;
-	/* Active */
-
-	background: #A8D7A5;
-	border-radius: 90px;
-
-	/* Inside auto layout */
-
-	flex: none;
-	order: 0;
-	flex-grow: 0;
-	margin: 0px 20px;
-
-}
-.round-spinner{
-	display: flex;
-flex-direction: row;
-padding: 5px 20px;
-
-width: 66px;
-height: 61px;
-left: 450px;
-top: 0px;
-font-family: "Space Grotesk";
-font-style: normal;
-font-weight: bold;
-font-size: 40px;
-line-height: 51px;
-/* identical to box height */
-
-
-/* White */
-
-color: #FFFFFF;
-/* Fill-In Grey */
-
-background: #5A5A5A;
-border-radius: 45px;
-
-/* Inside auto layout */
-
-flex: none;
-order: 2;
-flex-grow: 0;
-margin: 0px 20px;
-}
-.time-spinner{
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-	padding: 5px 20px;
-
-	background: #5a5a5a;
-	border-radius: 45px;
-	font-style: normal;
-	font-weight: bold;
-	font-size: 40px;
-	line-height: 48px;
-
-	width: 152px;
-	height: 58px;
-	color: #FFFFFF;
-	margin: 0px 10px;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-.Navbar{
-	display: flex;
-	flex-direction: row;
-	position: absolute;
-	width: 1287px;
-	height: 72px;
-	left: 68px;
-	top: 58px;
-
+.playlistOption {
+    font-family: Space Grotesk;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 38px;
+    /* Space Grey */
+    color: #191414;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 15px;
 }
 
-.title{
-	font-family: "Space Grotesk";
-	font-style: normal;
-	font-weight: bold;
-	font-size: 60px;
-	line-height: 72px;
-	/* identical to box height */
-	/* White */
-	color: #FFFFFF;
+.playlist {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 0px;
+    width: 280px;
+    height: 58px;
+    left: 0px;
+    top: 0px;
+    /* Active */
+    background: #A8D7A5;
+    border-radius: 90px;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 20px;
 }
 
-.username{
-	font-family: "Space Grotesk";
-	font-style: normal;
-	font-weight: normal;
-	font-size: 30px;
-	line-height: 36px;
-	/* White */
-
-	color: #FFFFFF;
-	/* Inside auto layout */
-
-	flex: none;
-	order: 0;
-	flex-grow: 0;
-	margin: 0px 10px;
+.round-spinner {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 20px;
+    width: 66px;
+    height: 61px;
+    left: 450px;
+    top: 0px;
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 51px;
+    /* identical to box height */
+    /* White */
+    color: #FFFFFF;
+    /* Fill-In Grey */
+    background: #5A5A5A;
+    border-radius: 45px;
+    /* Inside auto layout */
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    margin: 0px 20px;
 }
 
-.pencilIcon{
-	position: relative;
-	float: right;
+.time-spinner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 5px 20px;
+    background: #5a5a5a;
+    border-radius: 45px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 48px;
+    width: 152px;
+    height: 58px;
+    color: #FFFFFF;
+    margin: 0px 10px;
 }
 
-.session-title{
-	position: relative;
-	
-	display: flex;
-	flex-flow: row;
-	justify-content: space-between;
-
-	color: #191414;
-	
-	
-}
-.title{
-	position: absolute;
-	width: 235px;
-	height: 36px;
-	left: 0px;
-	top: 0px;
-
-	font-family: "Space Grotesk";
-	font-style: normal;
-	font-weight: normal;
-	font-size: 30px;
-	line-height: 36px;
-	/* identical to box height */
-
-	text-decoration-line: underline;
-
-	border-top-style: hidden;
-	border-right-style: hidden;
-	border-left-style: hidden;
-	border-bottom-style: hidden;
-	background-color: #191414;
-	/* White */
-
-	color: #FFFFFF;
+.Navbar {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    width: 1287px;
+    height: 72px;
+    left: 68px;
+    top: 58px;
 }
 
-.user-block{
-	position: absolute;
-	width: 206px;
-	height: 62px;
-	left: 1081px;
-	top: 5px;
+.title {
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 72px;
+    /* identical to box height */
+    /* White */
+    color: #FFFFFF;
 }
 
-.form{
-	display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 0px;
-
-position: absolute;
-width: 638px;
-height: 419px;
-left: 300px;
-top: 150px;
+.username {
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    /* White */
+    color: #FFFFFF;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 0px 10px;
 }
 
-.inline-button div{
-	display: inline-block;
-	width: 500px;
-	min-height: 50px;
-	height: auto;
-	/*background-color: #D3D3D3;
+.pencilIcon {
+    position: relative;
+    float: right;
+}
+
+.session-title {
+    position: relative;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    color: #191414;
+}
+
+.title {
+    position: absolute;
+    width: 235px;
+    height: 36px;
+    left: 0px;
+    top: 0px;
+    font-family: "Space Grotesk";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    /* identical to box height */
+    text-decoration-line: underline;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+    background-color: #191414;
+    /* White */
+    color: #FFFFFF;
+}
+
+.user-block {
+    position: absolute;
+    width: 206px;
+    height: 62px;
+    left: 1081px;
+    top: 5px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    position: absolute;
+    width: 638px;
+    height: 419px;
+    left: 300px;
+    top: 150px;
+}
+
+.inline-button div {
+    display: inline-block;
+    width: 500px;
+    min-height: 50px;
+    height: auto;
+    /*background-color: #D3D3D3;
 */
 }
-.step1alert{
-	color: red;
+
+.step1alert {
+    color: red;
 }
+
 .bodybg-color {
-	background-color: grey;
+    background-color: grey;
 }
 
 .PlaylistForm {
-	padding-left: 5%
+    padding-left: 5%
 }
 
 .spinner {
-	width: 250px;
+    width: 250px;
 }
