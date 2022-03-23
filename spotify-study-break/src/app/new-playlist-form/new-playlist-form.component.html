@@ -1,153 +1,76 @@
 <!----Authors: Christian Paget-->
+
 <body style="background: #191414;">
-<div>
-<script type="text/javascript">
-	/*function showGenreOne(){
-		var check = document.getElementById("step1genre");
-		var box = document.getElementById("step1boxgenre");
-		box.style.display = check.checked ? "block" : "none";
-	}*/
-</script>
-<div class="Navbar">
-	<div class="title">
-		Thrum
-	</div>
-	<div class="user-block">
-		<div class="profilePic">
-			<iframe src="{{spotUserPic}}"></iframe>
-		</div>
-		<div class="username" style="height:100px;width:100px">
-			{{ user }}
-		</div>
-	</div>
-</div>
-<form #orderForm="ngForm">
-	<div class="form">
-		<div class="session-title">
-			<div class="title" style="order: 0;">
-				<input type="text" class="title" placeholder="Sample Title" id=title [(ngModel)]="playlistModel.title" name="title">
-			</div>
-			<div class="pencilIcon" style="order: 1;">
-				<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M4.125 23.7187V28.875H9.28125L24.4888 13.6675L19.3325 8.51124L4.125 23.7187ZM28.4763 9.67999C29.0125 9.14374 29.0125 8.27749 28.4763 7.74124L25.2588 4.52374C24.7225 3.98749 23.8563 3.98749 23.32 4.52374L20.8038 7.03999L25.96 12.1962L28.4763 9.67999V9.67999Z" fill="white"/>
-				</svg>
-			</div>
-		</div>
-		<div class="work-time row-container">
-			<input class="form-control time-spinner" type="number" step="1" max="90" [(ngModel)]="playlistModel.focusTime" name="focusTime"/><div class="follow-text"> minute working sessions</div> 
-		</div>
-		<div class="row-container">
-			<select class="playlist form-control" [(ngModel)]="playlistModel.focusPlaylist" name="focusPlaylist">
-				<option class="playlistOption" *ngFor="let playlist of playlists" [value]="playlist">
-					{{playlist}}
-				</option>
-			</select>
-			<div class="follow-text">playing while I focus</div>
-		</div>
-		<div class="break-time row-container" >
-			<input class="form-control time-spinner" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxShortTime" name="relaxShortTime"/> <div class="follow-text"> minute short breaks</div>
-		</div>
-		<div class="row-container">
-			<select class="playlist form-control" [(ngModel)]="playlistModel.relaxPlaylist" name="relaxPlaylist">
-				<option class="playlistOption" *ngFor="let playlist of playlists" [value]="playlist">
-					{{playlist}}
-				</option>
-			</select>
-			<div class="follow-text">playing while I relax</div>
-		</div>
-		<div class="long-break row-container">
-			<input class="form-control time-spinner" type="number" step="5" max="90" [(ngModel)]="playlistModel.relaxLongTime" name="relaxLongTime"/><div class="follow-text"> minute long breaks every </div><input class="form-control round-spinner" type="number" step="1" max="10" [(ngModel)]="playlistModel.roundsNumber" name="roundsNumber"/> <div class="follow-text">rounds</div>
-		</div>
-		<div class="row-container">
-			<button class="start-button">Start</button>
-		</div>
-	</div>
-</form>
-
-<!--<h1>Create Your Study Break!</h1>
-<div class="ResetButton">
-	<button (click)="resetSelections()" layout-align="center center">Reset Selections</button>
-
-</div>
-<form #orderForm="ngForm">
-
-	
-<div class="PlaylistForm">
-	<label>Step 1: Choose your study vibe</label>
-	<p class="step1alert" id="step1alert"></p>
-	<div class="inline-button">
-    	<div class="radio-button">
-     			<input class="form-check-input" type="radio" name="step1" value="genre" id="step1genre" (click)="showGenreOne()" [(ngModel)]="playlistModel.step1choice">Genre
-    	</div>
-    	<div class="search-bar" id="step1genreBar">
-    		<input type="text" name="genreName1" placeholder="Search by Genre" id="step1boxgenre" style="display: none" [(ngModel)]="playlistModel.step1search">
-    	</div>
-    	</div>
-
-    <div class="inline-button">
-    	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step1" value="artist" [(ngModel)]="playlistModel.step1choice" (click) = "showArtistOne()">Artist
-  		</div>
-  		<div class="search-bar">
-  			<input type="text" name="artistName1" placeholder="Search by Artist" id = "step1boxartist" style="display:none"[(ngModel)]="playlistModel.step1search" >
-  		</div>
-    </div>
-    <div class="inline-button">
-    	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step1" value="playlist" [(ngModel)]="playlistModel.step1choice" (click)="showPlaylistOne()">Playlist
-  		</div>
-  		<div class="search-bar">
-  			<input type="text" name="playlistName1" placeholder="Search by Playlist" [(ngModel)]="playlistModel.step1search" id="step1boxplaylist" style="display:none">
-  		</div>
-    </div>
-    <label>Step 2: Choose your break vibe</label>
-    <p class="step1alert" id="step2alert"></p>
-	<div class="inline-button">
-    	<div class="radio-button">
-    		<input class="form-check-input" type="radio" name="step2" value="genre" [(ngModel)]="playlistModel.step2choice" (click)="showGenreTwo()">Genre
-    	</div>
-    	<div class="search-bar">
-    		<input type="text" name="genreName2" placeholder="Search by Genre" [(ngModel)]="playlistModel.step2search" id="step2boxgenre" style="display:none">
-    	</div>
-    </div>
-
-    <div class="inline-button">
-    	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step2" value="artist" [(ngModel)]="playlistModel.step2choice" (click)="showArtistTwo()">Artist
-  		</div>
-  		<div class="search-bar">
-  			<input type="text" name="artistName2" placeholder="Search by Artist" [(ngModel)]="playlistModel.step2search" id="step2boxartist" style="display:none">
-  		</div>
-    </div>
-    <div class="inline-button">
-    	<div class="radio-button">
-      		<input class="form-check-input" type="radio" name="step2" value="playlist" [(ngModel)]="playlistModel.step2choice" (click)="showPlaylistTwo()">Playlist
-  		</div>
-  		<div class="search-bar">
-  			<input type="text" name="playlistName2" placeholder="Search by Playlist" [(ngModel)]="playlistModel.step2search" id="step2boxplaylist" style="display: none">
-  		</div>
-    </div>
-    <label>Step 3: Choose the length of your study time and break time</label>
-    <p class="step1alert" id="step3alert"></p>
-    <div class="inline-button">
-    	<div class="label">
-    		<p>Study time length: </p>
-   			<div class="spinner">
-    			<input class="form-control" type="number" step="5" max="90" [(ngModel)]="playlistModel.studytime" name="studyTime"/> minutes
-    		</div>
-    	</div>
-    </div>
-    <div class="inline-button">
-    	<div class="label">
-    		<p>Break time length: </p>
-    	<div class="spinner">
-    		<input class="form-control" type="number" step="5" max="30" min="5" [(ngModel)]="playlistModel.breaktime" name="breakTime"> minutes
-    	</div>
-    </div>
-    </div>
     <div>
+        <script type="text/javascript">
+            /*function showGenreOne(){
+                                                                                                                                                                                                                                                                        		var check = document.getElementById("step1genre");
+                                                                                                                                                                                                                                                                        		var box = document.getElementById("step1boxgenre");
+                                                                                                                                                                                                                                                                        		box.style.display = check.checked ? "block" : "none";
+                                                                                                                                                                                                                                                                        	}*/
+        </script>
+        <div class="Navbar">
+            <div class="title">
+                Thrum
+            </div>
+        </div>
+        <div class="user-block">
+            <div class="profilePic">
+                <iframe src="{{spotUserPic}}"></iframe>
+            </div>
+            <div class="username" style="height:62px;width:62px">
+                {{ user }}
+            </div>
+        </div>
+        <form #orderForm="ngForm">
+            <div class="form">
+                <div class="session-title row-container">
+                    <div class="title">
+                        <input type="text" style="text-decoration-line: underline;" class="title" autofocus="autofocus" placeholder="Sample Title" id=title [(ngModel)]="playlistModel.title" name="title">
+                    </div>
+                    <!--
+                    <div class="pencilIcon">
+                        <svg width="33 " height="33 " viewBox="0 0 33 33 " fill="none " xmlns="http://www.w3.org/2000/svg ">
+							<path d="M4.125 23.7187V28.875H9.28125L24.4888 13.6675L19.3325 8.51124L4.125 23.7187ZM28.4763 9.67999C29.0125 9.14374 29.0125 8.27749 28.4763 7.74124L25.2588 4.52374C24.7225 3.98749 23.8563 3.98749 23.32 4.52374L20.8038 7.03999L25.96 12.1962L28.4763
+                        9.67999V9.67999Z " fill="white "/>
+						</svg>
+                    </div>-->
+                </div>
+                <div class="row-container ">
+                    <input class="form-control time-spinner " type="number " step="1 " max="90 " [(ngModel)]="playlistModel.focusTime " name="focusTime " />
+                    <div class="follow-text "> minute working sessions</div>
+                </div>
+                <div class="row-container ">
+                    <select class="playlist form-control " [(ngModel)]="playlistModel.focusPlaylist " name="focusPlaylist ">
+						<option class="playlistOption " *ngFor="let playlist of playlists " [value]="playlist ">
+					{{playlist}}
+				</option>
+			</select>
+                    <div class="follow-text ">playing while I focus</div>
+                </div>
+                <div class="break-time row-container ">
+                    <input class="form-control time-spinner " type="number " step="5 " max="90 " [(ngModel)]="playlistModel.relaxShortTime " name="relaxShortTime " />
+                    <div class="follow-text "> minute short breaks</div>
+                </div>
+                <div class="row-container ">
+                    <select class="playlist form-control " [(ngModel)]="playlistModel.relaxPlaylist " name="relaxPlaylist ">
+				<option class="playlistOption " *ngFor="let playlist of playlists " [value]="playlist ">
+					{{playlist}}
+				</option>
+			</select>
+                    <div class="follow-text ">playing while I relax</div>
+                </div>
+                <div class="long-break row-container ">
+                    <input class="form-control time-spinner " type="number " step="5 " max="90 " [(ngModel)]="playlistModel.relaxLongTime " name="relaxLongTime " />
+                    <div class="follow-text "> minute long breaks every </div>
+                    <div><input class="form-control round-spinner " type="number " step="1 " max="10 " [(ngModel)]="playlistModel.roundsNumber " name="roundsNumber " /></div>
+                    <div class="follow-text ">rounds</div>
+                </div>
+                <div class="row-container ">
+                    <button class="start-button ">Start</button>
+                </div>
+            </div>
+        </form>
 
-    	<button class="submit" (click)="submitPlaylist(orderForm.value)">Create new playlist</button>
-	</div>
-</form>-->
-</div>
+
+    </div>

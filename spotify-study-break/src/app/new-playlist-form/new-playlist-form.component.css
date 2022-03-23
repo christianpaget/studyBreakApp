@@ -13,7 +13,9 @@
     top: 0%;
     bottom: 0%;
     flex: 0 0 auto;
-    width: 300px;
+    display: inline-block;
+    /*width: 500px;*/
+    margin-right: 10px;
     font-family: "Space Grotesk";
     font-style: normal;
     font-weight: normal;
@@ -99,7 +101,7 @@ input::-webkit-inner-spin-button {
     flex: none;
     order: 0;
     flex-grow: 0;
-    margin: 0px 20px;
+    margin-right: 10px;
 }
 
 .round-spinner {
@@ -125,7 +127,8 @@ input::-webkit-inner-spin-button {
     flex: none;
     order: 2;
     flex-grow: 0;
-    margin: 0px 20px;
+    margin: 0px 0px;
+    margin-right: 10px;
 }
 
 .time-spinner {
@@ -142,7 +145,7 @@ input::-webkit-inner-spin-button {
     width: 152px;
     height: 58px;
     color: #FFFFFF;
-    margin: 0px 10px;
+    margin-right: 10px;
 }
 
 .Navbar {
@@ -161,9 +164,17 @@ input::-webkit-inner-spin-button {
     font-weight: bold;
     font-size: 60px;
     line-height: 72px;
+    position: absolute;
+    left: 68px;
+    top: 58px;
     /* identical to box height */
     /* White */
     color: #FFFFFF;
+}
+
+.profilePic {
+    height: 62px;
+    width: 62px;
 }
 
 .username {
@@ -189,7 +200,9 @@ input::-webkit-inner-spin-button {
 .session-title {
     position: relative;
     display: flex;
-    flex-flow: row;
+    flex-direction: row;
+    width: auto;
+    margin-bottom: 15px;
     justify-content: space-between;
     color: #191414;
 }
@@ -206,7 +219,6 @@ input::-webkit-inner-spin-button {
     font-size: 30px;
     line-height: 36px;
     /* identical to box height */
-    text-decoration-line: underline;
     border-top-style: hidden;
     border-right-style: hidden;
     border-left-style: hidden;
@@ -217,11 +229,13 @@ input::-webkit-inner-spin-button {
 }
 
 .user-block {
+    display: inline-block;
+    flex-direction: row;
     position: absolute;
     width: 206px;
     height: 62px;
-    left: 1081px;
-    top: 5px;
+    top: 0;
+    right: 0px;
 }
 
 .form {
@@ -229,11 +243,11 @@ input::-webkit-inner-spin-button {
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
-    position: absolute;
+    position: relative;
     width: 638px;
     height: 419px;
     left: 300px;
-    top: 150px;
+    top: 120px;
 }
 
 .inline-button div {
