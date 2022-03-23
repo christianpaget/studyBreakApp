@@ -19,7 +19,7 @@ export class NewPlaylistFormComponent implements OnInit {
     genres = ["Rock", "Pop", "Classical", "Acoustic"];
   	playlistModel = new newPlaylist("", "", "", 25, 5 , 20, 4,null, this.user);
   	//playlists: newPlaylist[];
-	playlists = ["hi", "me"];
+	playlists;
     responseData;
 	authToken;
 	spotId;
@@ -58,6 +58,7 @@ export class NewPlaylistFormComponent implements OnInit {
 			window.localStorage.setItem('spotifyPic', this.spotUserPic);
 		});
 		
+		
 		this.user = window.localStorage.getItem('user')
 		let userSpotID = window.localStorage.getItem('id');
 		this.spotUserPic = this.domSanitizer.bypassSecurityTrustResourceUrl(window.localStorage.getItem('spotifyPic'));
@@ -70,6 +71,17 @@ export class NewPlaylistFormComponent implements OnInit {
 				'userID': userSpotID
 			})
 		};
+		let tempSpotId = this.spotId;
+		this.http.get("https://api.spotify.com/v1/users/" + window.localStorage.getItem("id") + "/playlists", headers).subscribe((userPlaylists)=>{
+			console.log(userPlaylists)
+			let playlistsArray = []
+			for(let item in userPlaylists['items']){
+				console.log(item)
+				playlistsArray.push(userPlaylists['items'][item]['name'])
+			}
+			this.playlists = playlistsArray
+			console.log(this.playlists)
+		})
 		/*if(!window.localStorage.getItem('user')){
 			alert('You must sign in before you can access this page');
 			this.router.navigate(['/login']);
