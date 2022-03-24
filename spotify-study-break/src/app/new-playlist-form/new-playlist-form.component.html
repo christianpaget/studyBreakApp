@@ -4,10 +4,10 @@
     <div>
         <script type="text/javascript">
             /*function showGenreOne(){
-                                                                                                                                                                                                                                                                        		var check = document.getElementById("step1genre");
-                                                                                                                                                                                                                                                                        		var box = document.getElementById("step1boxgenre");
-                                                                                                                                                                                                                                                                        		box.style.display = check.checked ? "block" : "none";
-                                                                                                                                                                                                                                                                        	}*/
+            																																																																																																					var check = document.getElementById("step1genre");
+            																																																																																																					var box = document.getElementById("step1boxgenre");
+            																																																																																																					box.style.display = check.checked ? "block" : "none";
+            																																																																																																				}*/
         </script>
         <div class="Navbar">
             <div class="title">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="row-container ">
                     <select class="playlist form-control " [(ngModel)]="playlistModel.focusPlaylist " name="focusPlaylist ">
-						<option class="playlistOption " *ngFor="let playlist of playlists " [value]="playlist ">
+						<option class="playlistOption " *ngFor="let playlist of playlists " [value]="playlist">
 					{{playlist}}
 				</option>
 			</select>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="row-container ">
                     <select class="playlist form-control " [(ngModel)]="playlistModel.relaxPlaylist " name="relaxPlaylist ">
-				<option class="playlistOption " *ngFor="let playlist of playlists " [value]="playlist ">
+				<option class="playlistOption " *ngFor="let playlist of playlists " [value]="playlist">
 					{{playlist}}
 				</option>
 			</select>
@@ -67,7 +67,7 @@
                     <div class="follow-text ">rounds</div>
                 </div>
                 <div class="row-container ">
-                    <button class="start-button ">Start</button>
+                    <button class="start-button" (click)='submitPlaylist(orderForm.value)'>Start</button>
                 </div>
             </div>
         </form>
