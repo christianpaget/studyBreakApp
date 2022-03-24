@@ -8,6 +8,8 @@ export class newPlaylist{
 		public relaxLongTime: number,
 		public roundsNumber: number,
 		public playlistID: number,
+		public focusPlaylistID: string,
+		public relaxPlaylistID: string,
 		public userID: string
 		){}
 }

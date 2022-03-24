@@ -65,7 +65,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   studytime;
   secondTimeLeft = 0;
   minuteTimeLeft;
-  playlist = new newPlaylist("", "", "", 25, 5 , 20, 4,null, "");
+  playlist = new newPlaylist("", "", "", 25, 5 , 20, 4,null, "","", "");
   token; //window.localStorage.getItem('auth_token');
   headers;//= new HttpHeaders().append('Authorization', 'Bearer ' + this.token)
   deviceID;

@@ -8,48 +8,57 @@ import { environment } from './../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-new-playlist-form',
-  templateUrl: './new-playlist-form.component.html',
-  styleUrls: ['./new-playlist-form.component.css']
+	selector: 'app-new-playlist-form',
+	templateUrl: './new-playlist-form.component.html',
+	styleUrls: ['./new-playlist-form.component.css']
 })
 export class NewPlaylistFormComponent implements OnInit {
-    constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer){}
-    user = "";
+	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
+	user = "";
 	id;
-    genres = ["Rock", "Pop", "Classical", "Acoustic"];
-  	playlistModel = new newPlaylist("", "", "", 25, 5 , 20, 4,null, this.user);
-  	//playlists: newPlaylist[];
+	genres = ["Rock", "Pop", "Classical", "Acoustic"];
+	playlistModel = new newPlaylist("", "", "", 25, 5, 20, 4, null, "", "", this.user);
+	//playlists: newPlaylist[];
 	playlists;
-    responseData;
+	playlistIds
+	responseData;
 	authToken;
 	spotId;
 	spotUserPic
-    //window.localStorage.getItem('user');
-  	ngOnInit() {
+	//window.localStorage.getItem('user');
+	ngOnInit() {
 		// Grab auth_token from Spotify Redirect
-		if(!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token')==undefined){
-		//this.activatedRoute.queryParams.subscribe(params => {
-			let params = this.activatedRoute.snapshot.fragment;
-			if ( params != undefined) {
+		let params = this.activatedRoute.snapshot.fragment;
+			if (params != undefined) {
 				let token = params.split('&')[0];
 				let arg = token.split('=');
 				console.log(arg[1]);
-				if(arg[1])
+		if (!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token') == undefined || window.localStorage.getItem('auth_token') != arg[1]) {
+			//this.activatedRoute.queryParams.subscribe(params => {
+			//let params = this.activatedRoute.snapshot.fragment;
+			/*if (params != undefined) {
+				let token = params.split('&')[0];
+				let arg = token.split('=');
+				console.log(arg[1]);
+			*/	if (arg[1])
 					window.localStorage.setItem('auth_token', arg[1]);
-					this.authToken = arg[1];
+				this.authToken = arg[1];
 			}
 		}
 		//Get playlists of logged in user
 		let token = window.localStorage.getItem('auth_token');
 		const headers = {
 			headers: new HttpHeaders({
-				'Content-Type':'application/json',
+				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${token}`
 			})
 		};
 		console.log(headers);
-		this.http.get("https://api.spotify.com/v1/me", headers).subscribe((userMetaData)=>{
+		this.http.get("https://api.spotify.com/v1/me", headers).subscribe((userMetaData) => {
 			userMetaData = (userMetaData);
+			if(userMetaData["error"]["error"]["message"] == 'The access token expired'){
+				this.router.navigate(["/user-home"])
+			}
 			this.spotUserPic = (JSON.stringify(userMetaData['images'][0]['url']));
 			this.user = userMetaData['display_name'];
 			this.spotId = userMetaData['id'];
@@ -57,8 +66,8 @@ export class NewPlaylistFormComponent implements OnInit {
 			window.localStorage.setItem('id', this.spotId);
 			window.localStorage.setItem('spotifyPic', this.spotUserPic);
 		});
-		
-		
+
+
 		this.user = window.localStorage.getItem('user')
 		let userSpotID = window.localStorage.getItem('id');
 		this.spotUserPic = this.domSanitizer.bypassSecurityTrustResourceUrl(window.localStorage.getItem('spotifyPic'));
@@ -67,19 +76,23 @@ export class NewPlaylistFormComponent implements OnInit {
 		console.log(this.spotId)
 		const playlistHeaders = {
 			headers: new HttpHeaders({
-				'Content-Type':'application/json',
+				'Content-Type': 'application/json',
 				'userID': userSpotID
 			})
 		};
 		let tempSpotId = this.spotId;
-		this.http.get("https://api.spotify.com/v1/users/" + window.localStorage.getItem("id") + "/playlists", headers).subscribe((userPlaylists)=>{
+		this.http.get("https://api.spotify.com/v1/users/" + window.localStorage.getItem("id") + "/playlists", headers).subscribe((userPlaylists) => {
 			console.log(userPlaylists)
+			let playlistIds = {}
 			let playlistsArray = []
-			for(let item in userPlaylists['items']){
-				console.log(item)
-				playlistsArray.push(userPlaylists['items'][item]['name'])
+			for (let item in userPlaylists['items']) {
+				let playlist = userPlaylists["items"][item]
+				console.log(playlist["id"])
+				playlistsArray.push(playlist["name"])
+				playlistIds[playlist["name"]] = playlist["id"]
 			}
 			this.playlists = playlistsArray
+			this.playlistIds = playlistIds
 			console.log(this.playlists)
 		})
 		/*if(!window.localStorage.getItem('user')){
@@ -88,97 +101,104 @@ export class NewPlaylistFormComponent implements OnInit {
 		}*/
 		this.user = window.localStorage.getItem('user');
 		this.id = window.localStorage.getItem('id');
-		var param = { session : "yes"};
+		var param = { session: "yes" };
 		this.playlistModel.userID = this.id;
-  	}
+	}
 
-    redirectSuccess(){
-      this.router.navigate(['/homepage'])
-    }
-	/*
-  	submitPlaylist(form: any): void{
-      if(this.validatePlaylist()){
-        let params = this.playlistModel;
-		var apiUrl = environment.apiUrl;
-        this.http.post<any>(apiUrl + '/new/playlist', params).subscribe((data) =>{
-          console.log('Response: ', data);
-		  if(data['status'] == 200){
-			  console.log("here")
-			this.redirectSuccess()
-		  }
-        }, (error) =>{
-          if(error.status==400){
-            alert("Received 400 error")
-          }
-          //this.redirectSuccess();
+	redirectSuccess() {
+		this.router.navigate(['/spotify-player'])
+	}
 
-          console.log('Error: ', error);
-        });
-      }
-    }
-	/*
-    resetSelections(){
-  		this.playlistModel = new newPlaylist("", "", "", "", 30, 15, null, this.user);
-      document.getElementById("step1alert").innerHTML = "";
-      document.getElementById("step2alert").innerHTML = "";
-      document.getElementById("step3alert").innerHTML = "";
-      this.resetSearch();
+	submitPlaylist(form: any): void {
+		if (this.validatePlaylist()) {
+			let params = this.playlistModel;
+			this.playlistModel.relaxPlaylistID = this.playlistIds[this.playlistModel.relaxPlaylist];
+			this.playlistModel.focusPlaylistID = this.playlistIds[this.playlistModel.focusPlaylist];
+			var apiUrl = environment.apiUrl;
+			/*
+			this.http.post<any>(apiUrl + '/new/playlist', params).subscribe((data) => {
+				console.log('Response: ', data);
+				if (data['status'] == 200) {
+					console.log("here")
+					this.redirectSuccess()
+				}
+			}, (error) => {
+				if (error.status == 400) {
+					alert("Received 400 error")
+				}
+				//this.redirectSuccess();
 
-
-  	}
-    /*resetSearch(){
-    document.getElementById("step1boxgenre").style.display = "none";
-    document.getElementById("step1boxartist").style.display = "none";
-    document.getElementById("step1boxplaylist").style.display = "none";
-    document.getElementById("step2boxgenre").style.display = "none";
-    document.getElementById("step2boxartist").style.display = "none";
-    document.getElementById("step2boxplaylist").style.display = "none";
-        
-
-    }
-  	step1alert(){
-  		document.getElementById("step1alert").innerHTML = "Please select an option and enter a search term";
-  	}
-  	step2alert(){
-  		document.getElementById("step2alert").innerHTML = "Please select an option and enter a search term";
-  	}
-  	step3alert(){
-  		document.getElementById("step3alert").innerHTML = "Please select a time period greater than 0";
-  	}
-  	validatePlaylist(){
-  		var fail = true
-  		if(this.playlistModel.step1choice == "" || this.playlistModel.step1search == ""){
-  			this.step1alert();
-  			fail = false;
-
-  		}
-      else{
-        document.getElementById("step1alert").innerHTML = "";
-
-      }
-  		if(this.playlistModel.step2choice == "" || this.playlistModel.step2search == ""){
-  			this.step2alert();
-  			fail = false;
-  		}
-      else{
-        document.getElementById("step2alert").innerHTML = "";
-
-      }
-  		if(this.playlistModel.studytime <= 0 || this.playlistModel.studytime <= 0){
-  			this.step3alert();
-  			fail = false;
-  		}
-      else{
-        document.getElementById("step3alert").innerHTML = "";
-
-      }
-  		return fail;
-
-  	}
+				console.log('Error: ', error);
+			});*/
+			this.router.navigate(["/spotify-player"], form);
+		}
+	}
+/*
+	resetSelections() {
+		this.playlistModel = new newPlaylist("", "", "", "", 30, 15, null, this.user);
+		document.getElementById("step1alert").innerHTML = "";
+		document.getElementById("step2alert").innerHTML = "";
+		document.getElementById("step3alert").innerHTML = "";
+		this.resetSearch();
 
 
-  	
-  	showGenreOne(){
+	}
+	resetSearch() {
+		document.getElementById("step1boxgenre").style.display = "none";
+		document.getElementById("step1boxartist").style.display = "none";
+		document.getElementById("step1boxplaylist").style.display = "none";
+		document.getElementById("step2boxgenre").style.display = "none";
+		document.getElementById("step2boxartist").style.display = "none";
+		document.getElementById("step2boxplaylist").style.display = "none";
+	}
+*/
+	step1alert() {
+		document.getElementById("step1alert").innerHTML = "Please select an option and enter a search term";
+	}
+	step2alert() {
+		document.getElementById("step2alert").innerHTML = "Please select an option and enter a search term";
+	}
+	step3alert() {
+		document.getElementById("step3alert").innerHTML = "Please select a time period greater than 0";
+	}
+	validatePlaylist() {
+		var fail = true
+		if (this.playlistModel.title == "") {
+			fail = false;
+
+		}
+		
+		if (this.playlistModel.focusPlaylist == "") {
+			fail = false;
+		}
+		
+		if (this.playlistModel.relaxPlaylist == "") {
+			fail = false;
+		}
+		
+		if (this.playlistModel.focusTime <= 0) {
+			fail = false;
+		}
+		
+		if (this.playlistModel.relaxShortTime <= 0) {
+			fail = false;
+		}
+		
+		if (this.playlistModel.relaxLongTime <= 0) {
+			fail = false;
+		}
+		
+		if (this.playlistModel.roundsNumber <= 0) {
+			fail = false;
+		}
+		
+		return fail;
+
+	}
+
+
+
+	showGenreOne() {
 		var box = document.getElementById("step1boxgenre");
 		box.style.display = "inline-block";
 		var artistbox = document.getElementById("step1boxartist")
@@ -188,7 +208,7 @@ export class NewPlaylistFormComponent implements OnInit {
 
 		console.log(box);
 	}
-	showArtistOne(){
+	showArtistOne() {
 		var genrebox = document.getElementById("step1boxgenre");
 		var artistbox = document.getElementById("step1boxartist")
 		var playlistbox = document.getElementById("step1boxplaylist");
@@ -198,7 +218,7 @@ export class NewPlaylistFormComponent implements OnInit {
 
 	}
 
-	showPlaylistOne(){
+	showPlaylistOne() {
 		var genrebox = document.getElementById("step1boxgenre");
 		var artistbox = document.getElementById("step1boxartist")
 		var playlistbox = document.getElementById("step1boxplaylist");
@@ -207,7 +227,7 @@ export class NewPlaylistFormComponent implements OnInit {
 		genrebox.style.display = "none";
 	}
 
-	showGenreTwo(){
+	showGenreTwo() {
 		var box = document.getElementById("step2boxgenre");
 		box.style.display = "inline-block";
 		var artistbox = document.getElementById("step2boxartist")
@@ -217,7 +237,7 @@ export class NewPlaylistFormComponent implements OnInit {
 
 		console.log(box);
 	}
-	showArtistTwo(){
+	showArtistTwo() {
 		var genrebox = document.getElementById("step2boxgenre");
 		var artistbox = document.getElementById("step2boxartist")
 		var playlistbox = document.getElementById("step2boxplaylist");
@@ -227,7 +247,7 @@ export class NewPlaylistFormComponent implements OnInit {
 
 	}
 
-	showPlaylistTwo(){
+	showPlaylistTwo() {
 		var genrebox = document.getElementById("step2boxgenre");
 		var artistbox = document.getElementById("step2boxartist")
 		var playlistbox = document.getElementById("step2boxplaylist");
@@ -235,5 +255,5 @@ export class NewPlaylistFormComponent implements OnInit {
 		playlistbox.style.display = "inline-block";
 		genrebox.style.display = "none";
 	}
-*/
+	
 }
