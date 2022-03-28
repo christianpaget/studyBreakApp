@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from './../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PlaylistServiceService } from '../playlist-service.service';
 
 @Component({
 	selector: 'app-new-playlist-form',
@@ -13,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 	styleUrls: ['./new-playlist-form.component.css']
 })
 export class NewPlaylistFormComponent implements OnInit {
-	constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
+	constructor(public playlistServce: PlaylistServiceService, private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
 	user = "";
 	id;
 	genres = ["Rock", "Pop", "Classical", "Acoustic"];
@@ -29,10 +30,10 @@ export class NewPlaylistFormComponent implements OnInit {
 	ngOnInit() {
 		// Grab auth_token from Spotify Redirect
 		let params = this.activatedRoute.snapshot.fragment;
-			if (params != undefined) {
-				let token = params.split('&')[0];
-				let arg = token.split('=');
-				console.log(arg[1]);
+		if (params != undefined) {
+			let token = params.split('&')[0];
+			let arg = token.split('=');
+			console.log(arg[1]);
 		if (!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token') == undefined || window.localStorage.getItem('auth_token') != arg[1]) {
 			//this.activatedRoute.queryParams.subscribe(params => {
 			//let params = this.activatedRoute.snapshot.fragment;
@@ -56,6 +57,7 @@ export class NewPlaylistFormComponent implements OnInit {
 		console.log(headers);
 		this.http.get("https://api.spotify.com/v1/me", headers).subscribe((userMetaData) => {
 			userMetaData = (userMetaData);
+			console.log(userMetaData)
 			if(userMetaData["error"]["error"]["message"] == 'The access token expired'){
 				this.router.navigate(["/user-home"])
 			}
@@ -87,13 +89,11 @@ export class NewPlaylistFormComponent implements OnInit {
 			let playlistsArray = []
 			for (let item in userPlaylists['items']) {
 				let playlist = userPlaylists["items"][item]
-				console.log(playlist["id"])
 				playlistsArray.push(playlist["name"])
 				playlistIds[playlist["name"]] = playlist["id"]
 			}
 			this.playlists = playlistsArray
 			this.playlistIds = playlistIds
-			console.log(this.playlists)
 		})
 		/*if(!window.localStorage.getItem('user')){
 			alert('You must sign in before you can access this page');
@@ -115,6 +115,9 @@ export class NewPlaylistFormComponent implements OnInit {
 			this.playlistModel.relaxPlaylistID = this.playlistIds[this.playlistModel.relaxPlaylist];
 			this.playlistModel.focusPlaylistID = this.playlistIds[this.playlistModel.focusPlaylist];
 			var apiUrl = environment.apiUrl;
+			this.playlistServce.listenPlaylist = form;
+			console.log(this.playlistServce.listenPlaylist)
+			this.router.navigate(["/spotify-player"]);
 			/*
 			this.http.post<any>(apiUrl + '/new/playlist', params).subscribe((data) => {
 				console.log('Response: ', data);
@@ -130,7 +133,7 @@ export class NewPlaylistFormComponent implements OnInit {
 
 				console.log('Error: ', error);
 			});*/
-			this.router.navigate(["/spotify-player"], form);
+			
 		}
 	}
 /*
