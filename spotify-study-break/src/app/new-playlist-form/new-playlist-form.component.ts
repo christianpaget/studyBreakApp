@@ -14,7 +14,7 @@ import { PlaylistServiceService } from '../playlist-service.service';
 	styleUrls: ['./new-playlist-form.component.css']
 })
 export class NewPlaylistFormComponent implements OnInit {
-	constructor(public playlistServce: PlaylistServiceService, private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
+	constructor(public apiService: ApiService, public playlistServce: PlaylistServiceService, private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
 	user = "";
 	id;
 	genres = ["Rock", "Pop", "Classical", "Acoustic"];
@@ -23,10 +23,10 @@ export class NewPlaylistFormComponent implements OnInit {
 	playlists;
 	playlistIds
 	responseData;
+	userEmail;
 	authToken;
 	spotId;
 	spotUserPic
-	//window.localStorage.getItem('user');
 	ngOnInit() {
 		// Grab auth_token from Spotify Redirect
 		let params = this.activatedRoute.snapshot.fragment;
@@ -35,18 +35,12 @@ export class NewPlaylistFormComponent implements OnInit {
 			let arg = token.split('=');
 			console.log(arg[1]);
 		if (!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token') == undefined || window.localStorage.getItem('auth_token') != arg[1]) {
-			//this.activatedRoute.queryParams.subscribe(params => {
-			//let params = this.activatedRoute.snapshot.fragment;
-			/*if (params != undefined) {
-				let token = params.split('&')[0];
-				let arg = token.split('=');
-				console.log(arg[1]);
-			*/	if (arg[1])
+			if (arg[1])
 					window.localStorage.setItem('auth_token', arg[1]);
 				this.authToken = arg[1];
 			}
 		}
-		//Get playlists of logged in user
+		// Set headers to call Spotify API using token grabbed above
 		let token = window.localStorage.getItem('auth_token');
 		const headers = {
 			headers: new HttpHeaders({
@@ -55,35 +49,40 @@ export class NewPlaylistFormComponent implements OnInit {
 			})
 		};
 		console.log(headers);
+		let userMetaData;
+		// Get user data from API and set local storage
 		this.http.get("https://api.spotify.com/v1/me", headers).subscribe((userMetaData) => {
 			userMetaData = (userMetaData);
 			console.log(userMetaData)
-			if(userMetaData["error"]["error"]["message"] == 'The access token expired'){
-				this.router.navigate(["/user-home"])
-			}
 			this.spotUserPic = (JSON.stringify(userMetaData['images'][0]['url']));
 			this.user = userMetaData['display_name'];
 			this.spotId = userMetaData['id'];
+			this.userEmail = userMetaData['email'];
+			window.localStorage.setItem('email', this.userEmail);
 			window.localStorage.setItem('user', this.user);
 			window.localStorage.setItem('id', this.spotId);
 			window.localStorage.setItem('spotifyPic', this.spotUserPic);
+			if(userMetaData["error"]["error"]["message"] == 'The access token expired'){
+				this.router.navigate(["/user-home"])
+			}
 		});
-
-
+		// 
 		this.user = window.localStorage.getItem('user')
 		let userSpotID = window.localStorage.getItem('id');
 		this.spotUserPic = this.domSanitizer.bypassSecurityTrustResourceUrl(window.localStorage.getItem('spotifyPic'));
 		console.log(this.spotUserPic)
 		console.log(this.user)
 		console.log(this.spotId)
+		// Set headers for playlists API call
 		const playlistHeaders = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
 				'userID': userSpotID
 			})
 		};
+		// Get users playlists from Spotify to be used in playlist form. Populate playlistIds map with playlist name and playlist IDs
 		let tempSpotId = this.spotId;
-		this.http.get("https://api.spotify.com/v1/users/" + window.localStorage.getItem("id") + "/playlists", headers).subscribe((userPlaylists) => {
+		this.http.get("https://api.spotify.com/v1/users/" + userSpotID + "/playlists", headers).subscribe((userPlaylists) => {
 			console.log(userPlaylists)
 			let playlistIds = {}
 			let playlistsArray = []
@@ -101,8 +100,29 @@ export class NewPlaylistFormComponent implements OnInit {
 		}*/
 		this.user = window.localStorage.getItem('user');
 		this.id = window.localStorage.getItem('id');
-		var param = { session: "yes" };
+		//var param = { session: "yes" };
 		this.playlistModel.userID = this.id;
+
+		this.sendTrackingToKlaviyo()
+	}
+
+// Method to send user email and action to Klaviyo
+	sendTrackingToKlaviyo(){
+		let publicKey = this.apiService.klaviyoPublicKey;
+		let userEmail = window.localStorage.getItem("email")
+		console.log(userEmail)
+		const options = {
+			method: 'POST',
+			headers: { Accept: 'text/html', 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams({
+				data: '{"token":"' + publicKey + '" ,"event": "accessed playlist creation", "customer_properties": {"$email":"' + userEmail + '"}}'
+			})
+		};
+
+		fetch('https://a.klaviyo.com/api/track', options)
+			.then(response => response.json())
+			.then(response => console.log(response))
+			.catch(err => console.error(err));
 	}
 
 	redirectSuccess() {

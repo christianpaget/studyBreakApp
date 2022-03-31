@@ -14,7 +14,8 @@
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mocha": "^8.3.0"
+    "mocha": "^8.3.0",
+    "node-fetch": "^2.6.1"
   },
   "scripts": {
     "test": "nyc mocha --exit",

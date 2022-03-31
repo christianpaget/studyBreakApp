@@ -7,16 +7,17 @@ import { environment } from './../environments/environment';
 
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ApiService {
-	//PHP_API_SERVER = "http://3.92.60.217/api/login.php";
 	EXPRESS_API_SERVER = environment.apiUrl;
 
-	readPlaylists(): Observable<newPlaylist[]>{
+	klaviyoPublicKey = "VC8jcn"; //Safe to expose
+
+	readPlaylists(): Observable<newPlaylist[]> {
 		return this.httpClient.get<newPlaylist[]>(`${this.EXPRESS_API_SERVER}/api/userRows`);
 	}
 
-	
-  constructor(private httpClient: HttpClient) { }
+
+	constructor(private httpClient: HttpClient) { }
 }
