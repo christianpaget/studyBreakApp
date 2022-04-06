@@ -5,7 +5,7 @@ import { newPlaylist } from './new-playlist-form/newPlaylist'
   providedIn: 'root'
 })
 export class PlaylistServiceService {
-  public listenPlaylist = newPlaylist
+  public listenPlaylist;
 
   constructor() { }
 }

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { newPlaylist } from '../new-playlist-form/newPlaylist';
 import { timer } from 'rxjs';
+import { KlaviyoService } from '../klaviyo.service';
 import { PlaylistServiceService } from '../playlist-service.service'
 
 declare var Spotify: any;
@@ -23,16 +24,26 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 			this.router.navigate(['/spotify-login']);
 		}
 
+		this.playlist = this.playlistService.listenPlaylist;
+		this.klaviyoService.sendPlayerAccessToKlaviyo(this.playlist)
+		console.log(this.playlist);
 		let info = this.route.snapshot.paramMap;
-		this.playlist.title = info.get('title');
-		this.playlist.focusPlaylist = info.get('focusPlaylist');
-		this.playlist.relaxPlaylist = info.get('relaxPlaylist');
-		this.playlist.focusTime = parseInt(info.get('focusTime'));
-		this.playlist.relaxShortTime = parseInt(info.get('relaxShortTime'))
-		this.playlist.relaxLongTime = parseInt(info.get('relaxLongTime'));
-		this.playlist.userID = info.get('userID');
-		this.playlist.roundsNumber = parseInt(info.get('roundsNumber'))
-		this.playlist.playlistID = parseInt(info.get('playlistID'));
+		console.log(info.get('title'));
+		if(info.get('title')!=null){ // Redirect from Klaviyo, params are in url
+			console.log("Redirect from Klaviyo")
+			this.playlist.title = info.get('title');
+			this.playlist.focusPlaylist = info.get('focusPlaylist');
+			this.playlist.relaxPlaylist = info.get('relaxPlaylist');
+			this.playlist.focusTime = parseInt(info.get('focusTime'));
+			this.playlist.relaxShortTime = parseInt(info.get('relaxShortTime'))
+			this.playlist.relaxLongTime = parseInt(info.get('relaxLongTime'));
+			this.playlist.userID = info.get('userID');
+			this.playlist.roundsNumber = parseInt(info.get('roundsNumber'))
+			this.playlist.playlistID = parseInt(info.get('playlistID'));
+		}
+		
+		
+		
 		this.minuteTimeLeft = this.playlist.focusTime;
 		this.studytime = true;
 		this.loadSpotifyScript();
@@ -53,7 +64,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 			console.log('Interval cleared: ' + this.interval);
 		}
 	}
-	constructor(public playlistService: PlaylistServiceService, private router: Router, private http: HttpClient, private route: ActivatedRoute) {
+	constructor(public klaviyoService: KlaviyoService, public playlistService: PlaylistServiceService, private router: Router, private http: HttpClient, private route: ActivatedRoute) {
 	}
 	changed = true;
 	currentSong;

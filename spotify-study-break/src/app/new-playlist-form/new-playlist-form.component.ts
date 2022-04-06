@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from '@angular
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from './../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { KlaviyoService } from '../klaviyo.service';
 import { PlaylistServiceService } from '../playlist-service.service';
 
 @Component({
@@ -14,7 +15,7 @@ import { PlaylistServiceService } from '../playlist-service.service';
 	styleUrls: ['./new-playlist-form.component.css']
 })
 export class NewPlaylistFormComponent implements OnInit {
-	constructor(public apiService: ApiService, public playlistServce: PlaylistServiceService, private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
+	constructor(public klaviyoService: KlaviyoService, public apiService: ApiService, public playlistServce: PlaylistServiceService, private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private domSanitizer: DomSanitizer) { }
 	user = "";
 	id;
 	genres = ["Rock", "Pop", "Classical", "Acoustic"];
@@ -102,28 +103,10 @@ export class NewPlaylistFormComponent implements OnInit {
 		this.id = window.localStorage.getItem('id');
 		//var param = { session: "yes" };
 		this.playlistModel.userID = this.id;
-
-		this.sendTrackingToKlaviyo()
+		// Calls Tracking API in Klaviyo Service
+		this.klaviyoService.sendPlaylistScreenTrackingToKlaviyo()
 	}
 
-// Method to send user email and action to Klaviyo
-	sendTrackingToKlaviyo(){
-		let publicKey = this.apiService.klaviyoPublicKey;
-		let userEmail = window.localStorage.getItem("email")
-		console.log(userEmail)
-		const options = {
-			method: 'POST',
-			headers: { Accept: 'text/html', 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams({
-				data: '{"token":"' + publicKey + '" ,"event": "accessed playlist creation", "customer_properties": {"$email":"' + userEmail + '"}}'
-			})
-		};
-
-		fetch('https://a.klaviyo.com/api/track', options)
-			.then(response => response.json())
-			.then(response => console.log(response))
-			.catch(err => console.error(err));
-	}
 
 	redirectSuccess() {
 		this.router.navigate(['/spotify-player'])
@@ -135,7 +118,8 @@ export class NewPlaylistFormComponent implements OnInit {
 			this.playlistModel.relaxPlaylistID = this.playlistIds[this.playlistModel.relaxPlaylist];
 			this.playlistModel.focusPlaylistID = this.playlistIds[this.playlistModel.focusPlaylist];
 			var apiUrl = environment.apiUrl;
-			this.playlistServce.listenPlaylist = form;
+			console.log(this.playlistModel.focusPlaylistID)
+			this.playlistServce.listenPlaylist = this.playlistModel;
 			console.log(this.playlistServce.listenPlaylist)
 			this.router.navigate(["/spotify-player"]);
 			/*
@@ -185,6 +169,7 @@ export class NewPlaylistFormComponent implements OnInit {
 		document.getElementById("step3alert").innerHTML = "Please select a time period greater than 0";
 	}
 	validatePlaylist() {
+		console.log(this.playlistModel)
 		var fail = true
 		if (this.playlistModel.title == "") {
 			fail = false;
@@ -214,7 +199,7 @@ export class NewPlaylistFormComponent implements OnInit {
 		if (this.playlistModel.roundsNumber <= 0) {
 			fail = false;
 		}
-		
+		console.log(fail);
 		return fail;
 
 	}
