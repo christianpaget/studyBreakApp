@@ -2,9 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { newPlaylist } from '../new-playlist-form/newPlaylist';
-import { timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { KlaviyoService } from '../klaviyo.service';
 import { PlaylistServiceService } from '../playlist-service.service'
+import { ApiService } from '../api.service';
+//import { threadId } from 'worker_threads';
 
 declare var Spotify: any;
 declare var window: any;
@@ -21,7 +23,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 		}
 		console.log(this.playlistService.listenPlaylist)
 		if (!window.localStorage.getItem('auth_token') || window.localStorage.getItem('auth_token') == undefined) {
-			this.router.navigate(['/spotify-login']);
+			this.router.navigate(['/home-page']);
 		}
 
 		this.playlist = this.playlistService.listenPlaylist;
@@ -47,8 +49,15 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 		this.minuteTimeLeft = this.playlist.focusTime;
 		this.studytime = true;
 		this.loadSpotifyScript();
-		this.initializeSpotifyPlayer();
-		this.searchSpotify();
+		this.searchSpotify().subscribe(response => {
+			let output = JSON.parse(response.toString());
+			//let output = response.toString();
+			this.tracks = output['tracks']['items'];
+			//tracks = output['tracks']['items']
+			console.log(this.tracks);
+			this.initializeSpotifyPlayer();
+		});
+		//this.initializeSpotifyPlayer();
 		this.pause();
 
 	}
@@ -64,7 +73,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 			console.log('Interval cleared: ' + this.interval);
 		}
 	}
-	constructor(public klaviyoService: KlaviyoService, public playlistService: PlaylistServiceService, private router: Router, private http: HttpClient, private route: ActivatedRoute) {
+	constructor(public apiService: ApiService, public klaviyoService: KlaviyoService, public playlistService: PlaylistServiceService, private router: Router, private http: HttpClient, private route: ActivatedRoute) {
 	}
 	changed = true;
 	currentSong;
@@ -83,6 +92,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 	token; //window.localStorage.getItem('auth_token');
 	headers;//= new HttpHeaders().append('Authorization', 'Bearer ' + this.token)
 	deviceID;
+	firstStart = true;
 	player;
 	spotifyID = 'a466c513c83a43809ffe7f0573d24418';
 	tracks: [];
@@ -91,12 +101,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 		let token = window.localStorage.getItem('auth_token');
 		let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
 		let q;
-		/*
-		  if(this.studytime)
-			  q = this.playlist.focusPlaylist + ':' + this.playlist.step1search;
-		  else
-			  q = this.playlist.relaxPlaylist + ':' + this.playlist.step2search;
-  */
 		let type = 'track';
 		let params = new HttpParams().set('q', q).set('type', type);
 		this.http.get('https://api.spotify.com/v1/search', { headers: headers, params: params, responseType: 'text' as 'json' }).subscribe((response) => {
@@ -108,11 +112,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
 				console.log(this.tracks);
 			}
-			catch (e) {
-
-			}
+			catch (e) {}
 			if (this.studytime) {
-				let data = this.tracks[this.studyTrackNum]['name'];
+				let data = this.tracks[this.studyTrackNum];
+				console.log(data);
 				this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.studyTrackNum]['uri'], '', { headers: headers }).subscribe((response) => {
 					console.log("Queued: " + data + "in switchVibe");
 					this.studyTrackNum++;
@@ -120,43 +123,93 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 				});
 			}
 			else {
-				let data = this.tracks[this.studyTrackNum]['name'];
+				let data = this.tracks[this.breakTrackNum]['name'];
 				this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.breakTrackNum]['uri'], '', { headers: headers }).subscribe((response) => {
 					console.log("Queued: " + data + "in switchVibe");
 					this.breakTrackNum++;
 					this.nextTrack();
 				});
-
 			}
 		});
 		//this.queue();
 	}
+
+	async catchUpToQueuedSong(songInfo){
+		let token = localStorage.getItem('auth_token')
+		let caughtUp = false;
+		let first = 0
+		let firstSong = songInfo;
+		let currentlyPlayingSong
+		console.log(firstSong)
+		this.apiService.getCurrentSongPlaying(token).subscribe(response =>{
+			let songUri = response['item']['uri']
+			console.log(songUri);
+			currentlyPlayingSong = songUri
+		})
+		console.log(currentlyPlayingSong)
+		while(!caughtUp){
+			console.log("Catch up")
+			//let currentlyPlayingSong = this.player.state['track_window']['current_track']['uri'];
+			console.log(currentlyPlayingSong + ", " + firstSong)
+			if(currentlyPlayingSong == firstSong){
+				caughtUp = true;
+			}
+			else{
+				this.nextTrack()
+				let successfullyChangeTracks = false
+				let newSong 
+				this.apiService.getCurrentSongPlaying(this.token).subscribe(response => {
+					let songUri = response['item']['uri']
+					console.log(songUri);
+					newSong = songUri;
+				})
+				console.log(newSong + ", " + currentlyPlayingSong)
+				while(!successfullyChangeTracks){
+					if(newSong != currentlyPlayingSong){
+						successfullyChangeTracks = true;
+						console.log(successfullyChangeTracks)
+					}
+				}
+			}
+		}
+	}
+
 	async startSessionHelper() {
 		let token = window.localStorage.getItem('auth_token');
 		let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-		let params;
+		//var params: string;		
 		if (this.studytime) {
-			params = this.tracks[this.studyTrackNum]['name'];
-			await this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.studyTrackNum]['uri'], '', { headers: headers })//.subscribe((response) =>{
-			setTimeout(() => 500);
-			console.log("Queued: " + params + " in startSessionHelper");
-			this.http.post('https://api.spotify.com/v1/me/player/next', '', { headers: headers }).subscribe((response) => {
-				console.log("Next clicked");
-				this.player.resume();
-				this.playing = true;
-				//});
-			});
+			//if(this.tracks == null)
+			let songUri = this.tracks[this.studyTrackNum]['track']['uri'];
+			let songInfo = this.tracks[this.studyTrackNum]['track'];
+			//let song = this.tracks[this.studyTrackNum]['track']['name']
+			//let paramsForReq = new HttpParams().set('uri', params)
+			this.apiService.queue(songInfo, token)
+			//await this.http.post("https://api.spotify.com/v1/me/player/queue", params, { headers: headers })//.subscribe((response) =>{
+			//setTimeout(() => 500);
+			//console.log("Queued: " + song + " in startSessionHelper");
+			//this.nextTrack()
+			await this.catchUpToQueuedSong(songUri)
+			//this.http.post('https://api.spotify.com/v1/me/player/next', '', { headers: headers }).subscribe((response) => {
+			//console.log("Next clicked");
+			//this.player.resume();
+			this.play()
+			this.playing = true;
+			//});
 			this.studyTrackNum++;
 			console.log("studyTrackNum");
 		}
 		else {
-			params = this.tracks[this.studyTrackNum]['name'];
-			this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.breakTrackNum]['uri'], '', { headers: headers }).subscribe((response) => {
-				console.log("Queued: " + params + " in startSessionHelper");
-			});
+			//params = this.tracks[this.breakTrackNum]['name'];
+			let songInfo = this.tracks[this.studyTrackNum]['track'];
+			this.apiService.queue(songInfo, token)
+			//this.http.post('https://api.spotify.com/v1/me/player/queue??uri=' + this.tracks[this.breakTrackNum]['track']['uri'], '', { headers: headers }).subscribe((response) => {
+				//console.log("Queued: " + params + " in startSessionHelper");
+			//});
 			this.breakTrackNum++;
 		}
 	}
+
 	async startSession() {
 		//this.queue();
 		//this.nextTrack();
@@ -189,20 +242,24 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 		let token = window.localStorage.getItem('auth_token');
 		let headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 		//console.log(headers);
-		let params;
+		let song = this.tracks[this.studyTrackNum]['track']['name'];
+		let params = this.tracks[this.studyTrackNum]['track']['uri'];
 		if (this.studytime) {
-			params = this.tracks[this.studyTrackNum]['name'];
+			//params = this.tracks[this.studyTrackNum]['track']['name'];
 			//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.studyTrackNum]['uri']);
-			await this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.studyTrackNum]['uri'], '', { headers: headers }).subscribe((response) => {
+			/*await this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.studyTrackNum]['track']['uri'], '', { headers: headers }).subscribe((response) => {
 				console.log("Queued: " + params + "in queue function");
-			});
+			});*/
+			this.apiService.queue(params, token);
+			console.log(song);
 			this.studyTrackNum++;
 		}
 		else {
-			params = this.tracks[this.studyTrackNum]['name'];
-			this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.breakTrackNum]['uri'], '', { headers: headers }).subscribe((response) => {
+			//params = this.tracks[this.studyTrackNum]['name'];
+			/*this.http.post('https://api.spotify.com/v1/me/player/queue?uri=' + this.tracks[this.breakTrackNum]['track']['uri'], '', { headers: headers }).subscribe((response) => {
 				console.log("Queued: " + params + "in queue function");
-			});
+			});*/
+			this.apiService.queue(params, token);
 			this.breakTrackNum++;
 		}
 		//params = new HttpParams().set('device_id', this.deviceID).set('uri', this.tracks[this.breakTrackNum]['uri']);
@@ -224,29 +281,30 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
 		let token = window.localStorage.getItem('auth_token');
 
-		let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
-		//headers = headers.append('Authorization', 'Bearer ' + token);
-		//let q = 'artist:';
-		let q;
-		/*
-	  if(this.studytime)
-			q = this.playlist.focusPlaylist + ':' + this.playlist.step1search;
+		let headers = new HttpHeaders().append('Authorization', 'Bearer ' + token).append('Content-Type', 'application/json');
+
+		let playlistIDForAPI;
+		if (this.studytime)
+			playlistIDForAPI = this.playlist.focusPlaylistID;
 		else
-			q = this.playlist.relaxPlaylist + ':' + this.playlist.step2search;
-*/
-		let type = 'track';
+			playlistIDForAPI = this.playlist.relaxPlaylistID;
+		console.log(playlistIDForAPI)
+
+		//let type = '';
 		//console.log(headers);
-		let params = new HttpParams().set('q', q).set('type', type);
-		this.http.get('https://api.spotify.com/v1/search', { headers: headers, params: params, responseType: 'text' as 'json' }).subscribe((response) => {
+		let tracks;
+		if(playlistIDForAPI != null){
+		//let params = new HttpParams().set('q', q).set('type', type);
+			return this.http.get('https://api.spotify.com/v1/playlists/' + playlistIDForAPI, { headers: headers, responseType: 'text' as 'json' })//.subscribe((response) => {
+				//console.log(response);
+				/*let output = JSON.parse(response.toString());
+				this.tracks = output['tracks']['items'];
+				tracks = output['tracks']['items']
+				console.log(this.tracks);
+*/
+			//});
 
-			//console.log(response);
-
-			let output = JSON.parse(response.toString());
-			this.tracks = output['tracks']['items'];
-
-			console.log(this.tracks);
-
-		});
+		}
 	}
 	play() {
 		this.playing = true;
@@ -303,10 +361,38 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 				// Playback status updates
 				this.player.addListener('player_state_changed', state => {
 					//console.log("Changed: " + state['track_window']['current_track']['name']);
-					let track = state['track_window']['current_track']['uri'];
+					let track = state['track_window']['current_track'];
 					//console.log(track);
 					if (this.sessionRunning) {
-						//console.log("sessionRunning")
+						/*console.log(this.sessionRunning)
+						console.log(this.firstStart)
+						// Catch up to first queued song
+						if(this.firstStart){
+							console.log("reached")
+							this.firstStart = false;
+							let caughtUp = false;
+							let first = 0;
+							let firstSong = this.tracks[first]['track']['uri'];
+							while (!caughtUp) {
+								console.log(caughtUp)
+								let currentlyPlayingSong = this.player.state['track_window']['current_track']['uri'];
+								console.log(currentlyPlayingSong)
+								if (currentlyPlayingSong == firstSong) {
+									caughtUp = true;
+								}
+								else {
+									this.nextTrack()
+									let successfullyChangeTracks = false
+									while (!successfullyChangeTracks) {
+										if (this.player.state['track_window']['current_track']['uri'] != currentlyPlayingSong) {
+											successfullyChangeTracks = true;
+										}
+									}
+								}
+								console.log(caughtUp)
+							}
+						}
+						else{*/
 						if (track != this.currentSong) {
 							if (this.currentSongTime == state['duration']) {
 								console.log("Not up to date");
@@ -330,10 +416,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 							if (sessionLength > length) {
 								this.queue();
 								console.log('queued');
-
 							}
 							this.changed = true;
 						}
+					//}
 					}
 				});
 
